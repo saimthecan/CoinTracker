@@ -394,20 +394,41 @@ h3 {
     gap: 50px;
   }
 
+  /* Mobilde ve tarayıcıda seçim stilini engellemek */
+.card,
+.card-inner {
+ 
+  -webkit-tap-highlight-color: transparent; /* Mobilde tıklama efektini kaldırır */
+}
+
   /* Card */
   .card {
     min-height: 250px;
     max-width: 350px;
+    outline: none; /* Tarayıcıda mavi sınırın görünmesini engeller */
   }
 
   .card-inner{
     margin-left: 0.5rem;
+    outline: none; /* Tarayıcıda mavi sınırın görünmesini engeller */
+
   }
  
   .card-front,
   .card-back {
     padding: 15px;
   }
+
+/* Kartın tıklanabilirliğini ve mavi sınırı engelleyen stiller */
+.card:focus,
+.card:active,
+.card-inner:focus,
+.card-inner:active {
+  outline: none; /* Mavi sınırın görünmesini engeller */
+  box-shadow: none; /* Tıklama sırasında gölge eklenmesini engeller */
+  background-color: transparent; /* Arka plan rengini tamamen kaldır */
+  border: none; /* Varsayılan tarayıcı stillerini sıfırlamak için */
+}
 
   /* Info Rows İçin Grid Düzeni */
   .dates-row,
