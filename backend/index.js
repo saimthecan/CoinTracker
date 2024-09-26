@@ -10,6 +10,7 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 
+
 // Frontend build dosyalarını serve etme
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend/build')));
