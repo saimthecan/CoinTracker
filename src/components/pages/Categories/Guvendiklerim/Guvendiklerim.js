@@ -19,7 +19,7 @@ const Guvendiklerim = () => {
   // Fetch users belonging to 'güvendiklerim' category
   useEffect(() => {
     axios
-      .get('http://localhost:5000/users')
+      .get('https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users')
       .then((response) => {
         const users = response.data;
         const Guvendiklerim = users.filter(
@@ -45,7 +45,7 @@ const Guvendiklerim = () => {
   const handleDeleteUser = (userId) => {
     if (window.confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?')) {
       axios
-        .delete(`http://localhost:5000/users/${userId}`)
+        .delete(`https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users/${userId}`)
         .then(() => {
           setGuvendiklerimUsers(GuvendiklerimUsers.filter(user => user._id !== userId));
         })
@@ -58,7 +58,7 @@ const Guvendiklerim = () => {
   // Handle adding a new user
   const handleAddUser = (newUser) => {
     axios
-      .post('http://localhost:5000/users', newUser)
+      .post('https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users', newUser)
       .then((response) => {
         const addedUser = response.data;
         setGuvendiklerimUsers([...GuvendiklerimUsers, addedUser]);

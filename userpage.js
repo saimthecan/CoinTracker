@@ -17,7 +17,7 @@ const UserPage = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/users/${id}`);
+        const response = await axios.get(`https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users/${id}`);
         setUser(response.data);
         const coinsData = response.data.coins || [];
 
@@ -147,7 +147,7 @@ const UserPage = () => {
   const handleDeleteCoin = async (coinId) => {
     if (window.confirm("Bu coin'i silmek istediğinizden emin misiniz?")) {
       try {
-        await axios.delete(`http://localhost:5000/users/${id}/coins/${coinId}`);
+        await axios.delete(`https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users/${id}/coins/${coinId}`);
         setCoins((prevCoins) => prevCoins.filter((coin) => coin._id !== coinId));
       } catch (error) {
         console.error("Coin silinirken hata oluştu:", error);
@@ -159,7 +159,7 @@ const UserPage = () => {
   const handleAddCoin = async (newCoin) => {
     try {
       const response = await axios.post(
-        `http://localhost:5000/users/${id}/coins`,
+        `https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users/${id}/coins`,
         newCoin
       );
       const addedCoin = response.data; // Yeni eklenen coin, _id dahil

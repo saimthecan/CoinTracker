@@ -7,10 +7,12 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
 
+  const API_URL = "https://calm-harbor-22861-fa5a63bab33f.herokuapp.com";
+
   // Favori kullanıcıları çekme fonksiyonu
   const fetchFavorites = useCallback(async () => {
     try {
-      const response = await axios.get('http://localhost:5000/users?favorite=true');
+      const response = await axios.get('https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users?favorite=true');
       console.log('Favori kullanıcılar:', response.data);  // API cevabını burada kontrol ediyoruz
       setSelectedUsers(response.data);
     } catch (error) {
@@ -25,7 +27,7 @@ export const UserProvider = ({ children }) => {
 
   const addUserToSelected = async (user) => {
     try {
-      await axios.put(`http://localhost:5000/users/${user._id}/favorite`);
+      await axios.put(`https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users/${user._id}/favorite`);
       fetchFavorites(); // Favori listesini güncelle
     } catch (error) {
       console.error('Error adding user to favorites:', error);
@@ -34,7 +36,7 @@ export const UserProvider = ({ children }) => {
 
   const removeUserFromSelected = async (userId) => {
     try {
-      await axios.delete(`http://localhost:5000/users/${userId}/favorite`);
+      await axios.delete(`https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users/${userId}/favorite`);
       fetchFavorites(); // Favori listesini güncelle
     } catch (error) {
       console.error('Error removing user from favorites:', error);
