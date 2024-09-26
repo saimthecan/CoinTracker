@@ -45,6 +45,15 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+  /* Desktop view */
+  .desktop-text {
+    display: inline; /* Masaüstünde görünsün */
+  }
+  
+  .mobile-text {
+    display: none; /* Mobilde gizli */
+  }
+
 /* Kart Konteyneri */
 .card-container {
   display: flex;
@@ -178,3 +187,49 @@
   width: 22px;
   height: 22px;
 } 
+
+
+/* Mobile View */
+@media (max-width: 767px) {
+  .desktop-text {
+    display: none; /* Mobilde masaüstü metni gizle */
+  }
+
+  .mobile-text {
+    display: inline; /* Mobilde "+" işaretini göster */
+    font-size: 1rem; /* "+" işaretinin boyutunu artır */
+  }
+
+/* Kullanıcı Ekleme Butonu - Modern, minimalist tasarım */
+.add-card-button {
+  position: fixed;
+  bottom: 20px;
+  left: 20px; 
+  width: 50px; /* Daha küçük ve kompakt */
+  height: 50px;
+  background-color: #007BFF; /* Mavi ton */
+  color: #ffffff; /* Beyaz sembol */
+  border: none;
+  border-radius: 50%; /* Yuvarlak şekil */
+  font-size: 24px; /* "+" sembolü için büyük font */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Hafif gölge efekti */
+  cursor: pointer;
+  z-index: 1000; /* Üstte kalmasını sağla */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.add-card-button:hover {
+  background-color: #0056b3; /* Hover'da daha koyu mavi */
+  transform: translateY(-3px); /* Hover'da hafif yukarı hareket */
+}
+
+.add-card-button:active {
+  transform: translateY(0); /* Tıklamada eski pozisyona dön */
+}
+
+}
+
+  

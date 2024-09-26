@@ -72,7 +72,8 @@ const Guvendiklerim = () => {
     <div className="container">
       {/* "Card Ekle" Button */}
       <button className="add-card-button" onClick={() => setShowAddUserModal(true)}>
-        Kullanıcı Ekle
+      <span className="desktop-text">Kullanıcı Ekle</span>
+  <span className="mobile-text">+</span>
       </button>
 
       {/* New User Modal */}
