@@ -1,0 +1,80 @@
+/* src/components/Home.css */
+
+/* Container */
+.container {
+    padding: 2rem;
+  }
+  
+  /* Kart Konteyneri */
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: flex-start;
+  }
+  
+  /* Kullanıcı Kartı */
+  .user-card {
+    position: relative;
+    background-color: var(--card-background);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    padding: 1.5rem;
+    text-align: center;
+  }
+  
+  /* Kullanıcı İsmi */
+  .user-name {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin-top: 0.5rem !important;
+  }
+  
+  /* Twitter Logosu */
+  .twitter-logo {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    position: absolute;
+    top: 16px;
+    left: 16px;
+  }
+  
+  .twitter-logo:hover {
+    opacity: 0.8;
+  }
+  
+  /* Profil Görüntüle Butonu */
+  .view-profile-button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: var(--button-color);
+    color: var(--button-text-color);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .view-profile-button:hover {
+    background-color: #e05252;
+  }
+  
+  /* Yıldız İkonu */
+  .star-icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+  }
+  
+  .star-icon-container {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
+  
+  .user-category {
+    font-size: 0.85rem; /* Daha küçük font boyutu */
+    color: #6c757d; /* Daha açık bir renk */
+    margin-top: 0; /* Kullanıcı ismine yakınlaştırmak için */
+  }

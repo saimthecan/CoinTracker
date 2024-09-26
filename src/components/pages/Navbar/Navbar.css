@@ -1,0 +1,164 @@
+/* src/components/Navbar.css */
+
+/* General Navbar Settings */
+.navbar {
+    background-color: #f8f8f8; /* Clean, Apple-like background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    height: 10px; /* Compact navbar */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    position: fixed; /* Fixed at the top */
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    
+  }
+  
+  /* Navbar Content */
+  .navbar-content {
+    display: flex;
+    justify-content: center; /* İçeriği yatayda ortala */
+    align-items: center;
+    width: 100%;
+    max-width: 1200px; /* İçerik genişliğini sınırlamak için */
+    padding: 0 20px; /* Yatay padding */
+    gap: 20px; /* Logo ve linkler arasına boşluk ekle */
+  }
+  
+  /* Logo Style */
+  .logo-container {
+    flex-shrink: 0; /* Fixed logo size */
+  }
+  
+  .navbar-logo {
+    width: 45px; /* Small, minimal logo */
+    height: auto;
+  }
+  
+  /* Links Container */
+  .links-container {
+    display: flex;
+    gap: 24px; /* Space between links */
+  }
+  
+  /* Link Styles */
+  .nav-link {
+    font-size: 15px;
+    font-family: "Inter", sans-serif;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+  }
+  
+  .nav-link:hover {
+    color: #1abc9c; /* Green on hover */
+  }
+  
+  .nav-link.active {
+    color: #0071e3; /* Blue for active link */
+  }
+  
+  /* Hamburger Icon - Hidden on Desktop */
+  .hamburger-icon {
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+    display: none; /* Hidden by default */
+  }
+  
+  /* Sidebar Styles */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 250px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+    transition: right 0.3s ease-in-out;
+    padding: 2rem 1rem;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebar-open {
+    right: 0;
+  }
+  
+  .close-icon {
+    align-self: flex-end;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+    margin-bottom: 2rem;
+  }
+  
+  .sidebar-links {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .sidebar-link {
+    font-size: 16px;
+    font-family: "Inter", sans-serif;
+    color: #8c8cb1;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+  }
+  
+  .sidebar-link:hover {
+    color: #1abc9c; /* Green on hover */
+  }
+  
+  .sidebar-link.active {
+    color: #0071e3; /* Blue for active link */
+  }
+  
+  /* Responsive Styles */
+  
+  /* Desktop View */
+  @media (min-width: 768px) {
+    .links-container {
+      display: flex;
+      justify-content: flex-start; /* Align links to the left */
+    }
+    .hamburger-icon {
+      display: none; /* Hide hamburger on desktop */
+    }
+  }
+  
+  /* Mobile View */
+  @media (max-width: 767px) {
+
+    .links-container {
+      display: none; /* Hide links on mobile */
+    }
+    .navbar-content {
+      display: flex;
+      justify-content: space-between; /* Sol ve sağa hizala */
+      align-items: center;
+      width: 100%;
+      padding: 0 20px; /* Yatay padding */
+    }
+  
+    .logo-container {
+      margin-right: auto; /* Logoyu sola dayamak için */
+    }
+  
+    .hamburger-icon {
+      margin-left: auto; /* Hamburger ikonunu sağa dayamak için */
+      display: block;
+      margin-right: 1rem;
+    }
+    .navbar-logo{
+        margin-left: -1.5rem;
+    }
+  }
+  
+
+  

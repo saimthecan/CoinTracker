@@ -1,0 +1,499 @@
+/* Container */
+.coin-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+/* Grid */
+.coin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
+  gap: 50px; /* Boşluğu artırdık (önceki değer: 20px) */
+  width: 100%;
+  justify-items: start;
+}
+
+/* Card */
+.card {
+  position: relative; /* Düzeltme: Flexbox kaldırıldı */
+  width: 90%;
+  height: 275px;
+  perspective: 1000px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  transform-origin: 50% 50%;
+  margin-left: 1rem;
+
+  /* Eklenen Flexbox Özellikleri */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+   /* Donanım Hızlandırma */
+   transform: translateZ(0);
+   will-change: transform;
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Front */
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden; /* Arka yüzü gizle */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  -webkit-font-smoothing: antialiased; /* MacOS ve iOS için */
+  text-rendering: optimizeLegibility; /* Metin optimizasyonu */
+  transform: translateZ(0);
+}
+
+.card-front {
+  background-color: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  padding: 20px;
+}
+
+.card-back {
+  background-color: #f4f4f4; /* Ön kartla aynı renk */
+  color: #333;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  justify-content: center;
+  font-size: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Info Section */
+.info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* Genel boşluk */
+}
+
+/* Tarihler Satırı */
+.dates-row,
+.prices-row,
+.marketcap-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; /* Kart genişliğine göre ayarlayabilirsiniz */
+}
+
+/* Tarihler ve Diğer Bilgi Öğeleri */
+.date-item,
+.price-item,
+.marketcap-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* İçeriği ortala */
+  flex: 1; /* Eşit genişlik */
+}
+
+/* Bilgi Etiketleri ve Değerleri */
+.info-label {
+  font-weight: bold;
+  color: #555;
+  margin-bottom: -7px; /* Etiket ve değer arasında boşluk */
+  text-align: center; /* Etiketi ortala */
+}
+
+.info-value {
+  color: #777;
+  text-align: center; /* Değeri ortala */
+}
+
+/* Image */
+.coin-image {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
+}
+
+/* Heading */
+h3 {
+  font-size: 20px;
+  text-align: center;
+  margin: 10px 0;
+}
+
+/* Market Cap Comparison */
+.market-cap-comparison {
+  font-size: 18px;
+  color: #007BFF;
+  margin-top: 8px;
+}
+
+/* Delete Button */
+.delete-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: transparent;
+  border: none;
+  color: #ff4d4d;
+  font-size: 21px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  color: #ff0000;
+  transform: scale(1.2); /* Eklendi: Hover sırasında büyüme efekti */
+}
+
+/* Contract Address */
+.contract-address {
+  text-align: center;
+  font-size: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.contract-address:hover {
+  color: blue;
+}
+
+.dex-screener-link {
+  position: absolute; /* Absolute pozisyonlama */
+  top: 10px;          /* Üstten 10px uzaklık */
+  right: 10px;        /* Sağdan 10px uzaklık */
+  display: inline-block; /* İkonun düzgün hizalanmasını sağlar */
+
+  /* İsteğe Bağlı: Hover Efekti ve Diğer Stil Özellikleri */
+  /* margin-top: 10px; */ /* Mevcut margin-top kaldırıldı */
+}
+
+.dex-screener-icon {
+  width: 30px; /* İkon boyutunu ayarlayın */
+  height: 30px;
+  transition: transform 0.3s;
+}
+
+.dex-screener-icon:hover {
+  transform: scale(1.1); /* Hover efekt */
+}
+
+.mobile-label {
+  display: none;
+}
+
+/* Market Cap Comparison - Pozitif Değerler için */
+.market-cap-comparison.positive {
+  color: green;
+}
+
+/* Market Cap Comparison - Negatif Değerler için */
+.market-cap-comparison.negative {
+  color: red;
+}
+
+/* Header Container */
+.header {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); /* Gradient arka plan */
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Ortalamak için değiştirildi */
+
+}
+
+/* User Info */
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+/* User Name */
+.user-name {
+  font-size: 32px;
+  color: #333333;
+  margin: 0;
+  font-family: 'Roboto', sans-serif; /* Modern ve okunabilir bir font */
+  text-align: center
+}
+
+/* Add Coin and Twitter Container */
+.add-coin-and-twitter {
+  display: flex;
+  flex-direction: row; /* Yatay hizalama */
+  align-items: center; /* Dikey ortalama */
+  gap: 10px; /* Öğeler arası boşluk */
+}
+/* Add Coin Button */
+.add-coin-button {
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+}
+
+.add-coin-button:hover {
+  background-color: #0056b3;
+}
+
+/* Twitter Button */
+.twitter-icons {
+  width: 36px; /* İkon boyutunu ayarlayın */
+  height: 36px;
+}
+
+/* Twitter Button */
+.twitter-link {
+  padding-top: 0.2rem;
+}
+
+
+/* Twitter Button */
+.twitter-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.twitter-icon {
+  width: 24px; /* İkon boyutunu ayarlayın */
+  height: 24px;
+  transition: transform 0.3s;
+}
+
+.twitter-icon:hover {
+  transform: scale(1.1); /* Hover efekt */
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 24px;
+  text-align: center;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-content label {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.modal-content input {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 5px;
+  width: 100%;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.modal-buttons button {
+  padding: 8px 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-buttons button[type="submit"] {
+  background-color: #28a745;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.modal-buttons button[type="submit"]:hover {
+  background-color: #218838;
+}
+
+.modal-buttons button[type="button"] {
+  background-color: #dc3545;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.modal-buttons button[type="button"]:hover {
+  background-color: #c82333;
+}
+
+/* Responsive Tasarım */
+@media (max-width: 600px) {
+  /* Grid Düzeni */
+  .coin-grid {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+
+  /* Card */
+  .card {
+    min-height: 250px;
+    max-width: 350px;
+  }
+
+  .card-inner{
+    margin-left: 0.5rem;
+  }
+ 
+  .card-front,
+  .card-back {
+    padding: 15px;
+  }
+
+  /* Info Rows İçin Grid Düzeni */
+  .dates-row,
+  .prices-row,
+  .marketcap-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* İki sütunlu düzen */
+    gap: 40px;
+  }
+
+  .date-item,
+  .price-item,
+  .marketcap-item {
+    align-items: flex-start;
+    padding: 5px 0;
+  }
+
+  /* Yazı Boyutları */
+  h3 {
+    font-size: 18px;
+  }
+
+  .info-label {
+    font-size: 14px;
+  }
+
+  .info-value {
+    font-size: 14px;
+  }
+
+  /* Görseller */
+  .coin-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  /* Delete Butonu */
+  .delete-button {
+    top: 5px;
+    left: 5px;
+    font-size: 16px;
+  }
+
+  /* Dex Screener İkonu */
+  .dex-screener-icon {
+    width: 25px;
+    height: 25px;
+  }
+
+  /* Popup */
+  .copy-popup {
+    font-size: 12px;
+    padding: 3px 7px;
+  }
+
+  /* Masaüstü etiketlerini gizle ve mobil etiketlerini göster */
+  .desktop-label {
+    display: none;
+  }
+
+  .mobile-label {
+    display: inline;
+  }
+
+  .header {
+    padding: 15px;
+    margin-bottom: 1.5rem;
+    margin-left: -0.8rem;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .user-name {
+    font-size: 24px;
+  }
+
+  .user-experience {
+    font-size: 14px;
+  }
+
+  .add-coin-and-twitter {
+    flex-direction: row; /* Yatay hizalama korunuyor */
+    gap: 5px;
+  }
+
+  .add-coin-button {
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,4 @@
+<!-- src/assets/user.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#333" width="24px" height="24px">
+  <path d="M12 12c2.7 0 4.5-2.5 4.5-4.5S14.7 3 12 3 7.5 5.5 7.5 7.5 9.3 12 12 12zm0 1.5c-2.7 0-8 1.4-8 4.1V21h16v-3.4c0-2.7-5.3-4.1-8-4.1z"/>
+</svg>

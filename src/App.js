@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Navbar from './components/pages/Navbar/Navbar';
+import Home from "./components/pages/HomePage/Home";
+import EnGuvendiklerim from "./components/pages/Categories/EnGuvendiklerim/EnGuvendiklerim";
+import Guvendiklerim from "./components/pages/Categories/Guvendiklerim/Guvendiklerim";
+import UserPage from "./components/pages/UserPage/UserPage";
+import { UserProvider } from '../src/context/UserContext';
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserProvider>
+      <Router>
+        <Navbar />
+        <div className="main-content"> {/* Ana içeriği kapsayan div */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/en-guvendiklerim" element={<EnGuvendiklerim />} />
+          <Route path="/guvendiklerim" element={<Guvendiklerim />} />
+          <Route path="/user/:id" element={<UserPage />} />
+        </Routes>
+        </div>
+      </Router>
+    </UserProvider>
   );
 }
 

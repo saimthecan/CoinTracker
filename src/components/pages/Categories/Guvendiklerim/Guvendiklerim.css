@@ -1,0 +1,180 @@
+/* src/components/EnGuvendiklerim.css */
+
+/* Renk Değişkenleri */
+:root {
+  --primary-color: #4e89ae;
+  --secondary-color: #43658b;
+  --background-color: #f7f9fb;
+  --card-background: #ffffff;
+  --text-color: #333333;
+  --button-color: #ed6663;
+  --button-text-color: #ffffff;
+}
+
+/* Container */
+.container {
+  padding: 2rem;
+}
+
+.add-card-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px; /* Sağ alt köşede sabitle */
+  padding: 0.75rem 1.5rem;
+  background-color: #007BFF !important;
+  color: var(--button-text-color);
+  text-decoration: none;
+  border: none;
+  border-radius: 50px; /* Tamamen yuvarlak kenarlar */
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Sayfanın en üstünde kalması için */
+}
+
+.add-card-button:hover {
+  background-color: #3a6f9f;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.add-card-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Kart Konteyneri */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: flex-start;
+}
+
+/* Kullanıcı Kartı */
+.user-card {
+  display: flex;
+  flex-direction: column; /* Dikeyde hizalama için */
+  justify-content: center; /* Yatayda ortala */
+  align-items: center; /* Dikeyde ortala */
+  background-color: var(--card-background);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  height: 55px; /* Yeterli yüksekliği sağlamak için */
+  padding: 1.5rem;
+  text-align: center;
+  position: relative; /* Diğer ikonların yerleşimi için */
+}
+
+/* Kullanıcı İsmi */
+.user-name {
+  font-size: 1.5rem;
+  color: var(--text-color);
+  text-align: center center;
+}
+
+/* Twitter Logosu */
+.twitter-logo {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  position: absolute;
+  top: 16px;
+  left: 16px;
+}
+
+.twitter-logo:hover {
+  opacity: 0.8;
+}
+
+/* Profil Görüntüle Butonu */
+.view-profile-button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: var(--button-color);
+  color: var(--button-text-color);
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.view-profile-button:hover {
+  background-color: #e05252;
+}
+
+/* Yıldız İkonu */
+.star-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.star-icon-container {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+
+
+.add-user-form h3 {
+  margin-bottom: 1rem;
+  color: var(--text-color);
+  text-align: center;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.input-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 0.5rem;
+}
+
+.add-user-form input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-user-form button {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background-color: var(--button-color);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-user-form button:hover {
+  background-color: #e05252;
+}
+
+.user-name-link {
+  text-decoration: none;
+}
+
+.user-name-link:hover .user-name {
+  text-decoration: underline;
+}
+
+.delete-icon-container {
+  position: absolute;
+  bottom: 5px;
+  right: 16px;
+  cursor: pointer;
+}
+
+.delete-icon {
+  width: 22px;
+  height: 22px;
+} 
