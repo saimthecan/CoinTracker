@@ -189,6 +189,34 @@
     height: 22px;
   }
 
+  .favorites-header {
+    width: 99%;
+    padding: 10px 20px; /* Yüksekliği azaltmak için padding değerleri küçültüldü */
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Dikey ortalamak için eklendi */
+    text-align: center; /* Metni ortala */
+  }
+  
+  .favorites-header h1 {
+    font-size: 1.8rem; /* Başlık boyutunu küçülttük */
+    margin: 0;
+    color: var(--text-color, #333);
+  }
+  
+  .favorites-header p {
+    font-size: 1rem; /* Alt metnin boyutunu sabit tuttuk */
+    color: var(--secondary-text-color, #555);
+    margin: 0;
+  }
+
+
+
 /* Mobile View */
 @media (max-width: 767px) {
   .desktop-text {
@@ -230,5 +258,19 @@
   transform: translateY(0); /* Tıklamada eski pozisyona dön */
 }
 
+.favorites-header {
+  padding: 8px 15px; /* Daha küçük padding */
+  width: 87% !important;
 }
+
+.favorites-header h1 {
+  font-size: 1.5rem; /* Başlık boyutunu daha da küçülttük */
+}
+
+.favorites-header p {
+  font-size: 0.9rem; /* Alt metnin boyutunu küçülttük */
+}
+}
+
+
   

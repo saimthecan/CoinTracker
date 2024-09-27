@@ -25,6 +25,9 @@ const Home = () => {
 
   return (
     <div className="container">
+        <header className="favorites-header">
+        <h1>Favori Kullanıcılarım</h1>
+      </header>
       <div className="card-container">
         {loading ? (  // Eğer loading true ise "Yükleniyor" mesajını göster
           <p>Yükleniyor...</p>

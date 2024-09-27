@@ -70,6 +70,9 @@ const Guvendiklerim = () => {
 
   return (
     <div className="container">
+       <header className="favorites-header">
+        <h1>Güvendiklerim</h1>
+      </header>
       {/* "Card Ekle" Button */}
       <button className="add-card-button" onClick={() => setShowAddUserModal(true)}>
       <span className="desktop-text">Kullanıcı Ekle</span>
