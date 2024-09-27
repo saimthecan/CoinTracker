@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import DexScreenerIcon from "../../../assets/dexscreener.png"; // SVG dosyasını içe aktarın
 import AddCoinModal from "./AddCoinModal";
-import twitterIcon from '../../../assets/twitter.svg';
+import twitterIcon from "../../../assets/twitter.svg";
 import "./UserPage.css";
 
 const UserPage = () => {
@@ -14,76 +14,78 @@ const UserPage = () => {
   const [error, setError] = useState(null);
   const [showAddCoinModal, setShowAddCoinModal] = useState(false); // Modal görünürlüğü için state
 
- // fetchUserData fonksiyonunu useCallback ile sarmalayarak memoize ediyoruz
- const fetchUserData = useCallback(async () => {
-  try {
-    const response = await axios.get(`https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users/${id}`);
-    setUser(response.data);
-    const coinsData = response.data.coins || [];
+  // fetchUserData fonksiyonunu useCallback ile sarmalayarak memoize ediyoruz
+  const fetchUserData = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users/${id}`
+      );
+      setUser(response.data);
+      const coinsData = response.data.coins || [];
 
-    const updatedCoins = await Promise.all(
-      coinsData.map(async (coin) => {
-        try {
-          const response = await axios.get(
-            `https://api.dexscreener.com/latest/dex/tokens/${coin.caAddress}`
-          );
-          const pairs = response.data.pairs;
-          if (!pairs || pairs.length === 0) {
-            throw new Error("Coin verileri alınamadı.");
+      const updatedCoins = await Promise.all(
+        coinsData.map(async (coin) => {
+          try {
+            const response = await axios.get(
+              `https://api.dexscreener.com/latest/dex/tokens/${coin.caAddress}`
+            );
+            const pairs = response.data.pairs;
+            if (!pairs || pairs.length === 0) {
+              throw new Error("Coin verileri alınamadı.");
+            }
+
+            const pair = pairs[0];
+            const currentPrice = parseFloat(pair.priceUsd);
+            const currentMarketCap = pair.marketCap;
+            const imageUrl = `https://dd.dexscreener.com/ds-data/tokens/${pair.chainId}/${coin.caAddress}.png?size=lg&key=a459db`;
+            const url = pair.url || ""; // URL alanını ekleyin
+
+            const marketCapComparison = calculateMarketCapChange(
+              coin.shareMarketCap,
+              currentMarketCap
+            );
+
+            return {
+              ...coin,
+              currentPrice,
+              currentMarketCap,
+              imageUrl,
+              url, // URL'yi ekleyin
+              marketCapComparison,
+            };
+          } catch (error) {
+            console.error(`Coin verileri alınamadı (${coin.symbol}):`, error);
+            return {
+              ...coin,
+              currentPrice: null,
+              currentMarketCap: null,
+              imageUrl: "",
+              url: "",
+              marketCapComparison: null,
+            };
           }
+        })
+      );
 
-          const pair = pairs[0];
-          const currentPrice = parseFloat(pair.priceUsd);
-          const currentMarketCap = pair.marketCap;
-          const imageUrl = `https://dd.dexscreener.com/ds-data/tokens/${pair.chainId}/${coin.caAddress}.png?size=lg&key=a459db`;
-          const url = pair.url || ""; // URL alanını ekleyin
+      setCoins(updatedCoins);
+      setLoading(false);
+    } catch (error) {
+      setError("Kullanıcı bulunamadı");
+      setLoading(false);
+    }
+  }, [id]);
 
-          const marketCapComparison = calculateMarketCapChange(
-            coin.shareMarketCap,
-            currentMarketCap
-          );
+  useEffect(() => {
+    fetchUserData(); // Bileşen yüklendiğinde ilk veri çekme
 
-          return {
-            ...coin,
-            currentPrice,
-            currentMarketCap,
-            imageUrl,
-            url, // URL'yi ekleyin
-            marketCapComparison,
-          };
-        } catch (error) {
-          console.error(`Coin verileri alınamadı (${coin.symbol}):`, error);
-          return {
-            ...coin,
-            currentPrice: null,
-            currentMarketCap: null,
-            imageUrl: "",
-            url: "",
-            marketCapComparison: null,
-          };
-        }
-      })
-    );
+    // 30 saniyede bir veri çekmek için setInterval ayarlama
+    const intervalId = setInterval(() => {
+      fetchUserData();
+    }, 50000); // 30000 ms = 30 saniye
 
-    setCoins(updatedCoins);
-    setLoading(false);
-  } catch (error) {
-    setError("Kullanıcı bulunamadı");
-    setLoading(false);
-  }
-}, [id]);
-
-useEffect(() => {
-  fetchUserData(); // Bileşen yüklendiğinde ilk veri çekme
-
-  // 30 saniyede bir veri çekmek için setInterval ayarlama
-  const intervalId = setInterval(() => {
-    fetchUserData();
-  }, 50000); // 30000 ms = 30 saniye
-
-  // Temizleme fonksiyonu: Bileşen unmount olduğunda interval'i temizle
-  return () => clearInterval(intervalId);
-}, [fetchUserData]);
+    // Temizleme fonksiyonu: Bileşen unmount olduğunda interval'i temizle
+    return () => clearInterval(intervalId);
+  }, [fetchUserData]);
 
   const [flipped, setFlipped] = useState([]);
 
@@ -118,20 +120,20 @@ useEffect(() => {
   const formatPriceWithConditionalZeros = (price) => {
     // 1. Fiyatın geçerli olup olmadığını kontrol et (0 hariç)
     if (price === null || price === undefined || isNaN(price)) {
-        return "Yükleniyor"; // Fiyat değeri yoksa
+      return "Yükleniyor"; // Fiyat değeri yoksa
     }
 
     // 2. Fiyatın sıfır olup olmadığını kontrol et
     if (price === 0) {
-        return <span>$0</span>;
+      return <span>$0</span>;
     }
 
     // 3. Fiyatı stringe çevir ve bilimsel gösterimi düzelt
     let priceString = price.toString();
 
     if (priceString.includes("e")) {
-        // Bilimsel gösterimi normal sayıya çevir
-        priceString = price.toFixed(20).replace(/\.?0+$/, "");
+      // Bilimsel gösterimi normal sayıya çevir
+      priceString = price.toFixed(20).replace(/\.?0+$/, "");
     }
 
     // 4. Ondalık ve tam kısmı ayır
@@ -144,51 +146,55 @@ useEffect(() => {
     let zerosCount = leadingZerosMatch ? leadingZerosMatch[0].length : 0;
 
     if (zerosCount >= 4) {
-        // 4 veya daha fazla sıfır varsa
-        // 4 sıfırdan sonra gelen ilk 3 basamağı al
-        let remainingDecimals = decimal.slice(zerosCount, zerosCount + 3);
+      // 4 veya daha fazla sıfır varsa
+      // 4 sıfırdan sonra gelen ilk 3 basamağı al
+      let remainingDecimals = decimal.slice(zerosCount, zerosCount + 3);
 
-        return (
-            <>
-                <span>${integer}.0</span>
-                <sub>{zerosCount}</sub>
-                <span>{remainingDecimals}</span>
-            </>
-        );
+      return (
+        <>
+          <span>${integer}.0</span>
+          <sub>{zerosCount}</sub>
+          <span>{remainingDecimals}</span>
+        </>
+      );
     } else {
-        if (integer === "0") {
-            // Integer kısmı 0 ise ve sıfır sayısı 4'ten azsa
-            // 3 ondalık basamakla sınırlama
-            let remainingDecimals = decimal.slice(zerosCount, zerosCount + 3);
-            return (
-                <span>
-                    ${integer}.{decimal.slice(0, zerosCount)}{remainingDecimals}
-                </span>
-            );
-        } else {
-            // Integer kısmı 0'dan büyükse, 2 ondalık basamakla sınırlama
-            let limitedDecimals = decimal.slice(0, 2);
-            return (
-                <span>
-                    ${integer}.{limitedDecimals}
-                </span>
-            );
-        }
+      if (integer === "0") {
+        // Integer kısmı 0 ise ve sıfır sayısı 4'ten azsa
+        // 3 ondalık basamakla sınırlama
+        let remainingDecimals = decimal.slice(zerosCount, zerosCount + 3);
+        return (
+          <span>
+            ${integer}.{decimal.slice(0, zerosCount)}
+            {remainingDecimals}
+          </span>
+        );
+      } else {
+        // Integer kısmı 0'dan büyükse, 2 ondalık basamakla sınırlama
+        let limitedDecimals = decimal.slice(0, 2);
+        return (
+          <span>
+            ${integer}.{limitedDecimals}
+          </span>
+        );
+      }
     }
-};
+  };
 
   const calculateMarketCapChange = (shareMarketCap, currentMarketCap) => {
     if (!shareMarketCap || !currentMarketCap) return "Yükleniyor";
-    const change =
-      ((currentMarketCap - shareMarketCap) / shareMarketCap) * 100;
+    const change = ((currentMarketCap - shareMarketCap) / shareMarketCap) * 100;
     return change.toFixed(2);
   };
 
   const handleDeleteCoin = async (coinId) => {
     if (window.confirm("Bu coin'i silmek istediğinizden emin misiniz?")) {
       try {
-        await axios.delete(`https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users/${id}/coins/${coinId}`);
-        setCoins((prevCoins) => prevCoins.filter((coin) => coin._id !== coinId));
+        await axios.delete(
+          `https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users/${id}/coins/${coinId}`
+        );
+        setCoins((prevCoins) =>
+          prevCoins.filter((coin) => coin._id !== coinId)
+        );
       } catch (error) {
         console.error("Coin silinirken hata oluştu:", error);
         alert("Coin silinirken bir hata oluştu.");
@@ -204,14 +210,14 @@ useEffect(() => {
         newCoin
       );
       const addedCoin = response.data; // Backend'den eklenen coin
-  
+
       // 2. DexScreener API'sinden ek verileri alın
       const dexResponse = await axios.get(
         `https://api.dexscreener.com/latest/dex/tokens/${addedCoin.caAddress}`
       );
       const pairs = dexResponse.data.pairs;
       if (!pairs || pairs.length === 0) {
-        console.error('DexScreener API yanıtında coin bulunamadı.');
+        console.error("DexScreener API yanıtında coin bulunamadı.");
         // Ek veriler alınamadıysa, varsayılan değerler atayın
         addedCoin.currentPrice = null;
         addedCoin.currentMarketCap = null;
@@ -232,11 +238,14 @@ useEffect(() => {
         }
         const imageUrl = `https://dd.dexscreener.com/ds-data/tokens/${pair.chainId}/${addedCoin.caAddress}.png?size=lg&key=a459db`;
         const url = pair.url || "";
-  
+
         // Piyasa değeri değişimini hesaplayın
-        const change = ((currentMarketCap - addedCoin.shareMarketCap) / addedCoin.shareMarketCap) * 100;
+        const change =
+          ((currentMarketCap - addedCoin.shareMarketCap) /
+            addedCoin.shareMarketCap) *
+          100;
         const marketCapComparison = change.toFixed(2);
-  
+
         // Coin nesnesini zenginleştirin
         addedCoin.currentPrice = currentPrice;
         addedCoin.currentMarketCap = currentMarketCap;
@@ -245,13 +254,11 @@ useEffect(() => {
         addedCoin.marketCapComparison = marketCapComparison;
       }
 
-
       console.log("Added Coin:", addedCoin);
 
-  
       // 3. Zenginleştirilmiş coini frontend'deki coins durumuna ekleyin
       setCoins((prevCoins) => [...prevCoins, addedCoin]);
-  
+
       // 4. Modal'ı kapatın
       setShowAddCoinModal(false);
     } catch (error) {
@@ -259,11 +266,6 @@ useEffect(() => {
       alert("Coin eklenirken bir hata oluştu.");
     }
   };
-  
-  
-  
-  
-  
 
   if (loading) {
     return <p>Yükleniyor...</p>;
@@ -282,31 +284,32 @@ useEffect(() => {
           {/* Eğer alt başlık kullanmak isterseniz, aşağıdaki satırı aktif edebilirsiniz */}
           {/* <p className="user-experience">Kullanıcı Deneyimi</p> */}
         </div>
-        <div className="add-coin-and-twitter"> {/* Yeni Kapsayıcı */}
-    <button
-      className="add-coin-button"
-      onClick={() => setShowAddCoinModal(true)}
-    >
-      Ekle
-    </button>
-    <a
-      href={user.twitter}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="twitter-link"
-    >
-      <img src={twitterIcon} alt="Twitter" className="twitter-icons" />
-    </a>
-  </div>
+        <div className="add-coin-and-twitter">
+          {" "}
+          {/* Yeni Kapsayıcı */}
+          <button
+            className="add-coin-button"
+            onClick={() => setShowAddCoinModal(true)}
+          >
+            Ekle
+          </button>
+          <a
+            href={user.twitter}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="twitter-link"
+          >
+            <img src={twitterIcon} alt="Twitter" className="twitter-icons" />
+          </a>
+        </div>
       </div>
 
       {/* Add Coin Modal */}
       {showAddCoinModal && (
-       <AddCoinModal
-       onAddCoin={handleAddCoin}  // Prop adını 'onAddCoin' olarak değiştirin
-       onClose={() => setShowAddCoinModal(false)}
-     />
-     
+        <AddCoinModal
+          onAddCoin={handleAddCoin} // Prop adını 'onAddCoin' olarak değiştirin
+          onClose={() => setShowAddCoinModal(false)}
+        />
       )}
 
       <div className="coin-grid">
@@ -361,6 +364,7 @@ useEffect(() => {
                     rel="noopener noreferrer"
                     className="dex-screener-link"
                     onClick={(e) => {
+                      e.stopPropagation(); // Olayın kartın onClick olayına yayılmasını durdurur
                       if (!coin.url) {
                         e.preventDefault();
                         console.warn(
@@ -403,18 +407,14 @@ useEffect(() => {
                       <div className="price-item">
                         <p className="info-label">Paylaşım Fiyatı:</p>
                         <p className="info-value">
-                          {formatPriceWithConditionalZeros(
-                            coin.sharePrice
-                          )}
+                          {formatPriceWithConditionalZeros(coin.sharePrice)}
                         </p>
                       </div>
 
                       <div className="price-item">
                         <p className="info-label">Güncel Fiyat:</p>
                         <p className="info-value">
-                          {formatPriceWithConditionalZeros(
-                            coin.currentPrice
-                          )}
+                          {formatPriceWithConditionalZeros(coin.currentPrice)}
                         </p>
                       </div>
                     </div>
