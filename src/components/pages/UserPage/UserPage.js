@@ -116,39 +116,66 @@ useEffect(() => {
   };
 
   const formatPriceWithConditionalZeros = (price) => {
-    if (!price || isNaN(price)) {
-      return "Yükleniyor"; // Fiyat değeri yoksa
+    // 1. Fiyatın geçerli olup olmadığını kontrol et (0 hariç)
+    if (price === null || price === undefined || isNaN(price)) {
+        return "Yükleniyor"; // Fiyat değeri yoksa
     }
 
+    // 2. Fiyatın sıfır olup olmadığını kontrol et
+    if (price === 0) {
+        return <span>$0</span>;
+    }
+
+    // 3. Fiyatı stringe çevir ve bilimsel gösterimi düzelt
     let priceString = price.toString();
 
     if (priceString.includes("e")) {
-      priceString = price.toFixed(20).replace(/\.?0+$/, "");
+        // Bilimsel gösterimi normal sayıya çevir
+        priceString = price.toFixed(20).replace(/\.?0+$/, "");
     }
 
+    // 4. Ondalık ve tam kısmı ayır
     let [integer, decimal] = priceString.split(".");
 
-    if (!decimal) return `$${integer}`;
+    if (!decimal) return <span>${integer}</span>;
 
-    let zerosCount = (decimal.match(/^0+/) || [""])[0].length;
-    let remainingDecimals = decimal.slice(zerosCount);
+    // 5. Ondalık kısmındaki sıfır sayısını hesapla
+    let leadingZerosMatch = decimal.match(/^0+/);
+    let zerosCount = leadingZerosMatch ? leadingZerosMatch[0].length : 0;
 
     if (zerosCount >= 4) {
-      return (
-        <>
-          <span>${integer}.0</span>
-          <sub>{zerosCount}</sub>
-          <span>{remainingDecimals}</span>
-        </>
-      );
+        // 4 veya daha fazla sıfır varsa
+        // 4 sıfırdan sonra gelen ilk 3 basamağı al
+        let remainingDecimals = decimal.slice(zerosCount, zerosCount + 3);
+
+        return (
+            <>
+                <span>${integer}.0</span>
+                <sub>{zerosCount}</sub>
+                <span>{remainingDecimals}</span>
+            </>
+        );
     } else {
-      return (
-        <span>
-          ${integer}.{decimal}
-        </span>
-      );
+        if (integer === "0") {
+            // Integer kısmı 0 ise ve sıfır sayısı 4'ten azsa
+            // 3 ondalık basamakla sınırlama
+            let remainingDecimals = decimal.slice(zerosCount, zerosCount + 3);
+            return (
+                <span>
+                    ${integer}.{decimal.slice(0, zerosCount)}{remainingDecimals}
+                </span>
+            );
+        } else {
+            // Integer kısmı 0'dan büyükse, 2 ondalık basamakla sınırlama
+            let limitedDecimals = decimal.slice(0, 2);
+            return (
+                <span>
+                    ${integer}.{limitedDecimals}
+                </span>
+            );
+        }
     }
-  };
+};
 
   const calculateMarketCapChange = (shareMarketCap, currentMarketCap) => {
     if (!shareMarketCap || !currentMarketCap) return "Yükleniyor";
@@ -193,9 +220,16 @@ useEffect(() => {
         addedCoin.marketCapComparison = null;
       } else {
         const pair = pairs[0];
-        const tokenData = pair.baseToken;
         const currentPrice = parseFloat(pair.priceUsd);
-        const currentMarketCap = pair.marketCap;
+        const currentMarketCap = parseFloat(pair.marketCap);
+
+        if (isNaN(currentPrice) || isNaN(currentMarketCap)) {
+          addedCoin.currentPrice = null;
+          addedCoin.currentMarketCap = null;
+        } else {
+          addedCoin.currentPrice = currentPrice;
+          addedCoin.currentMarketCap = currentMarketCap;
+        }
         const imageUrl = `https://dd.dexscreener.com/ds-data/tokens/${pair.chainId}/${addedCoin.caAddress}.png?size=lg&key=a459db`;
         const url = pair.url || "";
   
@@ -210,6 +244,10 @@ useEffect(() => {
         addedCoin.url = url;
         addedCoin.marketCapComparison = marketCapComparison;
       }
+
+
+      console.log("Added Coin:", addedCoin);
+
   
       // 3. Zenginleştirilmiş coini frontend'deki coins durumuna ekleyin
       setCoins((prevCoins) => [...prevCoins, addedCoin]);
