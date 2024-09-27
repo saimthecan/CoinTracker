@@ -8,7 +8,7 @@ const AddCoinModal = ({ onClose, onAddCoin }) => {
   const [shareDate, setShareDate] = useState("");
   const [shareMarketCap, setShareMarketCap] = useState("");
   const [sharePrice, setSharePrice] = useState("");
-  const [inputType, setInputType] = useState("price"); // Başlangıçta fiyat girişi
+  const [inputType, setInputType] = useState("marketcap"); // Başlangıçta fiyat girişi
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
