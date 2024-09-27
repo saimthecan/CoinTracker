@@ -112,7 +112,7 @@
 @media (max-width: 768px) {
   .favorites-header {
     padding: 8px 15px; /* Daha küçük padding */
-    width: 87% !important;
+    width: 90% !important;
   }
 
   .favorites-header h1 {
