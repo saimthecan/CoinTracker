@@ -54,15 +54,18 @@
   flex-direction: column;
 }
 
+/* Etiketler */
 .form-group label {
   margin-bottom: 5px;
   font-weight: 500;
   color: #555;
 }
 
+/* Input Alanlarının Genişliğini Azaltma */
 .form-group input[type="text"],
 .form-group input[type="date"],
-.form-group input[type="number"] {
+.form-group input[type="number"],
+.form-group .formatted-input {
   width: 90%;
   padding: 10px 12px;
   border: 1px solid #ccc;
@@ -73,7 +76,8 @@
 
 .form-group input[type="text"]:focus,
 .form-group input[type="date"]:focus,
-.form-group input[type="number"]:focus {
+.form-group input[type="number"]:focus,
+.form-group .formatted-input:focus {
   border-color: #007BFF;
   outline: none;
 }
@@ -82,7 +86,7 @@
 .radio-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 15px;
+  margin-bottom: 0px !important;
 }
 
 .radio-group span {
@@ -170,5 +174,24 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Responsive Tasarım */
+@media (max-width: 500px) {
+  .modal-content {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .radio-label {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .submit-button,
+  .cancel-button {
+    padding: 8px 16px;
+    font-size: 14px;
   }
 }

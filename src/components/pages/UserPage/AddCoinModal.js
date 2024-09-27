@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { NumericFormat } from "react-number-format"; // NumericFormat'ı import ediyoruz
 import "./AddCoinModal.css";
 
 const AddCoinModal = ({ onClose, onAddCoin }) => {
@@ -14,7 +15,7 @@ const AddCoinModal = ({ onClose, onAddCoin }) => {
     e.preventDefault();
 
     try {
-      // Coin bilgilerini önce DexScreener API'den alıyoruz
+      // Coin bilgilerini DexScreener API'den alıyoruz
       const dexResponse = await axios.get(
         `https://api.dexscreener.com/latest/dex/tokens/${caAddress}`
       );
@@ -29,13 +30,13 @@ const AddCoinModal = ({ onClose, onAddCoin }) => {
       const currentPrice = parseFloat(pair.priceUsd);
       const currentMarketCap = parseFloat(pair.marketCap);
 
-      // Eğer currentPrice ve currentMarketCap değerleri alınamamışsa hata ver
+      // Eğer currentPrice ve currentMarketCap alınamadıysa hata ver
       if (!currentPrice || !currentMarketCap) {
         setError("Geçerli bir fiyat veya market cap bilgisi alınamadı.");
         return;
       }
 
-      // Kullanıcı girdiğine göre hesaplama yap
+      // Kullanıcı girdisine göre hesaplama yap
       let calculatedShareMarketCap = parseFloat(shareMarketCap);
       let calculatedSharePrice = parseFloat(sharePrice);
 
@@ -102,7 +103,6 @@ const AddCoinModal = ({ onClose, onAddCoin }) => {
           </div>
 
           <div className="form-group radio-group">
-        
             <div className="radio-container">
               <input
                 type="radio"
@@ -128,7 +128,7 @@ const AddCoinModal = ({ onClose, onAddCoin }) => {
 
           {inputType === "price" && (
             <div className="form-group">
-             
+           
               <input
                 type="number"
                 id="sharePrice"
@@ -144,13 +144,18 @@ const AddCoinModal = ({ onClose, onAddCoin }) => {
           {inputType === "marketcap" && (
             <div className="form-group">
             
-              <input
-                type="number"
+              <NumericFormat
+                thousandSeparator=","
+                allowNegative={false}
                 id="shareMarketCap"
                 placeholder="Paylaşım Tarihindeki Market Cap"
                 value={shareMarketCap}
-                onChange={(e) => setShareMarketCap(e.target.value)}
+                onValueChange={(values) => {
+                  const { value } = values; // formatlanmamış değer
+                  setShareMarketCap(value);
+                }}
                 required
+                className="formatted-input"
               />
             </div>
           )}
