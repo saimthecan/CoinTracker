@@ -35,7 +35,7 @@ const UserPage = () => {
           const pair = pairs[0];
           const currentPrice = parseFloat(pair.priceUsd);
           const currentMarketCap = pair.marketCap;
-          const imageUrl = pair.info?.imageUrl || "";
+          const imageUrl = `https://dd.dexscreener.com/ds-data/tokens/${pair.chainId}/${coin.caAddress}.png?size=lg&key=a459db`;
           const url = pair.url || ""; // URL alanını ekleyin
 
           const marketCapComparison = calculateMarketCapChange(
@@ -196,7 +196,7 @@ useEffect(() => {
         const tokenData = pair.baseToken;
         const currentPrice = parseFloat(pair.priceUsd);
         const currentMarketCap = pair.marketCap;
-        const imageUrl = pair.info?.imageUrl || "";
+        const imageUrl = `https://dd.dexscreener.com/ds-data/tokens/${pair.chainId}/${addedCoin.caAddress}.png?size=lg&key=a459db`;
         const url = pair.url || "";
   
         // Piyasa değeri değişimini hesaplayın
