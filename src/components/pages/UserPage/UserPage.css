@@ -224,16 +224,17 @@ h3 {
   display: flex;
   flex-direction: column;
   align-items: center; /* Ortalamak için değiştirildi */
-
+  margin-left: -0.3rem;
 }
 
-/* User Info */
 .user-info {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 5px;
+  align-items: center; /* İkonu ve kullanıcı adını dikeyde ortala */
+  justify-content: center; /* Kullanıcı adını ve ikonu yatayda ortala */
+  gap: 10px; /* Kullanıcı adı ve ikon arasında boşluk */
 }
+
+
 
 /* User Name */
 .user-name {
@@ -241,8 +242,10 @@ h3 {
   color: #333333;
   margin: 0;
   font-family: 'Roboto', sans-serif; /* Modern ve okunabilir bir font */
-  text-align: center
+  text-align: center;
+  line-height: 1; /* İkisi arasındaki boşluğu daha iyi kontrol edebilmek için satır yüksekliği */
 }
+
 
 /* Add Coin and Twitter Container */
 .add-coin-and-twitter {
@@ -251,24 +254,46 @@ h3 {
   align-items: center; /* Dikey ortalama */
   gap: 10px; /* Öğeler arası boşluk */
 }
-/* Add Coin Button */
+
+  /* Desktop view */
+  .desktop-text {
+    display: inline; /* Masaüstünde görünsün */
+  }
+  
+  .mobile-text {
+    display: none; /* Mobilde gizli */
+  }
+  
+
 .add-coin-button {
-  padding: 10px 20px;
-  background-color: #007BFF;
-  color: white;
+  position: fixed;
+  bottom: 20px;
+  right: 20px; /* Sağ alt köşede sabitle */
+  padding: 0.75rem 1.5rem;
+  background-color: #007BFF !important;
+  color: var(--button-text-color);
+  text-decoration: none;
   border: none;
-  border-radius: 4px;
+  border-radius: 50px; /* Tamamen yuvarlak kenarlar */
   cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
-  display: flex;
-  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Sayfanın en üstünde kalması için */
 }
 
-.add-coin-button:hover {
-  background-color: #0056b3;
-}
-
+  .add-coin-button:hover {
+    background-color: #3a6f9f;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .add-coin-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
 /* Twitter Button */
 .twitter-icons {
   width: 36px; /* İkon boyutunu ayarlayın */
@@ -290,9 +315,12 @@ h3 {
 }
 
 .twitter-icon {
-  width: 24px; /* İkon boyutunu ayarlayın */
-  height: 24px;
+  width: 36px; /* İkon boyutunu ayarla */
+  height: 36px;
+  cursor: pointer;
   transition: transform 0.3s;
+  vertical-align: middle; /* İkonu ortalamak için */
+  margin-top: 8px;
 }
 
 .twitter-icon:hover {
@@ -518,3 +546,47 @@ h3 {
     margin-left: 0;
   }
 }
+
+/* Mobile View */
+@media (max-width: 767px) {
+  .desktop-text {
+    display: none; /* Mobilde masaüstü metni gizle */
+  }
+
+  .mobile-text {
+    display: inline; /* Mobilde "+" işaretini göster */
+    font-size: 1rem; /* "+" işaretinin boyutunu artır */
+  }
+
+/* Kullanıcı Ekleme Butonu - Modern, minimalist tasarım */
+.add-coin-button {
+  position: fixed;
+  bottom: 20px;
+  left: 20px; 
+  width: 50px; /* Daha küçük ve kompakt */
+  height: 50px;
+  background-color: #007BFF; /* Mavi ton */
+  color: #ffffff; /* Beyaz sembol */
+  border: none;
+  border-radius: 50%; /* Yuvarlak şekil */
+  font-size: 24px; /* "+" sembolü için büyük font */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Hafif gölge efekti */
+  cursor: pointer;
+  z-index: 1000; /* Üstte kalmasını sağla */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.add-coin-button:hover {
+  background-color: #0056b3; /* Hover'da daha koyu mavi */
+  transform: translateY(-3px); /* Hover'da hafif yukarı hareket */
+}
+
+.add-coin-button:active {
+  transform: translateY(0); /* Tıklamada eski pozisyona dön */
+}
+
+}
+  

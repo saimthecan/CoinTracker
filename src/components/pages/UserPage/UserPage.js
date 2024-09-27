@@ -279,11 +279,19 @@ const UserPage = () => {
     <div className="coin-container">
       {/* Başlık Bölümü */}
       <div className="header">
-        <div className="user-info">
-          <h1 className="user-name">{user.name}</h1>
-          {/* Eğer alt başlık kullanmak isterseniz, aşağıdaki satırı aktif edebilirsiniz */}
-          {/* <p className="user-experience">Kullanıcı Deneyimi</p> */}
-        </div>
+      <div className="user-info">
+  <h1 className="user-name">{user.name}</h1>
+  {user.twitter && (
+    <a
+      href={user.twitter}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <img src={twitterIcon} alt="Twitter" className="twitter-icon" />
+    </a>
+  )}
+</div>
+
         <div className="add-coin-and-twitter">
           {" "}
           {/* Yeni Kapsayıcı */}
@@ -291,16 +299,10 @@ const UserPage = () => {
             className="add-coin-button"
             onClick={() => setShowAddCoinModal(true)}
           >
-            Ekle
+           <span className="desktop-text">Ekle</span>
+           <span className="mobile-text">+</span>
           </button>
-          <a
-            href={user.twitter}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="twitter-link"
-          >
-            <img src={twitterIcon} alt="Twitter" className="twitter-icons" />
-          </a>
+ 
         </div>
       </div>
 
