@@ -216,7 +216,7 @@ h3 {
 /* Header Container */
 .header {
   width: 100%;
-  padding: 10px;
+  padding: 5px;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); /* Gradient arka plan */
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hafif gölge */
@@ -231,19 +231,20 @@ h3 {
   display: flex;
   align-items: center; /* İkonu ve kullanıcı adını dikeyde ortala */
   justify-content: center; /* Kullanıcı adını ve ikonu yatayda ortala */
-  gap: 10px; /* Kullanıcı adı ve ikon arasında boşluk */
+  gap: 8px; /* Kullanıcı adı ve ikon arasında boşluk */
+  margin-top: -0.4rem;
 }
 
 
 
 /* User Name */
 .user-name {
-  font-size: 32px;
+  font-size: 28px;
   color: #333333;
   margin: 0;
   font-family: 'Roboto', sans-serif; /* Modern ve okunabilir bir font */
   text-align: center;
-  line-height: 1; /* İkisi arasındaki boşluğu daha iyi kontrol edebilmek için satır yüksekliği */
+  line-height: 1.2; /* İkisi arasındaki boşluğu daha iyi kontrol edebilmek için satır yüksekliği */
 }
 
 
@@ -315,8 +316,8 @@ h3 {
 }
 
 .twitter-icon {
-  width: 36px; /* İkon boyutunu ayarla */
-  height: 36px;
+  width: 30px; /* İkon boyutunu ayarla */
+  height: 30px;
   cursor: pointer;
   transition: transform 0.3s;
   vertical-align: middle; /* İkonu ortalamak için */
@@ -549,6 +550,25 @@ h3 {
 
 /* Mobile View */
 @media (max-width: 767px) {
+
+  .header {
+    padding: 5px; /* Padding değeri azaltıldı */
+    margin-bottom: 1rem; /* Margin değeri azaltıldı */
+  }
+
+   /* Mobilde Kullanıcı Adı */
+   .user-name {
+    font-size: 24px; /* Mobilde daha küçük font boyutu */
+    line-height: 1.2; /* Dikey boşluk ayarı */
+  }
+
+    /* Mobilde Twitter İkonu */
+    .twitter-icon {
+      width: 28px; /* Mobilde ikon boyutu küçültüldü */
+      height: 28px;
+    }
+  
+
   .desktop-text {
     display: none; /* Mobilde masaüstü metni gizle */
   }
