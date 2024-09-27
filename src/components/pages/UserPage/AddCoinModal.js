@@ -104,6 +104,16 @@ const AddCoinModal = ({ onClose, onAddCoin }) => {
 
           <div className="form-group radio-group">
             <div className="radio-container">
+            <input
+                type="radio"
+                id="marketcap"
+                name="inputType"
+                value="marketcap"
+                checked={inputType === "marketcap"}
+                onChange={() => setInputType("marketcap")}
+              />
+              <label htmlFor="marketcap" className="radio-label">Market Cap</label>
+
               <input
                 type="radio"
                 id="price"
@@ -114,15 +124,7 @@ const AddCoinModal = ({ onClose, onAddCoin }) => {
               />
               <label htmlFor="price" className="radio-label">Fiyat</label>
 
-              <input
-                type="radio"
-                id="marketcap"
-                name="inputType"
-                value="marketcap"
-                checked={inputType === "marketcap"}
-                onChange={() => setInputType("marketcap")}
-              />
-              <label htmlFor="marketcap" className="radio-label">Market Cap</label>
+         
             </div>
           </div>
 
