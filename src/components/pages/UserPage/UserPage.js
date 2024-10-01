@@ -1,9 +1,10 @@
+// src/components/pages/UserPage/UserPage.js
+
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import DexScreenerIcon from "../../../assets/dexscreener.png"; // SVG dosyasını içe aktarın
+import DexScreenerIcon from "../../../assets/dexscreener.png";
 import AddCoinModal from "./AddCoinModal";
-import twitterIcon from "../../../assets/twitter.svg";
 import "./UserPage.css";
 
 const UserPage = () => {
@@ -12,9 +13,26 @@ const UserPage = () => {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showAddCoinModal, setShowAddCoinModal] = useState(false); // Modal görünürlüğü için state
 
-  // fetchUserData fonksiyonunu useCallback ile sarmalayarak memoize ediyoruz
+  const [showAddCoinModal, setShowAddCoinModal] = useState(false);
+
+  // Yeni state değişkenleri
+  const [sortCriteria, setSortCriteria] = useState("");
+  const [selectedNetwork, setSelectedNetwork] = useState("");
+
+  // Twitter kullanıcı adını çıkaran fonksiyon
+  const getTwitterUsername = (twitterUrl) => {
+    if (!twitterUrl) return null;
+    const match = twitterUrl.match(
+      /(?:https?:\/\/)?(?:www\.)?(?:twitter\.com|x\.com)\/([a-zA-Z0-9_]+)/i
+    );
+    if (match && match[1]) {
+      return match[1];
+    }
+    return null;
+  };
+
+  // Kullanıcı verilerini çeken fonksiyon
   const fetchUserData = useCallback(async () => {
     try {
       const response = await axios.get(
@@ -36,22 +54,37 @@ const UserPage = () => {
 
             const pair = pairs[0];
             const currentPrice = parseFloat(pair.priceUsd);
-            const currentMarketCap = pair.marketCap;
+            const currentMarketCap = pair.fdv || pair.marketCap; // Tam FDV'yi kullan
             const imageUrl = `https://dd.dexscreener.com/ds-data/tokens/${pair.chainId}/${coin.caAddress}.png?size=lg&key=a459db`;
-            const url = pair.url || ""; // URL alanını ekleyin
+            const url = pair.url || "";
 
             const marketCapComparison = calculateMarketCapChange(
               coin.shareMarketCap,
               currentMarketCap
             );
 
+            // Ağ bilgisini ekliyoruz
+            const chainIdToNetwork = {
+              ethereum: "Ethereum",
+              bsc: "Binance Smart Chain",
+              polygon: "Polygon",
+              arbitrum: "Arbitrum",
+              optimism: "Optimism",
+              avalanche: "Avalanche",
+              fantom: "Fantom",
+              // Diğer ağları ekleyebilirsiniz
+            };
+
+            const network = chainIdToNetwork[pair.chainId] || pair.chainId;
+
             return {
               ...coin,
               currentPrice,
               currentMarketCap,
               imageUrl,
-              url, // URL'yi ekleyin
+              url,
               marketCapComparison,
+              network, // Ağ bilgisi
             };
           } catch (error) {
             console.error(`Coin verileri alınamadı (${coin.symbol}):`, error);
@@ -62,6 +95,7 @@ const UserPage = () => {
               imageUrl: "",
               url: "",
               marketCapComparison: null,
+              network: "Bilinmiyor",
             };
           }
         })
@@ -76,14 +110,12 @@ const UserPage = () => {
   }, [id]);
 
   useEffect(() => {
-    fetchUserData(); // Bileşen yüklendiğinde ilk veri çekme
+    fetchUserData();
 
-    // 30 saniyede bir veri çekmek için setInterval ayarlama
     const intervalId = setInterval(() => {
       fetchUserData();
-    }, 50000); // 30000 ms = 30 saniye
+    }, 50000);
 
-    // Temizleme fonksiyonu: Bileşen unmount olduğunda interval'i temizle
     return () => clearInterval(intervalId);
   }, [fetchUserData]);
 
@@ -118,36 +150,28 @@ const UserPage = () => {
   };
 
   const formatPriceWithConditionalZeros = (price) => {
-    // 1. Fiyatın geçerli olup olmadığını kontrol et (0 hariç)
     if (price === null || price === undefined || isNaN(price)) {
-      return "Yükleniyor"; // Fiyat değeri yoksa
+      return "Yükleniyor";
     }
 
-    // 2. Fiyatın sıfır olup olmadığını kontrol et
     if (price === 0) {
       return <span>$0</span>;
     }
 
-    // 3. Fiyatı stringe çevir ve bilimsel gösterimi düzelt
     let priceString = price.toString();
 
     if (priceString.includes("e")) {
-      // Bilimsel gösterimi normal sayıya çevir
       priceString = price.toFixed(20).replace(/\.?0+$/, "");
     }
 
-    // 4. Ondalık ve tam kısmı ayır
     let [integer, decimal] = priceString.split(".");
 
     if (!decimal) return <span>${integer}</span>;
 
-    // 5. Ondalık kısmındaki sıfır sayısını hesapla
     let leadingZerosMatch = decimal.match(/^0+/);
     let zerosCount = leadingZerosMatch ? leadingZerosMatch[0].length : 0;
 
     if (zerosCount >= 4) {
-      // 4 veya daha fazla sıfır varsa
-      // 4 sıfırdan sonra gelen ilk 3 basamağı al
       let remainingDecimals = decimal.slice(zerosCount, zerosCount + 3);
 
       return (
@@ -159,8 +183,6 @@ const UserPage = () => {
       );
     } else {
       if (integer === "0") {
-        // Integer kısmı 0 ise ve sıfır sayısı 4'ten azsa
-        // 3 ondalık basamakla sınırlama
         let remainingDecimals = decimal.slice(zerosCount, zerosCount + 3);
         return (
           <span>
@@ -169,7 +191,6 @@ const UserPage = () => {
           </span>
         );
       } else {
-        // Integer kısmı 0'dan büyükse, 2 ondalık basamakla sınırlama
         let limitedDecimals = decimal.slice(0, 2);
         return (
           <span>
@@ -204,68 +225,94 @@ const UserPage = () => {
 
   const handleAddCoin = async (newCoin) => {
     try {
-      // 1. Yeni coini backend'e ekleyin
       const response = await axios.post(
         `https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users/${id}/coins`,
         newCoin
       );
-      const addedCoin = response.data; // Backend'den eklenen coin
+      const addedCoin = response.data;
 
-      // 2. DexScreener API'sinden ek verileri alın
       const dexResponse = await axios.get(
         `https://api.dexscreener.com/latest/dex/tokens/${addedCoin.caAddress}`
       );
       const pairs = dexResponse.data.pairs;
       if (!pairs || pairs.length === 0) {
         console.error("DexScreener API yanıtında coin bulunamadı.");
-        // Ek veriler alınamadıysa, varsayılan değerler atayın
         addedCoin.currentPrice = null;
         addedCoin.currentMarketCap = null;
         addedCoin.imageUrl = "";
         addedCoin.url = "";
         addedCoin.marketCapComparison = null;
+        addedCoin.network = "Bilinmiyor";
       } else {
         const pair = pairs[0];
         const currentPrice = parseFloat(pair.priceUsd);
-        const currentMarketCap = parseFloat(pair.marketCap);
-
-        if (isNaN(currentPrice) || isNaN(currentMarketCap)) {
-          addedCoin.currentPrice = null;
-          addedCoin.currentMarketCap = null;
-        } else {
-          addedCoin.currentPrice = currentPrice;
-          addedCoin.currentMarketCap = currentMarketCap;
-        }
+        const currentMarketCap = parseFloat(pair.fdv || pair.marketCap);
         const imageUrl = `https://dd.dexscreener.com/ds-data/tokens/${pair.chainId}/${addedCoin.caAddress}.png?size=lg&key=a459db`;
         const url = pair.url || "";
 
-        // Piyasa değeri değişimini hesaplayın
         const change =
           ((currentMarketCap - addedCoin.shareMarketCap) /
             addedCoin.shareMarketCap) *
           100;
         const marketCapComparison = change.toFixed(2);
 
-        // Coin nesnesini zenginleştirin
+        const chainIdToNetwork = {
+          ethereum: "Ethereum",
+          bsc: "Binance Smart Chain",
+          polygon: "Polygon",
+          arbitrum: "Arbitrum",
+          optimism: "Optimism",
+          avalanche: "Avalanche",
+          fantom: "Fantom",
+        };
+
+        const network = chainIdToNetwork[pair.chainId] || pair.chainId;
+
         addedCoin.currentPrice = currentPrice;
         addedCoin.currentMarketCap = currentMarketCap;
         addedCoin.imageUrl = imageUrl;
         addedCoin.url = url;
         addedCoin.marketCapComparison = marketCapComparison;
+        addedCoin.network = network;
       }
 
-      console.log("Added Coin:", addedCoin);
-
-      // 3. Zenginleştirilmiş coini frontend'deki coins durumuna ekleyin
       setCoins((prevCoins) => [...prevCoins, addedCoin]);
-
-      // 4. Modal'ı kapatın
       setShowAddCoinModal(false);
     } catch (error) {
       console.error("Coin eklenirken hata oluştu:", error);
       alert("Coin eklenirken bir hata oluştu.");
     }
   };
+
+  // Sıralama işlemi
+  const sortedCoins = React.useMemo(() => {
+    if (!sortCriteria) return coins;
+
+    let sorted = [...coins];
+
+    switch (sortCriteria) {
+      case "shareDate":
+        sorted.sort((a, b) => new Date(a.shareDate) - new Date(b.shareDate));
+        break;
+      case "profitPercentage":
+        sorted.sort((a, b) => b.marketCapComparison - a.marketCapComparison);
+        break;
+      case "currentMarketCap":
+        sorted.sort((a, b) => b.currentMarketCap - a.currentMarketCap);
+        break;
+      default:
+        break;
+    }
+
+    return sorted;
+  }, [coins, sortCriteria]);
+
+  // Filtreleme işlemi
+  const filteredCoins = React.useMemo(() => {
+    if (!selectedNetwork) return sortedCoins;
+
+    return sortedCoins.filter((coin) => coin.network === selectedNetwork);
+  }, [sortedCoins, selectedNetwork]);
 
   if (loading) {
     return <p>Yükleniyor...</p>;
@@ -275,50 +322,87 @@ const UserPage = () => {
     return <p>{error}</p>;
   }
 
+  // Twitter profil resmi URL'si
+  const twitterUsername = getTwitterUsername(user.twitter);
+  const profileImageUrl = twitterUsername
+    ? `https://unavatar.io/twitter/${twitterUsername}`
+    : null;
+
   return (
     <div className="coin-container">
       {/* Başlık Bölümü */}
       <div className="header">
-      <div className="user-info">
-  <h1 className="user-name">{user.name}</h1>
-  {user.twitter && (
-    <a
-      href={user.twitter}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <img src={twitterIcon} alt="Twitter" className="twitter-icon" />
-    </a>
-  )}
-</div>
+        <div className="user-info">
+          {profileImageUrl && (
+            <a
+              href={user.twitter} // Kullanıcının Twitter sayfasına yönlendirme
+              target="_blank" // Yeni sekmede açılmasını sağlamak için
+              rel="noopener noreferrer" // Güvenlik için eklenen özellik
+            >
+              <img
+                src={profileImageUrl}
+                alt={`${user.name} profil resmi`}
+                className="twitter-profile-image"
+              />
+            </a>
+          )}
+          <h1 className="user-name">{user.name}</h1>
+        </div>
 
         <div className="add-coin-and-twitter">
-          {" "}
-          {/* Yeni Kapsayıcı */}
           <button
             className="add-coin-button"
             onClick={() => setShowAddCoinModal(true)}
           >
-           <span className="desktop-text">Ekle</span>
-           <span className="mobile-text">+</span>
+            <span className="desktop-text">Ekle</span>
+            <span className="mobile-text">+</span>
           </button>
- 
+        </div>
+      </div>
+
+      {/* Sıralama ve Filtreleme Kontrolleri */}
+      <div className="controls">
+        <div className="filter-section">
+          <label htmlFor="sortCriteria">Sırala: </label>
+          <select
+            id="sortCriteria"
+            value={sortCriteria}
+            onChange={(e) => setSortCriteria(e.target.value)}
+          >
+            <option value="">Sıralama Kriteri Seçin</option>
+            <option value="shareDate">Paylaşım Tarihine Göre</option>
+            <option value="profitPercentage">Kazanç Yüzdesine Göre</option>
+            <option value="currentMarketCap">Güncel MarketCap'e Göre</option>
+          </select>
+
+          <label htmlFor="networkFilter">Ağa Göre Filtrele: </label>
+          <select
+            id="networkFilter"
+            value={selectedNetwork}
+            onChange={(e) => setSelectedNetwork(e.target.value)}
+          >
+            <option value="">Tüm Ağlar</option>
+            {Array.from(new Set(coins.map((coin) => coin.network))).map(
+              (network) => (
+                <option key={network} value={network}>
+                  {network}
+                </option>
+              )
+            )}
+          </select>
         </div>
       </div>
 
       {/* Add Coin Modal */}
       {showAddCoinModal && (
         <AddCoinModal
-          onAddCoin={handleAddCoin} // Prop adını 'onAddCoin' olarak değiştirin
+          onAddCoin={handleAddCoin}
           onClose={() => setShowAddCoinModal(false)}
         />
       )}
 
       <div className="coin-grid">
-        {coins.map((coin, index) => {
-          console.log(`Coin ${index}:`, coin); // Tüm coin objesini logla
-          console.log(`chainId: ${coin.chainId}, caAddress: ${coin.caAddress}`); // Özellikleri logla
-
+        {filteredCoins.map((coin, index) => {
           return (
             <div
               key={coin._id}
@@ -358,6 +442,12 @@ const UserPage = () => {
                   >
                     {coin.marketCapComparison}%
                   </p>
+                  {/* Ağ Bilgisi */}
+                  <div className="network-row network-bottom">
+                    <div className="network-item">
+                      <p className="info-value">({coin.network})</p>
+                    </div>
+                  </div>
 
                   {/* Dex Screener URL'si */}
                   <a
@@ -366,7 +456,7 @@ const UserPage = () => {
                     rel="noopener noreferrer"
                     className="dex-screener-link"
                     onClick={(e) => {
-                      e.stopPropagation(); // Olayın kartın onClick olayına yayılmasını durdurur
+                      e.stopPropagation();
                       if (!coin.url) {
                         e.preventDefault();
                         console.warn(

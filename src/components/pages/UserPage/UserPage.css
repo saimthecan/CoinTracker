@@ -13,6 +13,7 @@
   gap: 50px; /* Boşluğu artırdık (önceki değer: 20px) */
   width: 100%;
   justify-items: start;
+  margin-top: 2rem;
 }
 
 /* Card */
@@ -224,7 +225,10 @@ h3 {
   display: flex;
   flex-direction: column;
   align-items: center; /* Ortalamak için değiştirildi */
+  justify-content: center; 
+  text-align: center;
   margin-left: -0.3rem;
+  height: 45px;
 }
 
 .user-info {
@@ -415,56 +419,259 @@ h3 {
   background-color: #c82333;
 }
 
-/* Responsive Tasarım */
-@media (max-width: 600px) {
+.twitter-profile-image{
+  width: 40px;
+  margin-top: 11px;
+  border-radius: 50%; /* Resmi tam yuvarlak yapmak için */
+  object-fit: cover; /* Resmin içindeki içeriği orantılı şekilde kırpmak için */
+}
+
+.network-bottom {
+  position: absolute;
+  bottom: 0px; /* Kartın en altına yerleştiriyoruz */
+  left: 50%;
+  transform: translateX(-50%); /* Ortalamak için */
+  text-align: center;
+  font-size: 14px;
+  color: #333; /* İsteğe bağlı stil */
+}
+
+/* Genel Buton Tasarımı */
+select {
+  padding: 10px 15px;
+  border: 1px solid #d1d1d1;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 1rem;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Hafif gölge efekti */
+  transition: all 0.3s ease; /* Yumuşak geçişler */
+  appearance: none; /* Tarayıcı varsayılan ok stilini kaldırmak için */
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="%23333" d="M7 10l5 5 5-5z"/></svg>'); /* Özel ok işareti */
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+}
+
+/* Hover Efekti */
+select:hover {
+  border-color: #007bff;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.1); /* Hover sırasında gölgeyi artır */
+}
+
+/* Aktifken Stil */
+select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2); /* Focus'ta belirgin hale gelsin */
+}
+
+/* Label'lar için Stil */
+label {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-right: 10px;
+  color: #333;
+}
+
+/* Controls için Genel Ayar */
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px; /* Üst ve kartlar arasındaki boşluk */
+}
+
+/* Filter Section - Yan Yana Getirmek İçin Flexbox */
+.filter-section {
+  display: flex;
+  gap: 20px; /* Butonlar arası boşluk */
+  flex-wrap: wrap; /* Ekran küçüldüğünde elemanlar alt alta gelir */
+  align-items: center;
+  background-color: #f9f9f9; /* Hafif arka plan rengi */
+  padding: 15px 25px; /* İç boşluklar */
+  border-radius: 12px; /* Yuvarlak köşeler */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+}
+
+/* Label Stili */
+.filter-section label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-right: 10px;
+}
+
+/* Select Kutusu Stili */
+.filter-section select {
+  padding: 10px;
+  border: 1px solid #d1d1d1;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 1rem;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="%23333" d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+}
+
+/* Hover ve Focus Efekti */
+.filter-section select:hover {
+  border-color: #007bff;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.1);
+}
+
+.filter-section select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+
+/* Mobile View */
+@media (max-width: 767px) {
+
+  .header {
+    padding: 15px; /* Tekrarlanan stil birleşti */
+    margin-bottom: 1.5rem;
+    margin-left: -0.8rem;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Mobilde Kullanıcı Adı */
+  .user-name {
+    font-size: 24px; /* Birleşti */
+    line-height: 1.2;
+  }
+
+  /* Mobilde Twitter İkonu */
+  .twitter-icon {
+    width: 28px; /* Tek tanımlama yeterli */
+    height: 28px;
+  }
+
+  .desktop-text {
+    display: none; /* Mobilde masaüstü metni gizle */
+  }
+
+  .mobile-text {
+    display: inline; /* Mobilde "+" işaretini göster */
+    font-size: 1rem; /* "+" işaretinin boyutunu artır */
+  }
+
+  /* Kullanıcı Ekleme Butonu - Modern, minimalist tasarım */
+  .add-coin-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 50px; /* Daha küçük ve kompakt */
+    height: 50px;
+    background-color: #007BFF;
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    z-index: 1000;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-left: 0; /* Çift yazılan kısmı birleştirdim */
+  }
+
+  .add-coin-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px);
+  }
+
+  .add-coin-button:active {
+    transform: translateY(0);
+  }
+
+  .filter-section {
+    flex-direction: row; /* Mobilde yatay sırala */
+    gap: 10px; /* Butonlar arası boşluk */
+    justify-content: space-between;
+  } 
+
+  /* Label Stili */
+.filter-section label {
+  font-size: 0.9rem; /* Daha küçük yazı boyutu */
+  font-weight: bold;
+  margin-right: 5px; /* Input ile arasında boşluk */
+  color: #333;
+}
+
+/* Select Kutusu Stili */
+.filter-section select {
+  padding: 5px 10px; /* Padding küçültüldü */
+  border: 1px solid #d1d1d1;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 0.9rem; /* Daha küçük font boyutu */
+  color: #333;
+  cursor: pointer;
+  width: 120px; /* Genişlik küçültüldü */
+  overflow: hidden; /* Taşan metni gizler */
+  text-overflow: ellipsis; /* Üç nokta ekler */
+}
+
   /* Grid Düzeni */
   .coin-grid {
     grid-template-columns: 1fr;
     gap: 50px;
+    margin-left: 0.5rem;
   }
 
   /* Mobilde ve tarayıcıda seçim stilini engellemek */
-.card,
-.card-inner {
- 
-  -webkit-tap-highlight-color: transparent; /* Mobilde tıklama efektini kaldırır */
-}
+  .card,
+  .card-inner {
+    -webkit-tap-highlight-color: transparent;
+  }
 
   /* Card */
   .card {
     min-height: 250px;
     max-width: 350px;
-    outline: none; /* Tarayıcıda mavi sınırın görünmesini engeller */
+    outline: none;
   }
 
-  .card-inner{
+  .card-inner {
     margin-left: 0.5rem;
-    outline: none; /* Tarayıcıda mavi sınırın görünmesini engeller */
-
+    outline: none;
   }
- 
+
   .card-front,
   .card-back {
     padding: 15px;
   }
 
-/* Kartın tıklanabilirliğini ve mavi sınırı engelleyen stiller */
-.card:focus,
-.card:active,
-.card-inner:focus,
-.card-inner:active {
-  outline: none; /* Mavi sınırın görünmesini engeller */
-  box-shadow: none; /* Tıklama sırasında gölge eklenmesini engeller */
-  background-color: transparent; /* Arka plan rengini tamamen kaldır */
-  border: none; /* Varsayılan tarayıcı stillerini sıfırlamak için */
-}
+  /* Kartın tıklanabilirliğini ve mavi sınırı engelleyen stiller */
+  .card:focus,
+  .card:active,
+  .card-inner:focus,
+  .card-inner:active {
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+    border: none;
+  }
 
   /* Info Rows İçin Grid Düzeni */
   .dates-row,
   .prices-row,
   .marketcap-row {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* İki sütunlu düzen */
+    grid-template-columns: 1fr 1fr;
     gap: 40px;
   }
 
@@ -522,91 +729,38 @@ h3 {
     display: inline;
   }
 
-  .header {
-    padding: 15px;
-    margin-bottom: 1.5rem;
-    margin-left: -0.8rem;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .user-name {
-    font-size: 24px;
-  }
-
-  .user-experience {
-    font-size: 14px;
-  }
-
-  .add-coin-and-twitter {
-    flex-direction: row; /* Yatay hizalama korunuyor */
-    gap: 5px;
-  }
-
-  .add-coin-button {
-    margin-left: 0;
-  }
+  select, option {
+    font-size: 0.85rem; /* Yazı boyutunu küçült */
+    padding: 8px; /* İç boşlukları ayarla */
+    line-height: 1.5rem; /* Seçenekler arasındaki boşluğu ayarla */
+    border-radius: 5px; /* Kenarları yuvarlat */
+    background-color: #f9f9f9; /* Açıldığında hoş bir arka plan rengi */
 }
 
-/* Mobile View */
-@media (max-width: 767px) {
-
-  .header {
-    padding: 5px; /* Padding değeri azaltıldı */
-    margin-bottom: 1.8rem; /* Margin değeri azaltıldı */
-  }
-
-   /* Mobilde Kullanıcı Adı */
-   .user-name {
-    font-size: 24px; /* Mobilde daha küçük font boyutu */
-    line-height: 1.2; /* Dikey boşluk ayarı */
-  }
-
-    /* Mobilde Twitter İkonu */
-    .twitter-icon {
-      width: 28px; /* Mobilde ikon boyutu küçültüldü */
-      height: 28px;
-    }
-  
-
-  .desktop-text {
-    display: none; /* Mobilde masaüstü metni gizle */
-  }
-
-  .mobile-text {
-    display: inline; /* Mobilde "+" işaretini göster */
-    font-size: 1rem; /* "+" işaretinin boyutunu artır */
-  }
-
-/* Kullanıcı Ekleme Butonu - Modern, minimalist tasarım */
-.add-coin-button {
-  position: fixed;
-  bottom: 20px;
-  left: 20px; 
-  width: 50px; /* Daha küçük ve kompakt */
-  height: 50px;
-  background-color: #007BFF; /* Mavi ton */
-  color: #ffffff; /* Beyaz sembol */
-  border: none;
-  border-radius: 50%; /* Yuvarlak şekil */
-  font-size: 24px; /* "+" sembolü için büyük font */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Hafif gölge efekti */
-  cursor: pointer;
-  z-index: 1000; /* Üstte kalmasını sağla */
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.add-coin-button:hover {
-  background-color: #0056b3; /* Hover'da daha koyu mavi */
-  transform: translateY(-3px); /* Hover'da hafif yukarı hareket */
-}
-
-.add-coin-button:active {
-  transform: translateY(0); /* Tıklamada eski pozisyona dön */
-}
 
 }
-  
+
+/* 400px ile 500px arasında değişiklik */
+@media (min-width: 400px) and (max-width: 500px) {
+  .filter-section {
+    flex-direction: row; /* Elemanları alt alta getir */
+    width: 100%; /* Genişlik %100 olacak */
+    align-items: center; /* Ortaya hizala */
+    gap: 10px; /* Elemanlar arasında boşluk */
+    padding: 10px; /* Padding artırıldı */
+  }
+
+  .filter-section select {
+    width: 50%; /* Select kutusu genişliği tam %100 olacak */
+    font-size: 0.9rem; /* Yazı boyutu biraz küçüldü */
+    padding: 8px; /* İç boşluk artırıldı */
+  }
+
+  .filter-section label {
+    font-size: 0.9rem; /* Yazı boyutu biraz küçüldü */
+    margin-bottom: 5px; /* Label ile input arası boşluk */
+  }
+
+  /* Diğer elementler için istenen responsive tasarımı ekleyebilirsiniz */
+}
+
