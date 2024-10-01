@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import DexScreenerIcon from "../../../assets/dexscreener.png";
+import defaultImage from "../../../assets/logo-free.png";
 import AddCoinModal from "./AddCoinModal";
 import "./UserPage.css";
 
@@ -19,6 +20,9 @@ const UserPage = () => {
   // Yeni state değişkenleri
   const [sortCriteria, setSortCriteria] = useState("");
   const [selectedNetwork, setSelectedNetwork] = useState("");
+
+  console.log(defaultImage);
+  
 
   // Twitter kullanıcı adını çıkaran fonksiyon
   const getTwitterUsername = (twitterUrl) => {
@@ -54,8 +58,11 @@ const UserPage = () => {
 
             const pair = pairs[0];
             const currentPrice = parseFloat(pair.priceUsd);
-            const currentMarketCap = pair.fdv || pair.marketCap; // Tam FDV'yi kullan
-            const imageUrl = `https://dd.dexscreener.com/ds-data/tokens/${pair.chainId}/${coin.caAddress}.png?size=lg&key=a459db`;
+            const currentMarketCap = pair.marketCap;  // FDV yerine marketCap öncelikli
+            const imageUrl = (pair.chainId && coin.caAddress && pair.priceUsd && pair.imageUrl !== "")
+            ? `https://dd.dexscreener.com/ds-data/tokens/${pair.chainId}/${coin.caAddress}.png?size=lg&key=a459db`
+            : defaultImage;
+          
             const url = pair.url || "";
 
             const marketCapComparison = calculateMarketCapChange(
@@ -92,7 +99,7 @@ const UserPage = () => {
               ...coin,
               currentPrice: null,
               currentMarketCap: null,
-              imageUrl: "",
+              imageUrl: defaultImage,  // Hata durumunda yedek görsel kullan
               url: "",
               marketCapComparison: null,
               network: "Bilinmiyor",
@@ -428,10 +435,11 @@ const UserPage = () => {
                     ❌
                   </button>
                   <img
-                    src={coin.imageUrl}
-                    alt={coin.name}
-                    className="coin-image"
-                  />
+  src={coin.imageUrl}
+  alt={coin.name}
+  className="coin-image"
+  onError={(e) => e.target.src = defaultImage}
+/>
                   <h3>
                     {coin.name} ({coin.symbol})
                   </h3>
