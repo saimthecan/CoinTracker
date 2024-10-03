@@ -21,8 +21,6 @@ const UserPage = () => {
   const [sortCriteria, setSortCriteria] = useState("");
   const [selectedNetwork, setSelectedNetwork] = useState("");
 
-  console.log(defaultImage);
-  
 
   // Twitter kullanıcı adını çıkaran fonksiyon
   const getTwitterUsername = (twitterUrl) => {
