@@ -56,24 +56,25 @@ export const formatPriceWithConditionalZeros = (price) => {
     }
   };
   
-  // Piyasa değerini formatlayan fonksiyon
-  export const formatMarketCap = (num) => {
+// Piyasa değerini formatlayan fonksiyon
+export const formatMarketCap = (num) => {
     if (num === null || num === undefined) return "Yükleniyor";
   
     if (num >= 1.0e12) {
-      return (num / 1.0e12).toFixed(2) + "T"; // Trilyon
+      return "$" + (num / 1.0e12).toFixed(2) + "T"; // Trilyon
     }
     if (num >= 1.0e9) {
-      return (num / 1.0e9).toFixed(2) + "B"; // Milyar
+      return "$" + (num / 1.0e9).toFixed(2) + "B"; // Milyar
     }
     if (num >= 1.0e6) {
-      return (num / 1.0e6).toFixed(2) + "M"; // Milyon
+      return "$" + (num / 1.0e6).toFixed(2) + "M"; // Milyon
     }
     if (num >= 1.0e3) {
-      return (num / 1.0e3).toFixed(2) + "K"; // Bin
+      return "$" + (num / 1.0e3).toFixed(2) + "K"; // Bin
     }
-    return num.toString();
+    return "$" + num.toString(); // Diğer durumlar
   };
+  
   
 
   export const sortCoins = (coins, sortCriteria, sortOrder) => {
