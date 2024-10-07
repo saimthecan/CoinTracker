@@ -201,6 +201,29 @@ const getTwitterUsername = (twitterUrl) => {
       }
     };
 
+    const handleToggleFavoriteCoin = async (coinId, isCurrentlyFavorite) => {
+      try {
+        if (isCurrentlyFavorite) {
+          // Coin'i favoriden çıkar
+          await axios.delete(`${API_URL}/users/${id}/coins/${coinId}/favorite`);
+        } else {
+          // Coin'i favorile
+          await axios.put(`${API_URL}/users/${id}/coins/${coinId}/favorite`);
+        }
+    
+        // Coin'in favori durumunu güncelle
+        setCoins((prevCoins) =>
+          prevCoins.map((coin) =>
+            coin._id === coinId ? { ...coin, isFavorite: !isCurrentlyFavorite } : coin
+          )
+        );
+      } catch (error) {
+        console.error("Favori durum değiştirilirken hata oluştu:", error);
+        alert("Favori durum değiştirilirken bir hata oluştu.");
+      }
+    };
+    
+
   const calculateMarketCapChange = (shareMarketCap, currentMarketCap) => {
     if (!shareMarketCap || !currentMarketCap) return "Yükleniyor";
     const change = ((currentMarketCap - shareMarketCap) / shareMarketCap) * 100;
@@ -221,6 +244,7 @@ const getTwitterUsername = (twitterUrl) => {
     handleDeleteCoin,
     handleAddCoin,
     handleUpdateCoin, 
+    handleToggleFavoriteCoin,
     sortCriteria,
     setSortCriteria,
     sortOrder, // Sıralama yönünü döndürüyoruz

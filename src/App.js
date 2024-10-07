@@ -7,6 +7,7 @@ import Home from "./components/pages/HomePage/Home";
 import EnGuvendiklerim from "./components/pages/Categories/EnGuvendiklerim/EnGuvendiklerim";
 import Guvendiklerim from "./components/pages/Categories/Guvendiklerim/Guvendiklerim";
 import UserPage from "./components/pages/UserPage/UserPage";
+import FavoriCoinlerim from "./components/pages/FavoriCoinlerim/FavoriCoinlerim";
 import { UserProvider } from '../src/context/UserContext';
 import "./App.css";
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="/en-guvendiklerim" element={<EnGuvendiklerim />} />
           <Route path="/guvendiklerim" element={<Guvendiklerim />} />
           <Route path="/user/:id" element={<UserPage />} />
+          <Route path="/favori-coinlerim" element={<FavoriCoinlerim />} />
         </Routes>
         </div>
       </Router>

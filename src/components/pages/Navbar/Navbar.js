@@ -30,6 +30,12 @@ const Navbar = () => {
               Favorilerim
             </RouterLink>
             <RouterLink
+              to="/favori-coinlerim"
+              className={location.pathname === "/favori-coinlerim" ? "nav-link active" : "nav-link"}
+            >
+              Favori Coinlerim
+            </RouterLink>
+            <RouterLink
               to="/en-guvendiklerim"
               className={location.pathname === "/en-guvendiklerim" ? "nav-link active" : "nav-link"}
             >
@@ -62,6 +68,12 @@ const Navbar = () => {
           >
             Favorilerim
           </RouterLink>
+          <RouterLink
+              to="/favori-coinlerim"
+              className={location.pathname === "/favori-coinlerim" ? "sidebar-link active" : "sidebar-link"}
+            >
+              Favori Coinlerim
+            </RouterLink>
           <RouterLink
             to="/en-guvendiklerim"
             className={location.pathname === "/en-guvendiklerim" ? "sidebar-link active" : "sidebar-link"}

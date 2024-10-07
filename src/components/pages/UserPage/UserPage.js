@@ -6,12 +6,11 @@ import DexScreenerIcon from "../../../assets/dexscreener.png";
 import AddCoinModal from "./AddCoinModal";
 import EditCoinModal from "./EditCoinModal"; // EditCoinModal'ı import ediyoruz
 import { useUserPage } from "./useUserPage"; // Hook'u import ediyoruz
-import {
-  formatPriceWithConditionalZeros,
-  formatMarketCap,
-} from "./Utils"; // Import ediyoruz
+import { formatPriceWithConditionalZeros, formatMarketCap } from "./Utils"; // Import ediyoruz
 import Pagination from "../../../Pagination/Pagination";
 import "./UserPage.css";
+import StarIcon from "../../../StarIcons/StarIcon"; // Yıldız ikonunun yolu
+import EmptyStarIcon from "../../../StarIcons/EmptyStarIcon"; // Boş yıldız ikonunun yolu
 
 const UserPage = () => {
   const { id } = useParams();
@@ -27,6 +26,7 @@ const UserPage = () => {
     handleDeleteCoin,
     handleAddCoin,
     handleUpdateCoin, // Düzenleme fonksiyonu
+    handleToggleFavoriteCoin,
     sortCriteria,
     setSortCriteria,
     sortOrder,
@@ -215,6 +215,31 @@ const UserPage = () => {
                   ✏️
                 </button>
 
+                {/* Yıldız İkonu - Sağ Alt Köşeye Eklenecek */}
+                <button
+                  className="favorite-button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleToggleFavoriteCoin(coin._id, coin.isFavorite);
+                  }}
+                >
+                  {coin.isFavorite ? <StarIcon /> : <EmptyStarIcon />}
+                </button>
+
+                <button
+                  className="dex-screener-button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.open(coin.url || "#", "_blank");
+                  }}
+                >
+                  <img
+                    src={DexScreenerIcon}
+                    alt="Dex Screener"
+                    className="dex-screener-icon"
+                  />
+                </button>
+
                 <img
                   src={coin.imageUrl}
                   alt={coin.name}
@@ -236,18 +261,6 @@ const UserPage = () => {
                     <p className="info-value">({coin.network})</p>
                   </div>
                 </div>
-                <a
-                  href={coin.url || "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="dex-screener-link"
-                >
-                  <img
-                    src={DexScreenerIcon}
-                    alt="Dex Screener"
-                    className="dex-screener-icon"
-                  />
-                </a>
               </div>
 
               {/* Arka Yüz */}
