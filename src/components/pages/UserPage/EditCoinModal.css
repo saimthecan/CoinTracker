@@ -1,0 +1,193 @@
+/* src/components/pages/UserPage/EditCoinModal.css */
+
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  /* Modal İçeriği */
+  .modal-content {
+    background-color: #f9f9f9;
+    padding: 30px 25px;
+    border-radius: 10px;
+    width: 400px;
+    position: relative;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    animation: slideDown 0.3s ease-out;
+  }
+  
+  /* Kapatma Butonu */
+  .close-button {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.2s;
+  }
+  
+  .close-button:hover {
+    color: #555;
+  }
+  
+  /* Başlık */
+  .modal-content h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+  
+  /* Form Grupları */
+  .form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Etiketler */
+  .form-group label {
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #555;
+  }
+  
+  /* Input Alanları */
+  .form-group input[type="text"],
+  .form-group input[type="date"],
+  .form-group input[type="number"],
+  .form-group .formatted-input {
+    width: 90%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+  }
+  
+  .form-group input[type="text"]:focus,
+  .form-group input[type="date"]:focus,
+  .form-group input[type="number"]:focus,
+  .form-group .formatted-input:focus {
+    border-color: #007BFF;
+    outline: none;
+  }
+  
+  /* Radio Grupları */
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0px !important;
+  }
+  
+  .radio-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  /* Özel Radio Butonları */
+  .radio-container input[type="radio"] {
+    display: none;
+  }
+  
+  .radio-label {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 2px solid #007BFF;
+    border-radius: 25px;
+    color: #007BFF;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+  }
+  
+  .radio-container input[type="radio"]:checked + .radio-label {
+    background-color: #007BFF;
+    color: #fff;
+  }
+  
+  /* Hata Mesajı */
+  .error-message {
+    color: #d9534f;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  /* Buton Grupları */
+  .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .submit-button,
+  .cancel-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .submit-button {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .submit-button:hover {
+    background-color: #218838;
+  }
+  
+  .cancel-button {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .cancel-button:hover {
+    background-color: #c82333;
+  }
+  
+  /* Animasyon */
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsive Tasarım */
+  @media (max-width: 500px) {
+    .modal-content {
+      width: 90%;
+      padding: 20px;
+    }
+  
+    .radio-label {
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+  
+    .submit-button,
+    .cancel-button {
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+  }
+  

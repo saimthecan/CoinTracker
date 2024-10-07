@@ -180,6 +180,39 @@ router.put('/:id/favorite', async (req, res) => {
   }
 });
 
+// Belirli bir kullanıcının belirli bir coinini güncelleme
+router.put('/:userId/coins/:coinId', async (req, res) => {
+  try {
+    const { userId, coinId } = req.params;
+    const { shareDate, sharePrice, shareMarketCap } = req.body;
+
+    // Kullanıcıyı bulun
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'Kullanıcı bulunamadı' });
+    }
+
+    // Coin'i bulun
+    const coin = user.coins.id(coinId);
+    if (!coin) {
+      return res.status(404).json({ message: 'Coin bulunamadı' });
+    }
+
+    // Coin'i güncelle
+    coin.shareDate = shareDate;
+    coin.sharePrice = sharePrice;
+    coin.shareMarketCap = shareMarketCap;
+
+    // Değişiklikleri kaydet
+    await user.save();
+
+    res.json(coin);
+  } catch (err) {
+    console.error('Hata:', err);
+    res.status(400).json({ message: 'Coin güncellenirken hata oluştu.' });
+  }
+});
+
 // Remove a user from favorites
 router.delete('/:id/favorite', async (req, res) => {
   try {

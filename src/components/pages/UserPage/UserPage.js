@@ -4,8 +4,12 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import DexScreenerIcon from "../../../assets/dexscreener.png";
 import AddCoinModal from "./AddCoinModal";
+import EditCoinModal from "./EditCoinModal"; // EditCoinModal'ı import ediyoruz
 import { useUserPage } from "./useUserPage"; // Hook'u import ediyoruz
-import { formatPriceWithConditionalZeros, formatMarketCap } from "./Utils"; // Import ediyoruz
+import {
+  formatPriceWithConditionalZeros,
+  formatMarketCap,
+} from "./Utils"; // Import ediyoruz
 import Pagination from "../../../Pagination/Pagination";
 import "./UserPage.css";
 
@@ -22,10 +26,11 @@ const UserPage = () => {
     handleFlip,
     handleDeleteCoin,
     handleAddCoin,
+    handleUpdateCoin, // Düzenleme fonksiyonu
     sortCriteria,
     setSortCriteria,
-    sortOrder, // Sıralama yönü
-    setSortOrder, // Sıralama yönünü değiştirme fonksiyonu
+    sortOrder,
+    setSortOrder,
     selectedNetwork,
     setSelectedNetwork,
     defaultImage,
@@ -34,6 +39,7 @@ const UserPage = () => {
   } = useUserPage(id);
 
   const [showAddCoinModal, setShowAddCoinModal] = useState(false);
+  const [coinBeingEdited, setCoinBeingEdited] = useState(null); // Düzenlenen coin'in state'i
 
   // Pagination için state
   const [currentPage, setCurrentPage] = useState(1);
@@ -49,11 +55,8 @@ const UserPage = () => {
     setCurrentPage(pageNumber);
   };
 
-  
   // Pagination'ın gösterilip gösterilmediğini takip eden state
   const [isPaginationVisible, setIsPaginationVisible] = useState(false);
-
-  
 
   if (loading) {
     return <p>Yükleniyor...</p>;
@@ -63,8 +66,8 @@ const UserPage = () => {
     return <p>{error}</p>;
   }
 
-    // Toplam sayfa sayısını hesapla
-    const totalPages = Math.ceil(coins.length / coinsPerPage);
+  // Toplam sayfa sayısını hesapla
+  const totalPages = Math.ceil(coins.length / coinsPerPage);
 
   // Sıralama yönünü simgeye tıklayarak değiştirme
   const toggleSortOrder = () => {
@@ -75,6 +78,11 @@ const UserPage = () => {
   const profileImageUrl = twitterUsername
     ? `https://unavatar.io/twitter/${twitterUsername}`
     : null;
+
+  // Düzenleme işlemini başlatan fonksiyon
+  const handleEditCoin = (coin) => {
+    setCoinBeingEdited(coin);
+  };
 
   return (
     <div className="coin-container">
@@ -160,6 +168,15 @@ const UserPage = () => {
         />
       )}
 
+      {/* Edit Coin Modal */}
+      {coinBeingEdited && (
+        <EditCoinModal
+          coin={coinBeingEdited}
+          onUpdateCoin={handleUpdateCoin}
+          onClose={() => setCoinBeingEdited(null)}
+        />
+      )}
+
       {/* Coin Listesi */}
       <div className="coin-grid">
         {currentCoins.map((coin, index) => (
@@ -186,6 +203,18 @@ const UserPage = () => {
                 >
                   ❌
                 </button>
+
+                {/* Düzenle Butonu */}
+                <button
+                  className="edit-button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleEditCoin(coin);
+                  }}
+                >
+                  ✏️
+                </button>
+
                 <img
                   src={coin.imageUrl}
                   alt={coin.name}
@@ -287,8 +316,8 @@ const UserPage = () => {
         ))}
       </div>
 
-       {/* Pagination */}
-       {totalPages > 1 && (
+      {/* Pagination */}
+      {totalPages > 1 && (
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

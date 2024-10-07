@@ -571,6 +571,22 @@ label {
   display: none;
 }
 
+/* Düzenle Butonu */
+.edit-button {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background-color: transparent;
+  border: none;
+  color: #007BFF;
+  font-size: 21px;
+  cursor: pointer;
+}
+
+.edit-button:hover {
+  color: #0056b3;
+  transform: scale(1.2);
+}
 
 
 /* Mobile View */

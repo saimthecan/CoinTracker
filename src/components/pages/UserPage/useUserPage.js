@@ -186,6 +186,21 @@ const getTwitterUsername = (twitterUrl) => {
     }
   };
 
+    // Coin güncelleme fonksiyonu
+    const handleUpdateCoin = async (updatedCoin) => {
+      try {
+        await axios.put(
+          `${API_URL}/users/${id}/coins/${updatedCoin._id}`,
+          updatedCoin
+        );
+        // Coin listesini güncellemek için kullanıcı verilerini tekrar çekiyoruz
+        await fetchUserData();
+      } catch (error) {
+        console.error("Coin güncellenirken hata oluştu:", error);
+        alert("Coin güncellenirken bir hata oluştu.");
+      }
+    };
+
   const calculateMarketCapChange = (shareMarketCap, currentMarketCap) => {
     if (!shareMarketCap || !currentMarketCap) return "Yükleniyor";
     const change = ((currentMarketCap - shareMarketCap) / shareMarketCap) * 100;
@@ -205,6 +220,7 @@ const getTwitterUsername = (twitterUrl) => {
     handleFlip,
     handleDeleteCoin,
     handleAddCoin,
+    handleUpdateCoin, 
     sortCriteria,
     setSortCriteria,
     sortOrder, // Sıralama yönünü döndürüyoruz
