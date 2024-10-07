@@ -84,17 +84,21 @@ const UserPage = () => {
       <div className="controls">
         <div className="filter-section">
           <label htmlFor="sortCriteria">Sırala: </label>
+          
           <span
-            className="sort-icon-container"
+            className={`sort-icon-container ${
+              sortCriteria === "" ? "hide-mobile" : ""
+            }`}
             onClick={toggleSortOrder}
-            title={sortOrder === "asc" ? "Artan sıralama" : "Azalan sıralama"} // İkona hover yapıldığında gösterilecek açıklama
+            title={sortOrder === "asc" ? "Artan sıralama" : "Azalan sıralama"}
           >
             {sortOrder === "asc" ? (
-              <i className="fas fa-sort-amount-up-alt"></i> // Artan sıralama ikonu
+              <i className="fas fa-sort-amount-up-alt"></i>
             ) : (
-              <i className="fas fa-sort-amount-down-alt"></i> // Azalan sıralama ikonu
+              <i className="fas fa-sort-amount-down-alt"></i>
             )}
           </span>
+
           <select
             id="sortCriteria"
             value={sortCriteria}
@@ -105,7 +109,6 @@ const UserPage = () => {
             <option value="profitPercentage">Kazanç Yüzdesine Göre</option>
             <option value="currentMarketCap">Güncel MarketCap'e Göre</option>
           </select>
-        
 
           <label htmlFor="networkFilter">Ağa Göre: </label>
           <select

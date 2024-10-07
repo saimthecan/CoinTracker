@@ -560,8 +560,18 @@ label {
   margin-left: -1rem;
 }
 
+/* Masaüstünde gizle */
+.hide-mobile {
+  display: none;
+}
+
+
 /* Mobile View */
 @media (max-width: 767px) {
+  .hide-mobile {
+    display: block; /* Mobilde display’i tekrar etkin yapıyoruz */
+    visibility: hidden; /* Görünmez yap */
+  }
 
   .header {
     padding: 15px; /* Tekrarlanan stil birleşti */
