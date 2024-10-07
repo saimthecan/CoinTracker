@@ -566,8 +566,11 @@ label {
 }
 
 
+
 /* Mobile View */
 @media (max-width: 767px) {
+
+
   .hide-mobile {
     display: block; /* Mobilde display’i tekrar etkin yapıyoruz */
     visibility: hidden; /* Görünmez yap */
@@ -824,6 +827,5 @@ label {
     margin-bottom: 5px; /* Label ile input arası boşluk */
   }
 
-  /* Diğer elementler için istenen responsive tasarımı ekleyebilirsiniz */
 }
 

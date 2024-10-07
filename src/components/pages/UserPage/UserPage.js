@@ -84,7 +84,7 @@ const UserPage = () => {
       <div className="controls">
         <div className="filter-section">
           <label htmlFor="sortCriteria">Sırala: </label>
-          
+
           <span
             className={`sort-icon-container ${
               sortCriteria === "" ? "hide-mobile" : ""
@@ -238,7 +238,7 @@ const UserPage = () => {
                   {/* Piyasa Değerleri */}
                   <div className="marketcap-row">
                     <div className="marketcap-item">
-                      <p className="info-label">Paylaşım Piyasa Değeri:</p>
+                      <p className="info-label">Paylaşım  Marketcap:</p>
                       <p className="info-value">
                         {coin.shareMarketCap
                           ? formatMarketCap(coin.shareMarketCap)
@@ -246,7 +246,7 @@ const UserPage = () => {
                       </p>
                     </div>
                     <div className="marketcap-item">
-                      <p className="info-label">Güncel Piyasa Değeri:</p>
+                      <p className="info-label">Güncel&nbsp; Marketcap:</p>
                       <p className="info-value">
                         {coin.currentMarketCap
                           ? formatMarketCap(coin.currentMarketCap)
