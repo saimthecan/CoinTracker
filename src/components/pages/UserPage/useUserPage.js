@@ -15,6 +15,7 @@ export const useUserPage = (id) => {
   const [flipped, setFlipped] = useState([]);
   const [sortCriteria, setSortCriteria] = useState("");
   const [selectedNetwork, setSelectedNetwork] = useState("");
+  const [allNetworks, setAllNetworks] = useState([]);
 
   // Twitter kullanıcı adını çıkaran fonksiyon
 const getTwitterUsername = (twitterUrl) => {
@@ -95,6 +96,12 @@ const getTwitterUsername = (twitterUrl) => {
           }
         })
       );
+
+      // Tüm ağları topluyoruz
+      const networks = Array.from(
+        new Set(updatedCoins.map((coin) => coin.network))
+      );
+      setAllNetworks(networks); // Ağları kaydediyoruz
 
       setCoins(updatedCoins);
       setLoading(false);
@@ -203,5 +210,6 @@ const getTwitterUsername = (twitterUrl) => {
     setSelectedNetwork,
     defaultImage,
     getTwitterUsername,
+    allNetworks,
   };
 };

@@ -26,7 +26,8 @@ const UserPage = () => {
     selectedNetwork,
     setSelectedNetwork,
     defaultImage,
-    getTwitterUsername
+    getTwitterUsername,
+    allNetworks, 
   } = useUserPage(id);
 
   const [showAddCoinModal, setShowAddCoinModal] = useState(false);
@@ -94,12 +95,11 @@ const UserPage = () => {
             value={selectedNetwork}
             onChange={(e) => setSelectedNetwork(e.target.value)}
           >
-            <option value="">Tüm Ağlar</option>
-            {Array.from(new Set(coins.map((coin) => coin.network))).map(
-              (network) => (
-                <option key={network} value={network}>
-                  {network}
-                </option>
+           <option value="">Tüm Ağlar</option>
+            {allNetworks.map((network) => (
+              <option key={network} value={network}>
+                {network}
+              </option>
               )
             )}
           </select>
