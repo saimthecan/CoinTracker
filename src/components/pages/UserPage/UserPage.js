@@ -6,6 +6,7 @@ import DexScreenerIcon from "../../../assets/dexscreener.png";
 import AddCoinModal from "./AddCoinModal";
 import { useUserPage } from "./useUserPage"; // Hook'u import ediyoruz
 import { formatPriceWithConditionalZeros, formatMarketCap } from "./Utils"; // Import ediyoruz
+import Pagination from "../../../Pagination/Pagination";
 import "./UserPage.css";
 
 const UserPage = () => {
@@ -34,6 +35,26 @@ const UserPage = () => {
 
   const [showAddCoinModal, setShowAddCoinModal] = useState(false);
 
+  // Pagination için state
+  const [currentPage, setCurrentPage] = useState(1);
+  const coinsPerPage = 20; // Her sayfada gösterilecek coin sayısı
+
+  // Coins'in gösterileceği sayfalara göre bölünmesi
+  const indexOfLastCoin = currentPage * coinsPerPage;
+  const indexOfFirstCoin = indexOfLastCoin - coinsPerPage;
+  const currentCoins = coins.slice(indexOfFirstCoin, indexOfLastCoin);
+
+  // Sayfa değişimi fonksiyonu
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  
+  // Pagination'ın gösterilip gösterilmediğini takip eden state
+  const [isPaginationVisible, setIsPaginationVisible] = useState(false);
+
+  
+
   if (loading) {
     return <p>Yükleniyor...</p>;
   }
@@ -41,6 +62,9 @@ const UserPage = () => {
   if (error) {
     return <p>{error}</p>;
   }
+
+    // Toplam sayfa sayısını hesapla
+    const totalPages = Math.ceil(coins.length / coinsPerPage);
 
   // Sıralama yönünü simgeye tıklayarak değiştirme
   const toggleSortOrder = () => {
@@ -71,7 +95,9 @@ const UserPage = () => {
 
         <div className="add-coin-and-twitter">
           <button
-            className="add-coin-button"
+            className={`add-coin-button ${
+              isPaginationVisible ? "with-pagination" : ""
+            }`}
             onClick={() => setShowAddCoinModal(true)}
           >
             <span className="desktop-text">Ekle</span>
@@ -136,7 +162,7 @@ const UserPage = () => {
 
       {/* Coin Listesi */}
       <div className="coin-grid">
-        {coins.map((coin, index) => (
+        {currentCoins.map((coin, index) => (
           <div
             key={coin._id}
             className={`card ${flipped[index] ? "flipped" : ""}`}
@@ -238,7 +264,7 @@ const UserPage = () => {
                   {/* Piyasa Değerleri */}
                   <div className="marketcap-row">
                     <div className="marketcap-item">
-                      <p className="info-label">Paylaşım  Marketcap:</p>
+                      <p className="info-label">Paylaşım Marketcap:</p>
                       <p className="info-value">
                         {coin.shareMarketCap
                           ? formatMarketCap(coin.shareMarketCap)
@@ -260,6 +286,16 @@ const UserPage = () => {
           </div>
         ))}
       </div>
+
+       {/* Pagination */}
+       {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          onVisibilityChange={setIsPaginationVisible}
+        />
+      )}
     </div>
   );
 };

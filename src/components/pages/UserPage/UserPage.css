@@ -4,6 +4,7 @@
   flex-direction: column;
   align-items: flex-start;
   padding: 20px;
+  margin-bottom: 5rem;
 }
 
 /* Grid */
@@ -306,6 +307,11 @@ h3 {
     transform: translateY(0);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
+
+  /* Pagination varsa butonun altına margin ekle */
+.add-coin-button.with-pagination {
+  margin-bottom: 3rem;
+}
   
 /* Twitter Button */
 .twitter-icons {
