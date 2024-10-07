@@ -14,6 +14,7 @@ export const useUserPage = (id) => {
   const [error, setError] = useState(null);
   const [flipped, setFlipped] = useState([]);
   const [sortCriteria, setSortCriteria] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc")
   const [selectedNetwork, setSelectedNetwork] = useState("");
   const [allNetworks, setAllNetworks] = useState([]);
 
@@ -192,7 +193,7 @@ const getTwitterUsername = (twitterUrl) => {
   };
 
   // Sıralama ve filtreleme işlemlerini uyguluyoruz
-  const sortedCoins = sortCoins(coins, sortCriteria);
+  const sortedCoins = sortCoins(coins, sortCriteria, sortOrder);
   const filteredCoins = filterCoinsByNetwork(sortedCoins, selectedNetwork);
 
   return {
@@ -206,6 +207,8 @@ const getTwitterUsername = (twitterUrl) => {
     handleAddCoin,
     sortCriteria,
     setSortCriteria,
+    sortOrder, // Sıralama yönünü döndürüyoruz
+    setSortOrder, // Sıralama yönünü değiştirmek için kullanıyoruz
     selectedNetwork,
     setSelectedNetwork,
     defaultImage,

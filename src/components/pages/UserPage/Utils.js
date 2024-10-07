@@ -76,8 +76,7 @@ export const formatPriceWithConditionalZeros = (price) => {
   };
   
 
-  // Sıralama işlemi
-export const sortCoins = (coins, sortCriteria) => {
+  export const sortCoins = (coins, sortCriteria, sortOrder) => {
     if (!sortCriteria) return coins;
   
     let sorted = [...coins];
@@ -96,8 +95,14 @@ export const sortCoins = (coins, sortCriteria) => {
         break;
     }
   
+    // Eğer sortOrder "desc" ise ters çevir
+    if (sortOrder === "desc") {
+      sorted.reverse();
+    }
+  
     return sorted;
   };
+  
   
   // Filtreleme işlemi
   export const filterCoinsByNetwork = (coins, selectedNetwork) => {

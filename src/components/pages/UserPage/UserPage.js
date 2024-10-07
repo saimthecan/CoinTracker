@@ -23,11 +23,13 @@ const UserPage = () => {
     handleAddCoin,
     sortCriteria,
     setSortCriteria,
+    sortOrder, // Sıralama yönü
+    setSortOrder, // Sıralama yönünü değiştirme fonksiyonu
     selectedNetwork,
     setSelectedNetwork,
     defaultImage,
     getTwitterUsername,
-    allNetworks, 
+    allNetworks,
   } = useUserPage(id);
 
   const [showAddCoinModal, setShowAddCoinModal] = useState(false);
@@ -40,11 +42,15 @@ const UserPage = () => {
     return <p>{error}</p>;
   }
 
+  // Sıralama yönünü simgeye tıklayarak değiştirme
+  const toggleSortOrder = () => {
+    setSortOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
+  };
+
   const twitterUsername = getTwitterUsername(user.twitter);
   const profileImageUrl = twitterUsername
     ? `https://unavatar.io/twitter/${twitterUsername}`
     : null;
-
 
   return (
     <div className="coin-container">
@@ -78,6 +84,17 @@ const UserPage = () => {
       <div className="controls">
         <div className="filter-section">
           <label htmlFor="sortCriteria">Sırala: </label>
+          <span
+            className="sort-icon-container"
+            onClick={toggleSortOrder}
+            title={sortOrder === "asc" ? "Artan sıralama" : "Azalan sıralama"} // İkona hover yapıldığında gösterilecek açıklama
+          >
+            {sortOrder === "asc" ? (
+              <i className="fas fa-sort-amount-up-alt"></i> // Artan sıralama ikonu
+            ) : (
+              <i className="fas fa-sort-amount-down-alt"></i> // Azalan sıralama ikonu
+            )}
+          </span>
           <select
             id="sortCriteria"
             value={sortCriteria}
@@ -88,20 +105,20 @@ const UserPage = () => {
             <option value="profitPercentage">Kazanç Yüzdesine Göre</option>
             <option value="currentMarketCap">Güncel MarketCap'e Göre</option>
           </select>
+        
 
-          <label htmlFor="networkFilter">Ağa Göre Filtrele: </label>
+          <label htmlFor="networkFilter">Ağa Göre: </label>
           <select
             id="networkFilter"
             value={selectedNetwork}
             onChange={(e) => setSelectedNetwork(e.target.value)}
           >
-           <option value="">Tüm Ağlar</option>
+            <option value="">Tüm Ağlar</option>
             {allNetworks.map((network) => (
               <option key={network} value={network}>
                 {network}
               </option>
-              )
-            )}
+            ))}
           </select>
         </div>
       </div>
@@ -200,13 +217,17 @@ const UserPage = () => {
                     <div className="price-item">
                       <p className="info-label">Paylaşım Fiyatı:</p>
                       <p className="info-value">
-                      {coin.sharePrice ? formatPriceWithConditionalZeros(coin.sharePrice) : "Yükleniyor"}
+                        {coin.sharePrice
+                          ? formatPriceWithConditionalZeros(coin.sharePrice)
+                          : "Yükleniyor"}
                       </p>
                     </div>
                     <div className="price-item">
                       <p className="info-label">Güncel Fiyat:</p>
                       <p className="info-value">
-                      {coin.currentPrice ? formatPriceWithConditionalZeros(coin.currentPrice) : "Yükleniyor"}
+                        {coin.currentPrice
+                          ? formatPriceWithConditionalZeros(coin.currentPrice)
+                          : "Yükleniyor"}
                       </p>
                     </div>
                   </div>
@@ -216,13 +237,17 @@ const UserPage = () => {
                     <div className="marketcap-item">
                       <p className="info-label">Paylaşım Piyasa Değeri:</p>
                       <p className="info-value">
-                      {coin.shareMarketCap ? formatMarketCap(coin.shareMarketCap) : "Yükleniyor"}
+                        {coin.shareMarketCap
+                          ? formatMarketCap(coin.shareMarketCap)
+                          : "Yükleniyor"}
                       </p>
                     </div>
                     <div className="marketcap-item">
                       <p className="info-label">Güncel Piyasa Değeri:</p>
                       <p className="info-value">
-                      {coin.currentMarketCap ? formatMarketCap(coin.currentMarketCap) : "Yükleniyor"}
+                        {coin.currentMarketCap
+                          ? formatMarketCap(coin.currentMarketCap)
+                          : "Yükleniyor"}
                       </p>
                     </div>
                   </div>

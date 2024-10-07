@@ -541,7 +541,24 @@ label {
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
 }
 
+.sort-icon-container:hover {
+  transform: scale(1.1); /* Mobilde hover efekti çok büyük olmamalı */
+  color: #0056b3; /* Hover sırasında mavi tonunu koruyalım */
+}
 
+/* İkonlar için FontAwesome */
+.fas {
+  font-size: 1.8rem;
+
+}
+
+.sort-icon-container{
+  color: #0056b3;
+}
+
+#networkFilter{
+  margin-left: -1rem;
+}
 
 /* Mobile View */
 @media (max-width: 767px) {
@@ -745,9 +762,36 @@ label {
     border-radius: 5px; /* Kenarları yuvarlat */
     background-color: #f9f9f9; /* Açıldığında hoş bir arka plan rengi */
 }
+/* Sıralama ikonunun stilini güncelliyoruz */
+/* Sort ikonları için kapsayıcı stil */
+.sort-icon-container {
+  font-size: 1.2rem; /* Mobilde ikon boyutunu küçültüyoruz */
+  margin-left:auto; /* İkona daha küçük bir negatif margin veriyoruz */
+  margin-right: 0.5rem; /* Sağdan da bir miktar boşluk ekliyoruz */
+}
+
+
+
+#sortCriteria{
+  width: 55%;
+}
+
+#networkFilter{
+  width: 55%;
+}
+
+/* İkonlar için FontAwesome */
+.fas {
+  font-size: 1.2rem;
+
+}
 
 
 }
+
+
+
+
 
 /* 400px ile 500px arasında değişiklik */
 @media (min-width: 400px) and (max-width: 500px) {
