@@ -1,82 +1,51 @@
 // src/components/Guvendiklerim.js
-import React, { useState, useContext, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Guvendiklerim.css';
 import twitterLogo from '../../../../assets/twitter.svg';
-import { UserContext } from '../../../../../src/context/UserContext';
+import StarIcon from "../../../../StarIcons/StarIcon";
+import EmptyStarIcon from "../../../../StarIcons/EmptyStarIcon";
 import Modal from '../Modal/Modal';
-import userIcon from '../../../../assets/user.svg';
-import twitterIcon from '../../../../assets/twitter.svg';
 import deleteIcon from '../../../../assets/delete.svg';
+import { useGuvendiklerim } from "./useGuvendiklerim";
+import AddUserForm from "./AddUserForm";
+import Pagination from "../../../../Pagination/Pagination";
+
 
 const Guvendiklerim = () => {
-  const [GuvendiklerimUsers, setGuvendiklerimUsers] = useState([]);
   const [showAddUserModal, setShowAddUserModal] = useState(false);
+  
+  // Hook'tan gelen işlemler
+  const { GuvendiklerimUsers, handleToggleFavorite, handleDeleteUser, handleAddUser, isUserSelected } = useGuvendiklerim();
 
-  const { selectedUsers, addUserToSelected, removeUserFromSelected, isUserSelected } = useContext(UserContext);
+  // Sayfalama için state'ler
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8; // Her sayfada gösterilecek kullanıcı sayısı
 
-  // Fetch users belonging to 'güvendiklerim' category
-  useEffect(() => {
-    axios
-      .get('https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users')
-      .then((response) => {
-        const users = response.data;
-        const Guvendiklerim = users.filter(
-          (user) => user.category === 'güvendiklerim'
-        );
-        setGuvendiklerimUsers(Guvendiklerim);
-      })
-      .catch((error) => {
-        console.error('Error fetching users:', error);
-      });
-  }, []);
+  // Kullanıcıları sayfalara bölüyoruz
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentUsers = GuvendiklerimUsers.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Handle toggling favorite status
-  const handleToggleFavorite = (user) => {
-    if (isUserSelected(user._id)) {
-      removeUserFromSelected(user._id);
-    } else {
-      addUserToSelected(user);
-    }
-  };
+  // Toplam sayfa sayısı
+  const totalPages = Math.ceil(GuvendiklerimUsers.length / itemsPerPage);
 
-  // Handle user deletion
-  const handleDeleteUser = (userId) => {
-    if (window.confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?')) {
-      axios
-        .delete(`https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users/${userId}`)
-        .then(() => {
-          setGuvendiklerimUsers(GuvendiklerimUsers.filter(user => user._id !== userId));
-        })
-        .catch((error) => {
-          console.error('Kullanıcı silinirken hata oluştu:', error);
-        });
-    }
-  };
-
-  // Handle adding a new user
-  const handleAddUser = (newUser) => {
-    axios
-      .post('https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users', newUser)
-      .then((response) => {
-        const addedUser = response.data;
-        setGuvendiklerimUsers([...GuvendiklerimUsers, addedUser]);
-      })
-      .catch((error) => {
-        console.error('Kullanıcı eklenirken hata oluştu:', error);
-      });
-  };
+    // Pagination'ın gösterilip gösterilmediğini takip eden state
+    const [isPaginationVisible, setIsPaginationVisible] = useState(false);
 
   return (
     <div className="container">
-       <header className="favorites-header">
+      <header className="favorites-header">
         <h1>Güvendiklerim</h1>
       </header>
+      
       {/* "Card Ekle" Button */}
-      <button className="add-card-button" onClick={() => setShowAddUserModal(true)}>
-      <span className="desktop-text">Kullanıcı Ekle</span>
-  <span className="mobile-text">+</span>
+      <button
+        className={`add-card-button ${isPaginationVisible ? "with-pagination" : ""}`}
+        onClick={() => setShowAddUserModal(true)}
+      >
+        <span className="desktop-text">Kullanıcı Ekle</span>
+        <span className="mobile-text">+</span>
       </button>
 
       {/* New User Modal */}
@@ -85,7 +54,7 @@ const Guvendiklerim = () => {
       </Modal>
 
       <div className="card-container">
-        {GuvendiklerimUsers.map(user => {
+        {currentUsers.map(user => {
           const isSelected = isUserSelected(user._id);
 
           return (
@@ -96,36 +65,11 @@ const Guvendiklerim = () => {
               </div>
               
               {/* Star Icon */}
-              <div className="star-icon-container" onClick={() => handleToggleFavorite(user)}>
-                {isSelected ? (
-                  // Filled star
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="#FFD700"
-                    stroke="#FFD700"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="star-icon"
-                  >
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                ) : (
-                  // Empty star
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="star-icon"
-                  >
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                )}
+              <div
+                className="star-icon-container"
+                onClick={() => handleToggleFavorite(user)}
+              >
+                {isSelected ? <StarIcon /> : <EmptyStarIcon />}
               </div>
 
               {/* Twitter Logo */}
@@ -141,57 +85,17 @@ const Guvendiklerim = () => {
           );
         })}
       </div>
+
+      {/* Pagination Component */}
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage} // Sayfa değişiminde state güncelleniyor
+          onVisibilityChange={setIsPaginationVisible}
+        />
+      )}
     </div>
-  );
-};
-
-const AddUserForm = ({ onAddUser, onClose }) => {
-  const [name, setName] = useState('');
-  const [twitter, setTwitter] = useState('');
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const newUser = {
-      name,
-      twitter,
-      category: 'güvendiklerim',
-      coins: []
-    };
-
-    onAddUser(newUser);
-
-    // Clear form and close modal
-    setName('');
-    setTwitter('');
-    onClose();
-  };
-
-  return (
-    <form className="add-user-form" onSubmit={handleSubmit}>
-      <h3>Yeni Kullanıcı Ekle</h3>
-      <div className="input-group">
-        <img src={userIcon} alt="Kullanıcı" className="input-icon" />
-        <input
-          type="text"
-          placeholder="Kullanıcı Adı"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </div>
-      <div className="input-group">
-        <img src={twitterIcon} alt="Twitter" className="input-icon" />
-        <input
-          type="url"
-          placeholder="Twitter Adresi"
-          value={twitter}
-          onChange={(e) => setTwitter(e.target.value)}
-          required
-        />
-      </div>
-      <button type="submit">Ekle</button>
-    </form>
   );
 };
 

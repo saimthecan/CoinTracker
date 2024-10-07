@@ -34,6 +34,11 @@
     z-index: 1000; /* Sayfanın en üstünde kalması için */
   }
 
+  .add-card-button.with-pagination {
+    margin-bottom: 50px; /* Pagination butonları görünür olduğunda uygulanacak */
+  }
+    
+
   /* Desktop view */
 .desktop-text {
   display: inline; /* Masaüstünde görünsün */
@@ -61,24 +66,28 @@
     flex-wrap: wrap;
     gap: 2rem;
     justify-content: flex-start;
+    margin-bottom: 3rem;
   }
-  
-  /* Kullanıcı Kartı */
-  .user-card {
-    display: flex;
-    flex-direction: column; /* Dikeyde hizalama için */
-    justify-content: center; /* Yatayda ortala */
-    align-items: center; /* Dikeyde ortala */
-    background-color: var(--card-background);
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 250px;
-    height: 55px; /* Yeterli yüksekliği sağlamak için */
-    padding: 1.5rem;
-    text-align: center;
-    position: relative; /* Diğer ikonların yerleşimi için */
-  }
-  
+
+
+
+
+/* Kullanıcı Kartı */
+.user-card {
+  display: flex;
+  flex-direction: column; /* Dikeyde hizalama için */
+  justify-content: center; /* Yatayda ortala */
+  align-items: center; /* Dikeyde ortala */
+  background-color: var(--card-background);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  height: 55px; /* Yeterli yüksekliği sağlamak için */
+  padding: 1.5rem;
+  text-align: center;
+  position: relative; /* Diğer ikonların yerleşimi için */
+}
+
   /* Kullanıcı İsmi */
   .user-name {
     font-size: 1.5rem;
@@ -272,6 +281,3 @@
   font-size: 0.9rem; /* Alt metnin boyutunu küçülttük */
 }
 }
-
-
-  

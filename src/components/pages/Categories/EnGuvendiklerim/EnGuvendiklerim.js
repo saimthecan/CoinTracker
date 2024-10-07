@@ -1,131 +1,79 @@
-// src/components/EnGuvendiklerim.js
-import React, { useState, useContext, useEffect } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import './EnGuvendiklerim.css';
-import twitterLogo from '../../../../assets/twitter.svg';
-import { UserContext } from '../../../../../src/context/UserContext';
-import Modal from '../Modal/Modal';
-import userIcon from '../../../../assets/user.svg';
-import twitterIcon from '../../../../assets/twitter.svg';
-import deleteIcon from '../../../../assets/delete.svg';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "./EnGuvendiklerim.css";
+import twitterLogo from "../../../../assets/twitter.svg";
+import Modal from "../Modal/Modal";
+import Pagination from "../../../../Pagination/Pagination";
+import AddUserForm from "./AddUserForm";
+import StarIcon from "../../../../StarIcons/StarIcon";
+import EmptyStarIcon from "../../../../StarIcons/EmptyStarIcon";
+import deleteIcon from "../../../../assets/delete.svg";
+import { useEnGuvendiklerim } from "./useEnGuvendiklerim";
 
 const EnGuvendiklerim = () => {
-  const [enGuvendiklerimUsers, setEnGuvendiklerimUsers] = useState([]);
   const [showAddUserModal, setShowAddUserModal] = useState(false);
 
-  const { selectedUsers, addUserToSelected, removeUserFromSelected, isUserSelected } = useContext(UserContext);
+  const { enGuvendiklerimUsers, handleToggleFavorite, handleDeleteUser, handleAddUser, isUserSelected } = useEnGuvendiklerim();
 
-  // Fetch users belonging to 'en_güvendiklerim' category
-  useEffect(() => {
-    axios
-      .get('https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users')
-      .then((response) => {
-        const users = response.data;
-        const enGuvendiklerim = users.filter(
-          (user) => user.category === 'en_güvendiklerim'
-        );
-        setEnGuvendiklerimUsers(enGuvendiklerim);
-      })
-      .catch((error) => {
-        console.error('Error fetching users:', error);
-      });
-  }, []);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentUsers = enGuvendiklerimUsers.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
-  // Handle toggling favorite status
-  const handleToggleFavorite = (user) => {
-    if (isUserSelected(user._id)) {
-      removeUserFromSelected(user._id);
-    } else {
-      addUserToSelected(user);
-    }
-  };
+  const totalPages = Math.ceil(enGuvendiklerimUsers.length / itemsPerPage);
 
-  // Handle user deletion
-  const handleDeleteUser = (userId) => {
-    if (window.confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?')) {
-      axios
-        .delete(`https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users/${userId}`)
-        .then(() => {
-          setEnGuvendiklerimUsers(enGuvendiklerimUsers.filter(user => user._id !== userId));
-        })
-        .catch((error) => {
-          console.error('Kullanıcı silinirken hata oluştu:', error);
-        });
-    }
-  };
-
-  // Handle adding a new user
-  const handleAddUser = (newUser) => {
-    axios
-      .post('https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users', newUser)
-      .then((response) => {
-        const addedUser = response.data;
-        setEnGuvendiklerimUsers([...enGuvendiklerimUsers, addedUser]);
-      })
-      .catch((error) => {
-        console.error('Kullanıcı eklenirken hata oluştu:', error);
-      });
-  };
+  // Pagination'ın gösterilip gösterilmediğini takip eden state
+  const [isPaginationVisible, setIsPaginationVisible] = useState(false);
 
   return (
     <div className="container">
-       <header className="favorites-header">
+      <header className="favorites-header">
         <h1>En Güvendiklerim</h1>
       </header>
       {/* "Card Ekle" Button */}
-      <button className="add-card-button" onClick={() => setShowAddUserModal(true)}>
-  <span className="desktop-text">Kullanıcı Ekle</span>
-  <span className="mobile-text">+</span>
-</button>
+      <button
+        className={`add-card-button ${isPaginationVisible ? "with-pagination" : ""}`}
+        onClick={() => setShowAddUserModal(true)}
+      >
+        <span className="desktop-text">Kullanıcı Ekle</span>
+        <span className="mobile-text">+</span>
+      </button>
 
       {/* New User Modal */}
-      <Modal isOpen={showAddUserModal} onClose={() => setShowAddUserModal(false)}>
-        <AddUserForm onAddUser={handleAddUser} onClose={() => setShowAddUserModal(false)} />
+      <Modal
+        isOpen={showAddUserModal}
+        onClose={() => setShowAddUserModal(false)}
+      >
+        <AddUserForm
+          onAddUser={handleAddUser}
+          onClose={() => setShowAddUserModal(false)}
+        />
       </Modal>
 
       <div className="card-container">
-        {enGuvendiklerimUsers.map(user => {
+        {currentUsers.map((user) => {
           const isSelected = isUserSelected(user._id);
 
           return (
             <div key={user._id} className="user-card">
               {/* Delete Icon */}
-              <div className="delete-icon-container" onClick={() => handleDeleteUser(user._id)}>
+              <div
+                className="delete-icon-container"
+                onClick={() => handleDeleteUser(user._id)}
+              >
                 <img src={deleteIcon} alt="Sil" className="delete-icon" />
               </div>
-              
+
               {/* Star Icon */}
-              <div className="star-icon-container" onClick={() => handleToggleFavorite(user)}>
-                {isSelected ? (
-                  // Filled star
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="#FFD700"
-                    stroke="#FFD700"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="star-icon"
-                  >
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                ) : (
-                  // Empty star
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="star-icon"
-                  >
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                )}
+              <div
+                className="star-icon-container"
+                onClick={() => handleToggleFavorite(user)}
+              >
+                {isSelected ? <StarIcon /> : <EmptyStarIcon />}
               </div>
 
               {/* Twitter Logo */}
@@ -141,57 +89,15 @@ const EnGuvendiklerim = () => {
           );
         })}
       </div>
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          onVisibilityChange={setIsPaginationVisible} // Pagination görünürlüğünü buradan takip ediyoruz
+        />
+      )}
     </div>
-  );
-};
-
-const AddUserForm = ({ onAddUser, onClose }) => {
-  const [name, setName] = useState('');
-  const [twitter, setTwitter] = useState('');
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const newUser = {
-      name,
-      twitter,
-      category: 'en_güvendiklerim',
-      coins: []
-    };
-
-    onAddUser(newUser);
-
-    // Clear form and close modal
-    setName('');
-    setTwitter('');
-    onClose();
-  };
-
-  return (
-    <form className="add-user-form" onSubmit={handleSubmit}>
-      <h3>Yeni Kullanıcı Ekle</h3>
-      <div className="input-group">
-        <img src={userIcon} alt="Kullanıcı" className="input-icon" />
-        <input
-          type="text"
-          placeholder="Kullanıcı Adı"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </div>
-      <div className="input-group">
-        <img src={twitterIcon} alt="Twitter" className="input-icon" />
-        <input
-          type="url"
-          placeholder="Twitter Adresi"
-          value={twitter}
-          onChange={(e) => setTwitter(e.target.value)}
-          required
-        />
-      </div>
-      <button type="submit">Ekle</button>
-    </form>
   );
 };
 
