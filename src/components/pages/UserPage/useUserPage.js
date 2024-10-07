@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import defaultImage from "../../../assets/logo-free.png";
+import { sortCoins, filterCoinsByNetwork } from "./Utils";
 
 const API_URL = "https://calm-harbor-22861-fa5a63bab33f.herokuapp.com";
 
@@ -15,19 +16,18 @@ export const useUserPage = (id) => {
   const [sortCriteria, setSortCriteria] = useState("");
   const [selectedNetwork, setSelectedNetwork] = useState("");
 
-    // Twitter kullanıcı adını çıkaran fonksiyon
-    const getTwitterUsername = (twitterUrl) => {
-        if (!twitterUrl) return null;
-        const match = twitterUrl.match(
-          /(?:https?:\/\/)?(?:www\.)?(?:twitter\.com|x\.com)\/([a-zA-Z0-9_]+)/i
-        );
-        if (match && match[1]) {
-          return match[1];
-        }
-        return null;
-      };
+  // Twitter kullanıcı adını çıkaran fonksiyon
+const getTwitterUsername = (twitterUrl) => {
+    if (!twitterUrl) return null;
+    const match = twitterUrl.match(
+      /(?:https?:\/\/)?(?:www\.)?(?:twitter\.com|x\.com)\/([a-zA-Z0-9_]+)/i
+    );
+    if (match && match[1]) {
+      return match[1];
+    }
+    return null;
+  };
 
-  // Kullanıcı verilerini çeken fonksiyon
   const fetchUserData = useCallback(async () => {
     try {
       const response = await axios.get(`${API_URL}/users/${id}`);
@@ -184,9 +184,13 @@ export const useUserPage = (id) => {
     return change.toFixed(2);
   };
 
+  // Sıralama ve filtreleme işlemlerini uyguluyoruz
+  const sortedCoins = sortCoins(coins, sortCriteria);
+  const filteredCoins = filterCoinsByNetwork(sortedCoins, selectedNetwork);
+
   return {
     user,
-    coins,
+    coins: filteredCoins, // Filtrelenmiş ve sıralanmış coinleri döndürüyoruz
     loading,
     error,
     flipped,

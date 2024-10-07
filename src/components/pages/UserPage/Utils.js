@@ -75,3 +75,33 @@ export const formatPriceWithConditionalZeros = (price) => {
     return num.toString();
   };
   
+
+  // Sıralama işlemi
+export const sortCoins = (coins, sortCriteria) => {
+    if (!sortCriteria) return coins;
+  
+    let sorted = [...coins];
+  
+    switch (sortCriteria) {
+      case "shareDate":
+        sorted.sort((a, b) => new Date(a.shareDate) - new Date(b.shareDate));
+        break;
+      case "profitPercentage":
+        sorted.sort((a, b) => b.marketCapComparison - a.marketCapComparison);
+        break;
+      case "currentMarketCap":
+        sorted.sort((a, b) => b.currentMarketCap - a.currentMarketCap);
+        break;
+      default:
+        break;
+    }
+  
+    return sorted;
+  };
+  
+  // Filtreleme işlemi
+  export const filterCoinsByNetwork = (coins, selectedNetwork) => {
+    if (!selectedNetwork) return coins;
+  
+    return coins.filter((coin) => coin.network === selectedNetwork);
+  };
