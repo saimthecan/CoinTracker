@@ -5,14 +5,30 @@ import StarIcon from '../../../StarIcons/StarIcon';
 import EmptyStarIcon from '../../../StarIcons/EmptyStarIcon';
 import defaultImage from '../../../assets/logo-free.png';
 import './FavoriCoinlerim.css';
+import Pagination from '../../../Pagination/Pagination';
 
 // Gerekli fonksiyonları import ediyoruz
-import { formatPriceWithConditionalZeros, formatMarketCap } from "../UserPage/Utils";
+import {
+  formatPriceWithConditionalZeros,
+  formatMarketCap,
+  sortCoins,
+  filterCoinsByNetwork,
+} from "../UserPage/Utils";
 
 const FavoriCoinlerim = () => {
   const [coins, setCoins] = useState([]);
   const [flipped, setFlipped] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Yeni eklenen state'ler
+const [sortCriteria, setSortCriteria] = useState("");
+const [sortOrder, setSortOrder] = useState("asc");
+const [selectedNetwork, setSelectedNetwork] = useState("");
+const [allNetworks, setAllNetworks] = useState([]);
+
+// Pagination için state
+const [currentPage, setCurrentPage] = useState(1);
+const coinsPerPage = 20; // Her sayfada gösterilecek coin sayısı
 
   const API_URL = 'https://calm-harbor-22861-fa5a63bab33f.herokuapp.com';
 
@@ -84,6 +100,10 @@ const FavoriCoinlerim = () => {
           })
         );
 
+        // Tüm ağları topluyoruz
+      const networks = Array.from(new Set(updatedCoins.map((coin) => coin.network)));
+      setAllNetworks(networks); // Ağları kaydediyoruz
+
         setCoins(updatedCoins);
         setFlipped(new Array(updatedCoins.length).fill(false));
         setLoading(false);
@@ -95,6 +115,27 @@ const FavoriCoinlerim = () => {
 
     fetchFavoriteCoins();
   }, []);
+// Sıralama ve filtreleme işlemlerini uyguluyoruz
+const sortedCoins = sortCoins(coins, sortCriteria, sortOrder);
+const filteredCoins = filterCoinsByNetwork(sortedCoins, selectedNetwork);
+
+// Coins'in gösterileceği sayfalara göre bölünmesi
+const indexOfLastCoin = currentPage * coinsPerPage;
+const indexOfFirstCoin = indexOfLastCoin - coinsPerPage;
+const currentCoins = filteredCoins.slice(indexOfFirstCoin, indexOfLastCoin);
+
+// Toplam sayfa sayısını hesapla
+const totalPages = Math.ceil(filteredCoins.length / coinsPerPage);
+
+const handlePageChange = (pageNumber) => {
+  setCurrentPage(pageNumber);
+};
+
+const toggleSortOrder = () => {
+  setSortOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
+};
+
+
 
   // calculateMarketCapChange fonksiyonu
   const calculateMarketCapChange = (shareMarketCap, currentMarketCap) => {
@@ -151,8 +192,52 @@ const FavoriCoinlerim = () => {
         <h1>Favori Coinlerim</h1>
       </header>
 
+      <div className="controls">
+  <div className="filter-section">
+    <label htmlFor="sortCriteria">Sırala: </label>
+
+    <span
+      className={`sort-icon-container ${sortCriteria === "" ? "hide-mobile" : ""}`}
+      onClick={toggleSortOrder}
+      title={sortOrder === "asc" ? "Artan sıralama" : "Azalan sıralama"}
+    >
+      {sortOrder === "asc" ? (
+        <i className="fas fa-sort-amount-up-alt"></i>
+      ) : (
+        <i className="fas fa-sort-amount-down-alt"></i>
+      )}
+    </span>
+
+    <select
+      id="sortCriteria"
+      value={sortCriteria}
+      onChange={(e) => setSortCriteria(e.target.value)}
+    >
+      <option value="">Sıralama Kriteri Seçin</option>
+      <option value="shareDate">Paylaşım Tarihine Göre</option>
+      <option value="profitPercentage">Kazanç Yüzdesine Göre</option>
+      <option value="currentMarketCap">Güncel MarketCap'e Göre</option>
+    </select>
+
+    <label htmlFor="networkFilter">Ağa Göre: </label>
+    <select
+      id="networkFilter"
+      value={selectedNetwork}
+      onChange={(e) => setSelectedNetwork(e.target.value)}
+    >
+      <option value="">Tüm Ağlar</option>
+      {allNetworks.map((network) => (
+        <option key={network} value={network}>
+          {network}
+        </option>
+      ))}
+    </select>
+  </div>
+</div>
+
+
       <div className="coin-grid">
-        {coins.map((coin, index) => (
+      {currentCoins.map((coin, index) => (
           <div
             key={coin._id}
             className={`card ${flipped[index] ? 'flipped' : ''}`}
@@ -284,6 +369,15 @@ const FavoriCoinlerim = () => {
           </div>
         ))}
       </div>
+
+      {totalPages > 1 && (
+  <Pagination
+    currentPage={currentPage}
+    totalPages={totalPages}
+    onPageChange={handlePageChange}
+  />
+)}
+
     </div>
   );
 };
