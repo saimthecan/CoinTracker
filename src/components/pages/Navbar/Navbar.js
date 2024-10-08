@@ -17,17 +17,17 @@ const Navbar = () => {
       <nav className="navbar">
         {/* Logo and Links Container */}
         <div className="navbar-content">
-          <RouterLink to="/" className="logo-container">
+          <RouterLink to="/favori-kullanicilarim" className="logo-container">
             <img src={Logo} alt="Logo" className="navbar-logo" />
           </RouterLink>
 
           {/* Desktop Links */}
           <div className="links-container">
             <RouterLink
-              to="/"
-              className={location.pathname === "/" ? "nav-link active" : "nav-link"}
+              to="/favori-kullanicilarim"
+              className={location.pathname === "/favori-kullanicilarim" ? "nav-link active" : "nav-link"}
             >
-              Favorilerim
+              Favori Kullanıcılarım
             </RouterLink>
             <RouterLink
               to="/favori-coinlerim"
@@ -62,15 +62,16 @@ const Navbar = () => {
         {/* Sidebar Links */}
         <div className="sidebar-links">
           <RouterLink
-            to="/"
-            className={location.pathname === "/" ? "sidebar-link active" : "sidebar-link"}
+            to="/favori-kullanicilarim"
+            className={location.pathname === "/favori-kullanicilarim" ? "sidebar-link active" : "sidebar-link"}
             onClick={toggleSidebar}
           >
-            Favorilerim
+            Favori Kullanıcılarım
           </RouterLink>
           <RouterLink
               to="/favori-coinlerim"
               className={location.pathname === "/favori-coinlerim" ? "sidebar-link active" : "sidebar-link"}
+              onClick={toggleSidebar}
             >
               Favori Coinlerim
             </RouterLink>

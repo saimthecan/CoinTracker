@@ -1,11 +1,11 @@
 // src/components/Home.js
 import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './Home.css';
+import './FavoriKullanicilarim.css';
 import twitterLogo from '../../../assets/twitter.svg';
 import { UserContext } from '../../../../src/context/UserContext';
 
-const Home = () => {
+const FavoriKullanicilarim = () => {
   const { selectedUsers, removeUserFromSelected, fetchFavorites } = useContext(UserContext);
   const [loading, setLoading] = useState(true);  // Yüklenme durumu için state
 
@@ -70,4 +70,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default FavoriKullanicilarim;
