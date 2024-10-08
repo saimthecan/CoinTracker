@@ -39,12 +39,6 @@ const Home = () => {
           <Link to="/en-guvendiklerim" className="feature-button">Başla</Link>
         </div>
 
-        <div className="feature-card">
-          <img src={CoinIcon} alt="Coin Performansı" className="feature-icon" />
-          <h3>Coin Performansını Takip Edin</h3>
-          <p>Coinlerin güncel fiyatlarını ve piyasa değerlerini görün.</p>
-          <Link to="/favori-coinlerim" className="feature-button">Keşfet</Link>
-        </div>
 
         <div className="feature-card">
           <img src={News} alt="Trendler" className="feature-icon" />
