@@ -28,7 +28,7 @@ const [allNetworks, setAllNetworks] = useState([]);
 
 // Pagination için state
 const [currentPage, setCurrentPage] = useState(1);
-const coinsPerPage = 5; // Her sayfada gösterilecek coin sayısı
+const coinsPerPage = 20; // Her sayfada gösterilecek coin sayısı
 
   const API_URL = 'https://calm-harbor-22861-fa5a63bab33f.herokuapp.com';
 
