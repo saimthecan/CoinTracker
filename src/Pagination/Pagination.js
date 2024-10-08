@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './Pagination.css';
 
-const Pagination = ({ currentPage, totalPages, onPageChange, onVisibilityChange }) => {
+const Pagination = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+  onVisibilityChange = () => {},
+}) => {
   const [showPagination, setShowPagination] = useState(false);
 
   // Scroll event listener
