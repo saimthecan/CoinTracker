@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './NewsComponent.css';
+import './News.css';
 import parse from 'html-react-parser';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
-const NewsComponent = () => {
+const News = () => {
   const [newsItems, setNewsItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -83,4 +83,4 @@ const NewsComponent = () => {
   );
 };
 
-export default NewsComponent;
+export default News;

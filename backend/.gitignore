@@ -1,4 +1,13 @@
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+# Node.js modules
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+logs/
+*.log
+
+# Lock files
+package-lock.json
+yarn.lock

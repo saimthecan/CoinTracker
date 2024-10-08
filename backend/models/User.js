@@ -8,6 +8,7 @@ const coinSchema = new mongoose.Schema({
   shareDate: { type: Date, required: true },
   sharePrice: { type: Number, required: true },
   shareMarketCap: { type: Number, required: true },
+  isFavorite: { type: Boolean, default: false },
 }, { _id: true });
 
 const userSchema = new mongoose.Schema({

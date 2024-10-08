@@ -6,7 +6,7 @@ import Navbar from './components/pages/Navbar/Navbar';
 import FavoriKullanicilarim from "./components/pages/FavoriKullanicilarim/FavoriKullanicilarim";
 import EnGuvendiklerim from "./components/pages/Categories/EnGuvendiklerim/EnGuvendiklerim";
 import UserPage from "./components/pages/UserPage/UserPage";
-import NewsComponent from "./components/pages/Home/NewsComponent/NewsComponent";
+import News from "./components/pages/News/News";
 import FavoriCoinlerim from "./components/pages/FavoriCoinlerim/FavoriCoinlerim";
 import Home from './components/pages/Home/Home';
 import { UserProvider } from '../src/context/UserContext';
@@ -24,7 +24,7 @@ function App() {
           <Route path="/en-guvendiklerim" element={<EnGuvendiklerim />} />
           <Route path="/user/:id" element={<UserPage />} />
           <Route path="/favori-coinlerim" element={<FavoriCoinlerim />} />
-          <Route path="/news" element={<NewsComponent />} />
+          <Route path="/news" element={<News />} />
         </Routes>
         </div>
       </Router>
