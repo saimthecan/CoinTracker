@@ -33,26 +33,21 @@ const Navbar = () => {
               to="/favori-kullanicilarim"
               className={location.pathname === "/favori-kullanicilarim" ? "nav-link active" : "nav-link"}
             >
-              Favori Kullanıcılarım
+             Favorite Influencers
             </RouterLink>
             <RouterLink
               to="/favori-coinlerim"
               className={location.pathname === "/favori-coinlerim" ? "nav-link active" : "nav-link"}
             >
-              Favori Coinlerim
+             Star Coins
             </RouterLink>
             <RouterLink
               to="/en-guvendiklerim"
               className={location.pathname === "/en-guvendiklerim" ? "nav-link active" : "nav-link"}
             >
-              En Güvendiklerim
+             Crypto Influencers
             </RouterLink>
-            <RouterLink
-              to="/guvendiklerim"
-              className={location.pathname === "/guvendiklerim" ? "nav-link active" : "nav-link"}
-            >
-              Güvendiklerim
-            </RouterLink>
+         
             <RouterLink
               to="/news"
               className={location.pathname === "/news" ? "nav-link active" : "nav-link"}
@@ -85,7 +80,7 @@ const Navbar = () => {
             className={location.pathname === "/favori-kullanicilarim" ? "sidebar-link active" : "sidebar-link"}
             onClick={toggleSidebar}
           >
-            Favori Kullanıcılarım
+           Favorite Influencers
           </RouterLink>
           <RouterLink
               to="/favori-coinlerim"
@@ -99,7 +94,7 @@ const Navbar = () => {
             className={location.pathname === "/en-guvendiklerim" ? "sidebar-link active" : "sidebar-link"}
             onClick={toggleSidebar}
           >
-            En Güvendiklerim
+         Crypto Influencers
           </RouterLink>
           <RouterLink
             to="/news"

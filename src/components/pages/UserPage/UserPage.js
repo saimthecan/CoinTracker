@@ -108,7 +108,7 @@ const UserPage = () => {
             }`}
             onClick={() => setShowAddCoinModal(true)}
           >
-            <span className="desktop-text">Ekle</span>
+            <span className="desktop-text">Add</span>
             <span className="mobile-text">+</span>
           </button>
         </div>
@@ -117,7 +117,7 @@ const UserPage = () => {
       {/* Sıralama ve Filtreleme Kontrolleri */}
       <div className="controls">
         <div className="filter-section">
-          <label htmlFor="sortCriteria">Sırala: </label>
+        <label htmlFor="sortCriteria">Sort: </label>
 
           <span
             className={`sort-icon-container ${
@@ -138,19 +138,19 @@ const UserPage = () => {
             value={sortCriteria}
             onChange={(e) => setSortCriteria(e.target.value)}
           >
-            <option value="">Sıralama Kriteri Seçin</option>
-            <option value="shareDate">Paylaşım Tarihine Göre</option>
-            <option value="profitPercentage">Kazanç Yüzdesine Göre</option>
-            <option value="currentMarketCap">Güncel MarketCap'e Göre</option>
+           <option value="">Select Sorting Criteria</option>
+      <option value="shareDate">By Share Date</option>
+      <option value="profitPercentage">By Profit Percentage</option>
+      <option value="currentMarketCap">By Current MarketCap</option>
           </select>
 
-          <label htmlFor="networkFilter">Ağa Göre: </label>
+          <label htmlFor="networkFilter">By Network: </label>
           <select
             id="networkFilter"
             value={selectedNetwork}
             onChange={(e) => setSelectedNetwork(e.target.value)}
           >
-            <option value="">Tüm Ağlar</option>
+            <option value="">All Chains</option>
             {allNetworks.map((network) => (
               <option key={network} value={network}>
                 {network}
@@ -270,13 +270,13 @@ const UserPage = () => {
                   {/* Tarihler */}
                   <div className="dates-row">
                     <div className="date-item">
-                      <p className="info-label">Paylaşım Tarihi:</p>
+                      <p className="info-label">Posted Date:</p>
                       <p className="info-value">
                         {new Date(coin.shareDate).toLocaleDateString()}
                       </p>
                     </div>
                     <div className="date-item">
-                      <p className="info-label">Güncel Tarih:</p>
+                      <p className="info-label">Current Date:</p>
                       <p className="info-value">
                         {new Date().toLocaleDateString()}
                       </p>
@@ -286,7 +286,7 @@ const UserPage = () => {
                   {/* Fiyatlar */}
                   <div className="prices-row">
                     <div className="price-item">
-                      <p className="info-label">Paylaşım Fiyatı:</p>
+                      <p className="info-label">Posted Price:</p>
                       <p className="info-value">
                         {coin.sharePrice
                           ? formatPriceWithConditionalZeros(coin.sharePrice)
@@ -294,7 +294,7 @@ const UserPage = () => {
                       </p>
                     </div>
                     <div className="price-item">
-                      <p className="info-label">Güncel Fiyat:</p>
+                      <p className="info-label">Current Price:</p>
                       <p className="info-value">
                         {coin.currentPrice
                           ? formatPriceWithConditionalZeros(coin.currentPrice)
@@ -306,7 +306,7 @@ const UserPage = () => {
                   {/* Piyasa Değerleri */}
                   <div className="marketcap-row">
                     <div className="marketcap-item">
-                      <p className="info-label">Paylaşım Marketcap:</p>
+                      <p className="info-label">Posted MarketCap:</p>
                       <p className="info-value">
                         {coin.shareMarketCap
                           ? formatMarketCap(coin.shareMarketCap)
@@ -314,7 +314,7 @@ const UserPage = () => {
                       </p>
                     </div>
                     <div className="marketcap-item">
-                      <p className="info-label">Güncel&nbsp; Marketcap:</p>
+                      <p className="info-label">Current&nbsp; Marketcap:</p>
                       <p className="info-value">
                         {coin.currentMarketCap
                           ? formatMarketCap(coin.currentMarketCap)

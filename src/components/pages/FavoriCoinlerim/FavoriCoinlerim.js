@@ -191,12 +191,12 @@ const toggleSortOrder = () => {
   return (
     <div className="coin-container">
     <header className="favorites-header">
-        <h1>Favori Coinlerim</h1>
+        <h1>Star Coins</h1>
       </header>
 
       <div className="controls">
   <div className="filter-section">
-    <label htmlFor="sortCriteria">Sırala: </label>
+    <label htmlFor="sortCriteria">Sort: </label>
 
     <span
       className={`sort-icon-container ${sortCriteria === "" ? "hide-mobile" : ""}`}
@@ -215,19 +215,19 @@ const toggleSortOrder = () => {
       value={sortCriteria}
       onChange={(e) => setSortCriteria(e.target.value)}
     >
-      <option value="">Sıralama Kriteri Seçin</option>
-      <option value="shareDate">Paylaşım Tarihine Göre</option>
-      <option value="profitPercentage">Kazanç Yüzdesine Göre</option>
-      <option value="currentMarketCap">Güncel MarketCap'e Göre</option>
+      <option value="">Select Sorting Criteria</option>
+      <option value="shareDate">By Share Date</option>
+      <option value="profitPercentage">By Profit Percentage</option>
+      <option value="currentMarketCap">By Current MarketCap</option>
     </select>
 
-    <label htmlFor="networkFilter">Ağa Göre: </label>
+    <label htmlFor="networkFilter">By Network: </label>
     <select
       id="networkFilter"
       value={selectedNetwork}
       onChange={(e) => setSelectedNetwork(e.target.value)}
     >
-      <option value="">Tüm Ağlar</option>
+      <option value="">All Chains</option>
       {allNetworks.map((network) => (
         <option key={network} value={network}>
           {network}
@@ -313,13 +313,13 @@ const toggleSortOrder = () => {
                   {/* Tarihler */}
                   <div className="dates-row">
                     <div className="date-item">
-                      <p className="info-label">Paylaşım Tarihi:</p>
+                      <p className="info-label">Posted Date:</p>
                       <p className="info-value">
                         {new Date(coin.shareDate).toLocaleDateString()}
                       </p>
                     </div>
                     <div className="date-item">
-                      <p className="info-label">Güncel Tarih:</p>
+                      <p className="info-label">Current Date:</p>
                       <p className="info-value">
                         {new Date().toLocaleDateString()}
                       </p>
@@ -329,7 +329,7 @@ const toggleSortOrder = () => {
                   {/* Fiyatlar */}
                   <div className="prices-row">
                     <div className="price-item">
-                      <p className="info-label">Paylaşım Fiyatı:</p>
+                      <p className="info-label">Posted Price:</p>
                       <p className="info-value">
                         {coin.sharePrice
                           ? formatPriceWithConditionalZeros(coin.sharePrice)
@@ -337,7 +337,7 @@ const toggleSortOrder = () => {
                       </p>
                     </div>
                     <div className="price-item">
-                      <p className="info-label">Güncel Fiyat:</p>
+                      <p className="info-label">Current Price:</p>
                       <p className="info-value">
                         {coin.currentPrice
                           ? formatPriceWithConditionalZeros(coin.currentPrice)
@@ -349,7 +349,7 @@ const toggleSortOrder = () => {
                   {/* Piyasa Değerleri */}
                   <div className="marketcap-row">
                     <div className="marketcap-item">
-                      <p className="info-label">Paylaşım Marketcap:</p>
+                      <p className="info-label">Posted MarketCap:</p>
                       <p className="info-value">
                         {coin.shareMarketCap
                           ? formatMarketCap(coin.shareMarketCap)
@@ -357,7 +357,7 @@ const toggleSortOrder = () => {
                       </p>
                     </div>
                     <div className="marketcap-item">
-                      <p className="info-label">Güncel Marketcap:</p>
+                      <p className="info-label">Current MarketCap:</p>
                       <p className="info-value">
                         {coin.currentMarketCap
                           ? formatMarketCap(coin.currentMarketCap)

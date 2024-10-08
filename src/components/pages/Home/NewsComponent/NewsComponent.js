@@ -49,7 +49,9 @@ const NewsComponent = () => {
 
   return (
     <div className="news-container">
-      <h2 className="news-header">Latest Cryptocurrency News</h2>
+      <header className="favorites-header">
+        <h1>Latest Crypto News</h1>
+      </header>
       <div className="news-list">
         {newsItems.map((news, index) => (
           <div key={index} className="news-item">

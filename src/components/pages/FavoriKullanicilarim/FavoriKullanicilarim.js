@@ -26,7 +26,7 @@ const FavoriKullanicilarim = () => {
   return (
     <div className="container">
         <header className="favorites-header">
-        <h1>Favori Kullanıcılarım</h1>
+        <h1>Favorite Influencers</h1>
       </header>
       <div className="card-container">
         {loading ? (  // Eğer loading true ise "Yükleniyor" mesajını göster
@@ -58,7 +58,6 @@ const FavoriKullanicilarim = () => {
               {/* User Name */}
               <Link to={`/user/${user._id}`} className="user-name-link">
                 <h3 className="user-name">{user.name}</h3>
-                <p className="user-category">({user.category})</p> {/* Kategori bilgisi */}
               </Link>
             </div>
           ))

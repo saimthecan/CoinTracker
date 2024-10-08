@@ -27,12 +27,12 @@ const AddUserForm = ({ onAddUser, onClose }) => {
 
   return (
     <form className="add-user-form" onSubmit={handleSubmit}>
-      <h3>Yeni Kullanıcı Ekle</h3>
+      <h3>Add New User</h3>
       <div className="input-group">
         <img src={userIcon} alt="Kullanıcı" className="input-icon" />
         <input
           type="text"
-          placeholder="Kullanıcı Adı"
+          placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
@@ -42,13 +42,13 @@ const AddUserForm = ({ onAddUser, onClose }) => {
         <img src={twitterIcon} alt="Twitter" className="input-icon" />
         <input
           type="url"
-          placeholder="Twitter Adresi"
+          placeholder="X Address"
           value={twitter}
           onChange={(e) => setTwitter(e.target.value)}
           required
         />
       </div>
-      <button type="submit">Ekle</button>
+      <button type="submit">Add</button>
     </form>
   );
 };

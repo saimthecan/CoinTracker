@@ -21,11 +21,11 @@ const Home = () => {
             <img src={HomeImage} alt="Coin Tracker" />
           </div>
           <div className="hero-text">
-            <h1>Kripto Dünyasına Adım Atın!</h1>
+            <h1>Step into the Gem Market!</h1>
             <p>
-              Twitter fenomenlerinin paylaştığı coinlerin performansını takip edin ve kâr-zarar durumlarını görün. En güvendiğiniz fenomenleri ekleyerek kripto yatırımlarınızı güçlendirin.
+            Discover the world of gem coins, where high volatility meets high risk, but with the potential for incredible gains. These under-the-radar cryptocurrencies, often promoted by trusted Twitter influencers, can see explosive growth in short periods. By tracking their performance and understanding their market movements, you can capitalize on the most promising opportunities. Stay ahead of the curve by adding your most trusted influencers, and build a portfolio that leverages both high risk and high reward to maximize your crypto investments.
             </p>
-            <Link to="/en-guvendiklerim" className="hero-button">Hemen Başla</Link>
+           
           </div>
         </div>
       </section>
@@ -34,35 +34,35 @@ const Home = () => {
       <section className="features-section">
         <div className="feature-card">
           <img src={UserIcon} alt="Favori Fenomenler" className="feature-icon" />
-          <h3>Favori Fenomenlerinizi Ekleyin</h3>
-          <p>En güvendiğiniz Twitter fenomenlerini ekleyin ve paylaştıkları coinleri takip edin.</p>
-          <Link to="/en-guvendiklerim" className="feature-button">Başla</Link>
+          <h3>Add Your Favorite Influencers</h3>
+          <p>Track trusted Twitter influencers and the coins they share. Stay informed on their latest picks and monitor their performance.</p>
+          <Link to="/en-guvendiklerim" className="feature-button">Start</Link>
         </div>
 
 
         <div className="feature-card">
           <img src={News} alt="Trendler" className="feature-icon" />
-          <h3>En Son Haberleri Görün</h3>
-          <p>Kripto dünyasındaki en son haberleri takip edin.</p>
-          <Link to="/news" className="feature-button">Haberleri İncele</Link>
+          <h3>Stay Updated with the Latest News</h3>
+          <p>Follow the most recent developments in the crypto world..</p>
+          <Link to="/news" className="feature-button">Explore News</Link>
         </div>
       </section>
 
       {/* Öne Çıkanlar */}
       <section className="highlights-section">
-        <h2>Öne Çıkanlar</h2>
+        <h2>Highlights</h2>
         <div className="highlights-grid">
           <div className="highlight-card">
             <img src={UserIcon} alt="Fenomen" className="highlight-icon" />
-            <h3>En Çok Takip Edilen Fenomen</h3>
-            <p>@fenomen1</p>
-            <Link to="/user/1" className="highlight-button">Profili Gör</Link>
+            <h3>Most Followed Influencer</h3>
+            <p>@user</p>
+            <Link to="/user/1" className="highlight-button">View Profile</Link>
           </div>
           <div className="highlight-card">
             <img src={CoinIcon} alt="Coin" className="highlight-icon" />
-            <h3>En Çok Kazandıran Coin</h3>
-            <p>Coin XYZ (%150 artış)</p>
-            <Link to="/favori-coinlerim" className="highlight-button">Detaylar</Link>
+            <h3>Top Performing Coin</h3>
+            <p>Coin XYZ (%150 Increase)</p>
+            <Link to="/favori-coinlerim" className="highlight-button">Details</Link>
           </div>
           {/* Daha fazla öne çıkan kart ekleyebilirsiniz */}
         </div>

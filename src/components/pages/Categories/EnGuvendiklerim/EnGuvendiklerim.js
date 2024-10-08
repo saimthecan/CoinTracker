@@ -32,14 +32,14 @@ const EnGuvendiklerim = () => {
   return (
     <div className="container">
       <header className="favorites-header">
-        <h1>En Güvendiklerim</h1>
+        <h1>Crypto Influencers</h1>
       </header>
       {/* "Card Ekle" Button */}
       <button
         className={`add-card-button ${isPaginationVisible ? "with-pagination" : ""}`}
         onClick={() => setShowAddUserModal(true)}
       >
-        <span className="desktop-text">Kullanıcı Ekle</span>
+        <span className="desktop-text">Add Influencer</span>
         <span className="mobile-text">+</span>
       </button>
 
