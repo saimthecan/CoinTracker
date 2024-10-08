@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import './Home.css';
 import CoinIcon from '../../../assets/star.svg'; // Örnek bir coin ikonu
 import UserIcon from '../../../assets/user.svg'; // Örnek bir kullanıcı ikonu
-import TrendIcon from '../../../assets/star.svg'; // Örnek bir trend ikonu
+import News from '../../../assets/news.png'; // Örnek bir trend ikonu
 import HomeImage from '../../../assets/home.png'; // Sol tarafa eklenecek resim
 import CryptoTicker from './CryptoTicker';
 
@@ -47,10 +47,10 @@ const Home = () => {
         </div>
 
         <div className="feature-card">
-          <img src={TrendIcon} alt="Trendler" className="feature-icon" />
-          <h3>En Son Trendleri Görün</h3>
-          <p>Kripto dünyasındaki en son trendleri ve haberleri takip edin.</p>
-          <Link to="/trendler" className="feature-button">Trendleri İncele</Link>
+          <img src={News} alt="Trendler" className="feature-icon" />
+          <h3>En Son Haberleri Görün</h3>
+          <p>Kripto dünyasındaki en son haberleri takip edin.</p>
+          <Link to="/news" className="feature-button">Haberleri İncele</Link>
         </div>
       </section>
 

@@ -23,9 +23,9 @@ const coinLogos = {
   solana: 'https://assets.coingecko.com/coins/images/4128/small/solana.png',
   dogecoin: 'https://assets.coingecko.com/coins/images/5/small/dogecoin.png',
   tron: 'https://assets.coingecko.com/coins/images/1094/small/tron-logo.png',
-  toncoin: 'https://assets.coingecko.com/coins/images/17980/small/ton_symbol.png',
+  "the-open-network": 'https://assets.coingecko.com/coins/images/17980/small/ton_symbol.png',
   'avalanche-2': 'https://assets.coingecko.com/coins/images/12559/small/coin-round-red.png',
-  sui: 'https://assets.coingecko.com/coins/images/24405/small/sui.jpeg',
+  sui: 'https://assets.coingecko.com/coins/images/26375/standard/sui-ocean-square.png?1727791290',
 };
 
 const CryptoTicker = () => {

@@ -53,6 +53,12 @@ const Navbar = () => {
             >
               Güvendiklerim
             </RouterLink>
+            <RouterLink
+              to="/news"
+              className={location.pathname === "/news" ? "nav-link active" : "nav-link"}
+            >
+              News
+            </RouterLink>
           </div>
 
           {/* Hamburger Menu for Mobile */}
@@ -96,11 +102,11 @@ const Navbar = () => {
             En Güvendiklerim
           </RouterLink>
           <RouterLink
-            to="/guvendiklerim"
-            className={location.pathname === "/guvendiklerim" ? "sidebar-link active" : "sidebar-link"}
+            to="/news"
+            className={location.pathname === "/news" ? "sidebar-link active" : "sidebar-link"}
             onClick={toggleSidebar}
           >
-            Güvendiklerim
+            News
           </RouterLink>
         </div>
       </div>

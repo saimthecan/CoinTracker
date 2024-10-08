@@ -7,8 +7,6 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
 
-  const API_URL = "https://calm-harbor-22861-fa5a63bab33f.herokuapp.com";
-
   // Favori kullanıcıları çekme fonksiyonu
   const fetchFavorites = useCallback(async () => {
     try {
