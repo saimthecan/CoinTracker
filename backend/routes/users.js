@@ -395,6 +395,69 @@ router.get('/highlights', async (req, res) => {
   }
 });
 
+// Tüm kullanıcıların ortalama kâr/zararını getirme
+router.get('/average-profits', async (req, res) => {
+  try {
+    const users = await User.find();
+
+    const userProfitData = [];
+
+    // Tüm kullanıcılar için kâr/zarar hesaplama
+    for (const user of users) {
+      const coins = user.coins;
+
+      if (coins.length === 0) {
+        // Kullanıcının coini yoksa atla
+        continue;
+      }
+
+      let totalProfit = 0;
+      let validCoinCount = 0;
+
+      for (const coin of coins) {
+        const caAddress = coin.caAddress;
+
+        try {
+          const response = await axios.get(
+            `https://api.dexscreener.com/latest/dex/tokens/${caAddress}`
+          );
+
+          const pairs = response.data.pairs;
+          if (pairs && pairs.length > 0) {
+            const pair = pairs[0];
+            const currentMarketCap = pair.marketCap;
+            const shareMarketCap = coin.shareMarketCap;
+
+            if (currentMarketCap && shareMarketCap) {
+              const profitPercentage = ((currentMarketCap - shareMarketCap) / shareMarketCap) * 100;
+              totalProfit += profitPercentage;
+              validCoinCount += 1;
+            }
+          }
+        } catch (err) {
+          console.error(`CA adresi için veri alınırken hata oluştu (${caAddress}):`, err);
+          // Hata varsa bu coini atla
+          continue;
+        }
+      }
+
+      if (validCoinCount > 0) {
+        const avgProfit = totalProfit / validCoinCount;
+        userProfitData.push({
+          userId: user._id,
+          userName: user.name,
+          avgProfit: avgProfit,
+        });
+      }
+    }
+
+    res.json(userProfitData);
+  } catch (err) {
+    console.error('Ortalama kârlar alınırken hata oluştu:', err);
+    res.status(500).json({ message: 'Ortalama kârlar alınırken hata oluştu' });
+  }
+});
+
 // Tüm kullanıcıları alma veya favorilere göre filtreleme
 router.get('/', async (req, res) => {
   try {

@@ -1,0 +1,22 @@
+/* src/components/pages/AverageProfits/AverageProfits.css */
+
+.average-profits-container {
+    padding: 20px;
+  }
+  
+  .profits-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .profits-table th,
+  .profits-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .profits-table th {
+    background-color: #f2f2f2;
+  }
+  

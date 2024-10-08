@@ -8,6 +8,7 @@ import EnGuvendiklerim from "./components/pages/Categories/EnGuvendiklerim/EnGuv
 import UserPage from "./components/pages/UserPage/UserPage";
 import News from "./components/pages/News/News";
 import FavoriCoinlerim from "./components/pages/FavoriCoinlerim/FavoriCoinlerim";
+import AverageProfits from './components/pages/AverageProfits/AverageProfits';
 import Home from './components/pages/Home/Home';
 import { UserProvider } from '../src/context/UserContext';
 import "./App.css";
@@ -20,6 +21,7 @@ function App() {
         <div className="main-content"> {/* Ana içeriği kapsayan div */}
         <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/average-profits" element={<AverageProfits />} />
           <Route path="/favori-kullanicilarim" element={<FavoriKullanicilarim />} />
           <Route path="/en-guvendiklerim" element={<EnGuvendiklerim />} />
           <Route path="/user/:id" element={<UserPage />} />

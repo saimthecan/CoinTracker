@@ -40,3 +40,9 @@ body {
   .main-content {
     padding-top: 40px; /* Navbar'ın yüksekliği kadar boşluk */
   }
+
+  /* Tüm öğeler için */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
