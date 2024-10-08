@@ -225,7 +225,7 @@ const getTwitterUsername = (twitterUrl) => {
     
 
   const calculateMarketCapChange = (shareMarketCap, currentMarketCap) => {
-    if (!shareMarketCap || !currentMarketCap) return "Yükleniyor";
+    if (!shareMarketCap || !currentMarketCap) return "Loading";
     const change = ((currentMarketCap - shareMarketCap) / shareMarketCap) * 100;
     return change.toFixed(2);
   };

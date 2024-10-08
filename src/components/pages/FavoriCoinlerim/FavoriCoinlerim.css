@@ -241,6 +241,14 @@ h3 {
   font-size: 1.8rem;
 }
 
+.loading-icon {
+  display: flex;
+  justify-content: center; /* Yatayda ortalamak için */
+  height: 100vh; /* Ekranın tamamına yaymak için */
+  margin-top: 50px; /* Üstten boşluk eklemek için */
+}
+
+
 /* Mobile View */
 @media (max-width: 767px) {
 

@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import './FavoriKullanicilarim.css';
 import twitterLogo from '../../../assets/twitter.svg';
 import { UserContext } from '../../../../src/context/UserContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const FavoriKullanicilarim = () => {
   const { selectedUsers, removeUserFromSelected, fetchFavorites } = useContext(UserContext);
@@ -23,14 +25,24 @@ const FavoriKullanicilarim = () => {
     removeUserFromSelected(user._id);
   };
 
+  if (loading) {
+    return (
+      <div className="loading-icon">
+        <FontAwesomeIcon icon={faSpinner} spin /> {/* Loading icon */}
+      </div>
+    );
+  }
+
   return (
     <div className="container">
         <header className="favorites-header">
         <h1>Favorite Influencers</h1>
       </header>
       <div className="card-container">
-        {loading ? (  // Eğer loading true ise "Yükleniyor" mesajını göster
-          <p>Yükleniyor...</p>
+        {loading ? (  // Eğer loading true ise "Loading" mesajını göster
+         <div className="loading-icon">
+         <FontAwesomeIcon icon={faSpinner} spin /> {/* Loading icon */}
+       </div>
         ) : selectedUsers.length > 0 ? (  // Eğer kullanıcılar varsa bunları göster
           selectedUsers.map(user => (
             <div key={user._id} className="user-card">

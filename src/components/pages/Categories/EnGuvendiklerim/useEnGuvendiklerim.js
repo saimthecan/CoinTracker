@@ -6,11 +6,13 @@ const API_URL = 'https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users';
 
 export const useEnGuvendiklerim = () => {
   const [enGuvendiklerimUsers, setEnGuvendiklerimUsers] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state burada ekleniyor
   const { addUserToSelected, removeUserFromSelected, isUserSelected } = useContext(UserContext);
 
   // Fetch users belonging to 'en_güvendiklerim' category
   useEffect(() => {
     const fetchUsers = async () => {
+      setLoading(true); // Verileri çekerken loading true olur
       try {
         const response = await axios.get(API_URL);
         const users = response.data;
@@ -18,6 +20,8 @@ export const useEnGuvendiklerim = () => {
         setEnGuvendiklerimUsers(enGuvendiklerim);
       } catch (error) {
         console.error('Error fetching users:', error);
+      }finally {
+        setLoading(false); // API isteği tamamlandığında loading false olur
       }
     };
 
@@ -62,5 +66,6 @@ export const useEnGuvendiklerim = () => {
     handleDeleteUser,
     handleAddUser,
     isUserSelected, 
+    loading,
   };
 };

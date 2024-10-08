@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './NewsComponent.css';
 import parse from 'html-react-parser';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const NewsComponent = () => {
   const [newsItems, setNewsItems] = useState([]);
@@ -45,9 +47,12 @@ const NewsComponent = () => {
   };
 
   if (loading) {
-    return <div className="news-container">Loading news...</div>;
+    return (
+      <div className="loading-icon">
+        <FontAwesomeIcon icon={faSpinner} spin /> {/* Loading icon */}
+      </div>
+    );
   }
-
   if (error) {
     return <div className="news-container">Unable to load news at this time.</div>;
   }

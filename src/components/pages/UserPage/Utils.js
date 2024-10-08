@@ -3,7 +3,7 @@
 // Fiyatları formatlayan fonksiyon
 export const formatPriceWithConditionalZeros = (price) => {
     if (price === null || price === undefined || isNaN(price)) {
-      return "Yükleniyor";
+      return "Loading";
     }
   
     if (price === 0) {
@@ -58,7 +58,7 @@ export const formatPriceWithConditionalZeros = (price) => {
   
 // Piyasa değerini formatlayan fonksiyon
 export const formatMarketCap = (num) => {
-    if (num === null || num === undefined) return "Yükleniyor";
+    if (num === null || num === undefined) return "Loading";
   
     if (num >= 1.0e12) {
       return "$" + (num / 1.0e12).toFixed(2) + "T"; // Trilyon

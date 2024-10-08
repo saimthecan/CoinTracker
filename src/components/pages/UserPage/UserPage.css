@@ -851,7 +851,12 @@ label {
 
 }
 
-
+.loading-icon {
+  display: flex;
+  justify-content: center; /* Yatayda ortalamak için */
+  height: 100vh; /* Ekranın tamamına yaymak için */
+  margin-top: 50px; /* Üstten boşluk eklemek için */
+}
 
 
 

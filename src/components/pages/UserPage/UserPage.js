@@ -11,6 +11,8 @@ import Pagination from "../../../Pagination/Pagination";
 import "./UserPage.css";
 import StarIcon from "../../../StarIcons/StarIcon"; // Yıldız ikonunun yolu
 import EmptyStarIcon from "../../../StarIcons/EmptyStarIcon"; // Boş yıldız ikonunun yolu
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const UserPage = () => {
   const { id } = useParams();
@@ -59,9 +61,12 @@ const UserPage = () => {
   const [isPaginationVisible, setIsPaginationVisible] = useState(false);
 
   if (loading) {
-    return <p>Yükleniyor...</p>;
+    return (
+      <div className="loading-icon">
+        <FontAwesomeIcon icon={faSpinner} spin /> {/* Loading icon */}
+      </div>
+    );
   }
-
   if (error) {
     return <p>{error}</p>;
   }
@@ -290,7 +295,7 @@ const UserPage = () => {
                       <p className="info-value">
                         {coin.sharePrice
                           ? formatPriceWithConditionalZeros(coin.sharePrice)
-                          : "Yükleniyor"}
+                          : "Loading"}
                       </p>
                     </div>
                     <div className="price-item">
@@ -298,7 +303,7 @@ const UserPage = () => {
                       <p className="info-value">
                         {coin.currentPrice
                           ? formatPriceWithConditionalZeros(coin.currentPrice)
-                          : "Yükleniyor"}
+                          : "Loading"}
                       </p>
                     </div>
                   </div>
@@ -310,7 +315,7 @@ const UserPage = () => {
                       <p className="info-value">
                         {coin.shareMarketCap
                           ? formatMarketCap(coin.shareMarketCap)
-                          : "Yükleniyor"}
+                          : "Loading"}
                       </p>
                     </div>
                     <div className="marketcap-item">
@@ -318,7 +323,7 @@ const UserPage = () => {
                       <p className="info-value">
                         {coin.currentMarketCap
                           ? formatMarketCap(coin.currentMarketCap)
-                          : "Yükleniyor"}
+                          : "Loading"}
                       </p>
                     </div>
                   </div>

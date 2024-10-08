@@ -108,6 +108,19 @@
     margin: 0;
   }
 
+  .loading-icon {
+    display: flex;
+    justify-content: center; /* Yatayda ortalamak için */
+    height: 100vh; /* Ekranın tamamına yaymak için */
+    margin-top: 50px; /* Üstten boşluk eklemek için */
+  }
+
+  .loading-icon svg {
+    font-size: 2rem; /* İkon boyutunu ayarla */
+    color: #0071e3; /* İkonun rengini ayarla */
+    margin-top: 20px; /* Üstten boşluk ekle */
+  }
+
   /* Responsive: Mobil ve küçük ekranlar için */
 @media (max-width: 768px) {
   .favorites-header {

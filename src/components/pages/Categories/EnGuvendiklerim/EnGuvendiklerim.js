@@ -9,11 +9,17 @@ import StarIcon from "../../../../StarIcons/StarIcon";
 import EmptyStarIcon from "../../../../StarIcons/EmptyStarIcon";
 import deleteIcon from "../../../../assets/delete.svg";
 import { useEnGuvendiklerim } from "./useEnGuvendiklerim";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const EnGuvendiklerim = () => {
   const [showAddUserModal, setShowAddUserModal] = useState(false);
 
-  const { enGuvendiklerimUsers, handleToggleFavorite, handleDeleteUser, handleAddUser, isUserSelected } = useEnGuvendiklerim();
+
+  const { enGuvendiklerimUsers, handleToggleFavorite, handleDeleteUser, handleAddUser, isUserSelected, loading  } = useEnGuvendiklerim();
+
+ 
+ 
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
@@ -29,6 +35,13 @@ const EnGuvendiklerim = () => {
   // Pagination'ın gösterilip gösterilmediğini takip eden state
   const [isPaginationVisible, setIsPaginationVisible] = useState(false);
 
+  if (loading) {
+    return (
+      <div className="loading-icon">
+        <FontAwesomeIcon icon={faSpinner} spin /> {/* Loading icon */}
+      </div>
+    );
+  }
   return (
     <div className="container">
       <header className="favorites-header">
