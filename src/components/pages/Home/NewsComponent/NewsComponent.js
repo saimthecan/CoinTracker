@@ -32,6 +32,11 @@ const NewsComponent = () => {
     };
 
     fetchNews();
+
+  // Her 5 dakikada bir haberleri güncelleyen interval
+  const intervalId = setInterval(fetchNews, 1800000 ); // 30 dakika
+
+  return () => clearInterval(intervalId); // Bileşen kaldırıldığında interval'i temizle
   }, []);
 
   const removeDuplicateImages = (htmlContent) => {

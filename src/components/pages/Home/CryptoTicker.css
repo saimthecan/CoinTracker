@@ -1,84 +1,57 @@
-/* src/components/CryptoTicker/CryptoTicker.css */
-
 .crypto-ticker {
-    width: 100%;
-    overflow: hidden;
-    background-color: var(--background-color); /* Sayfanızın arka plan rengiyle uyumlu */
-    color: var(--text-color); /* Sayfanızın metin rengiyle uyumlu */
-    border-bottom: 1px solid #e0e0e0;
-    margin-bottom: 1rem;
-  }
-  
-  .ticker-content {
-    display: flex;
-    animation: ticker 20s linear infinite;
-    align-items: center;
-  }
-  
-  .ticker-item {
-    display: flex;
-    align-items: center;
-    padding: 0 1.5rem;
-    font-size: 0.9rem;
-    white-space: nowrap;
-  }
-  
-  .coin-logo {
-    width: 20px;
-    height: 20px;
-    margin-right: 0.5rem;
-  }
-  
-  .coin-name {
-    font-weight: bold;
-    margin-right: 0.5rem;
-  }
-  
-  .coin-price {
-    margin-right: 0.5rem;
-  }
-  
-  .coin-change {
-    margin-right: 1.5rem;
-  }
-  
-  .coin-change.positive {
-    color: #4caf50;
-  }
-  
-  .coin-change.negative {
-    color: #f44336;
-  }
-  
-  /* Kayan animasyon */
-  @keyframes ticker {
-    0% {
-      transform: translateX(0%);
-    }
-    100% {
-      transform: translateX(-100%);
-    }
-  }
-  
-  /* Hover ile animasyonu durdurma */
-  .crypto-ticker:hover .ticker-content {
-    animation-play-state: paused;
-  }
-  
-  /* Responsive Tasarım */
-  @media (max-width: 768px) {
-    .ticker-item {
-      font-size: 0.8rem;
-      padding: 0 1rem;
-    }
-  
-    .coin-logo {
-      width: 16px;
-      height: 16px;
-    }
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--background-color); /* Sayfanızın arka plan rengiyle uyumlu */
+  color: var(--text-color); /* Sayfanızın metin rengiyle uyumlu */
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 1rem;
+  position: relative;
+}
 
-    .ticker-content {
-        animation: ticker 6s linear infinite;
-      }
+.ticker-item {
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.coin-logo {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.5rem;
+}
+
+.coin-name {
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.coin-price {
+  margin-right: 0.5rem;
+}
+
+.coin-change {
+  margin-right: 1.5rem;
+}
+
+.coin-change.positive {
+  color: #4caf50;
+}
+
+.coin-change.negative {
+  color: #f44336;
+}
+
+/* Responsive Tasarım */
+@media (max-width: 768px) {
+  .ticker-item {
+    font-size: 0.8rem;
+    padding: 0 1rem;
   }
-  
+
+  .coin-logo {
+    width: 16px;
+    height: 16px;
+  }
+}

@@ -45,14 +45,14 @@
   .nav-link {
     font-size: 15px;
     font-family: "Inter", sans-serif;
-    color: #333;
+    color: #333333e2;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s;
   }
   
   .nav-link:hover {
-    color: #1abc9c; /* Green on hover */
+    color: black; /* Green on hover */
   }
   
   .nav-link.active {
@@ -123,7 +123,7 @@
 }
 
   .sidebar-link:hover {
-    color: #1abc9c; /* Green on hover */
+    color: black; /* Green on hover */
   }
   
   .sidebar-link.active {

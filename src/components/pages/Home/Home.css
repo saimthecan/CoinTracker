@@ -198,7 +198,7 @@
   }
   
   .hero-text h1 {
-    font-size: 3rem;
+    font-size: 2.8rem;
     color: var(--primary-color);
     margin-bottom: 1rem;
     animation: fadeInDown 1s ease-out;
@@ -330,6 +330,7 @@
   
     .hero-text p {
       font-size: 1rem; /* Paragraf boyutunu mobil için küçültür */
+      font-family: 'Roboto', sans-serif;
     }
     
     .hero-button {
