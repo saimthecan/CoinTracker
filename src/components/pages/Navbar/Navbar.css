@@ -11,7 +11,7 @@
     position: fixed; /* Fixed at the top */
     top: 0;
     width: 100%;
-    z-index: 50;
+    z-index: 101;
   }
   
   /* Navbar Content */
@@ -78,7 +78,7 @@
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
     transition: right 0.3s ease-in-out;
     padding: 2rem 1rem;
-    z-index: 100;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     overflow-y: auto; 
@@ -147,11 +147,11 @@
   @media (max-width: 767px) {
 
     .navbar {
-      z-index: 50;
+      z-index: 101;
     }
 
     .sidebar {
-      z-index: 1; /* Navbar'dan daha yüksek olmalı */
+      z-index: 100; /* Navbar'dan daha yüksek olmalı */
     }
 
     .links-container {
