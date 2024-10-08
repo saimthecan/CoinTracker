@@ -1,0 +1,340 @@
+/* Genel Stil Ayarları */
+:root {
+    --primary-color: #007BFF;
+    --secondary-color: #6C757D;
+    --background-color: #f8f9fa;
+    --card-background: #ffffff;
+    --button-hover-color: #0056b3;
+    --button-active-color: #004085;
+    --text-color: #343a40;
+    --light-text-color: #6c757d;
+    --border-radius: 12px;
+    --transition-speed: 0.3s;
+  }
+  
+  /* Ana Container */
+  .home-container {
+    padding: 1rem 2rem;
+    background-color: var(--background-color);
+    min-height: 100vh;
+  }
+  
+  /* Ana Özellikler Bölümü */
+  .features-section {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 4rem;
+  }
+  
+  .feature-card {
+    background-color: var(--card-background);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  }
+  
+  .feature-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1.5rem;
+    transition: transform var(--transition-speed) ease;
+  }
+  
+  .feature-card:hover .feature-icon {
+    transform: rotate(10deg);
+  }
+  
+  .feature-card h3 {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+  }
+  
+  .feature-card p {
+    font-size: 1rem;
+    color: var(--light-text-color);
+    margin-bottom: 1.5rem;
+  }
+  
+  .feature-button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: var(--primary-color);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+  }
+  
+  .feature-button:hover {
+    background-color: var(--button-hover-color);
+    transform: translateY(-3px);
+  }
+  
+  .feature-button:active {
+    background-color: var(--button-active-color);
+    transform: translateY(0);
+  }
+  
+  /* Öne Çıkanlar Bölümü */
+  .highlights-section {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  
+  .highlights-section h2 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    animation: fadeIn 1s ease-out;
+  }
+  
+  .highlights-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  
+  .highlight-card {
+    background-color: var(--card-background);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    width: 250px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  }
+  
+  .highlight-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  }
+  
+  .highlight-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+    transition: transform var(--transition-speed) ease;
+  }
+  
+  .highlight-card:hover .highlight-icon {
+    transform: rotate(-10deg);
+  }
+  
+  .highlight-card h3 {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+  }
+  
+  .highlight-card p {
+    font-size: 1rem;
+    color: var(--light-text-color);
+    margin-bottom: 1rem;
+  }
+  
+  .highlight-button {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    background-color: var(--secondary-color);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+  }
+  
+  .highlight-button:hover {
+    background-color: #5a6268;
+    transform: translateY(-3px);
+  }
+  
+  .highlight-button:active {
+    background-color: #343a40;
+    transform: translateY(0);
+  }
+  
+  /* Hero Bölümü */
+.hero-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 4rem;
+  }
+  
+  .hero-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    max-width: 1200px;
+    gap: 2rem;
+  }
+  
+  .hero-image {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .hero-image img {
+    width: 100%;
+    max-width: 500px;
+    border-radius: var(--border-radius);
+  }
+  
+  .hero-text {
+    flex: 1;
+  }
+  
+  .hero-text h1 {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    animation: fadeInDown 1s ease-out;
+  }
+  
+  .hero-text p {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+    animation: fadeInUp 1s ease-out;
+  }
+  
+  .hero-button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary-color);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+  }
+  
+  .hero-button:hover {
+    background-color: var(--button-hover-color);
+    transform: translateY(-3px);
+  }
+  
+  .hero-button:active {
+    background-color: var(--button-active-color);
+    transform: translateY(0);
+  }
+  
+  /* Animasyonlar */
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* Responsive Tasarım */
+  @media (max-width: 992px) {
+    .features-section, .highlights-grid {
+      justify-content: center;
+    }
+  
+    .feature-card, .highlight-card {
+      width: 80%;
+    }
+  
+    .features-section {
+      gap: 1.5rem;
+    }
+  
+    .highlights-section h2 {
+      font-size: 2rem;
+    } 
+  }
+  
+  @media (max-width: 768px) {
+   
+    .feature-card, .highlight-card {
+      width: 100%;
+    }
+  
+    .features-section {
+      gap: 1rem;
+    }
+  
+    .highlights-section h2 {
+      font-size: 1.8rem;
+    }
+
+  }
+   /* Hero Section Mobil Görünüm Düzenlemeleri */
+   @media (max-width: 768px) {
+    .hero-content {
+      display: flex;
+      flex-direction: column; /* Resim üstte, yazı altta olacak şekilde içerikleri dikey sıralar */
+      align-items: center; /* İçeriği ortalar */
+      text-align: center; /* Yazıları ortalar */
+    }
+  
+    .hero-image {
+      order: -1; /* Resmi üstte göstermek için */
+      width: 100%;
+      text-align: center;
+    }
+  
+    .hero-image img {
+      width: 100%;
+      max-width: 400px; /* Resmin genişliğini sınırlar */
+    }
+  
+    .hero-content{
+        gap: 0;
+    }
+   
+  
+    .hero-text h1 {
+      font-size: 2rem; /* Başlık boyutunu mobil için küçültür */
+    }
+  
+    .hero-text p {
+      font-size: 1rem; /* Paragraf boyutunu mobil için küçültür */
+    }
+    
+    .hero-button {
+      padding: 0.75rem 1.5rem; /* Buton boyutlarını ayarlar */
+      font-size: 1rem; /* Buton yazı boyutunu küçültür */
+    }
+  }
+   

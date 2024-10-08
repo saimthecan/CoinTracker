@@ -8,6 +8,7 @@ import EnGuvendiklerim from "./components/pages/Categories/EnGuvendiklerim/EnGuv
 import Guvendiklerim from "./components/pages/Categories/Guvendiklerim/Guvendiklerim";
 import UserPage from "./components/pages/UserPage/UserPage";
 import FavoriCoinlerim from "./components/pages/FavoriCoinlerim/FavoriCoinlerim";
+import Home from './components/pages/Home/Home';
 import { UserProvider } from '../src/context/UserContext';
 import "./App.css";
 
@@ -18,6 +19,7 @@ function App() {
         <Navbar />
         <div className="main-content"> {/* Ana içeriği kapsayan div */}
         <Routes>
+        <Route path="/" element={<Home />} />
           <Route path="/favori-kullanicilarim" element={<FavoriKullanicilarim />} />
           <Route path="/en-guvendiklerim" element={<EnGuvendiklerim />} />
           <Route path="/guvendiklerim" element={<Guvendiklerim />} />

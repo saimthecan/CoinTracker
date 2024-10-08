@@ -17,12 +17,18 @@ const Navbar = () => {
       <nav className="navbar">
         {/* Logo and Links Container */}
         <div className="navbar-content">
-          <RouterLink to="/favori-kullanicilarim" className="logo-container">
+          <RouterLink to="/" className="logo-container">
             <img src={Logo} alt="Logo" className="navbar-logo" />
           </RouterLink>
 
           {/* Desktop Links */}
           <div className="links-container">
+          <RouterLink
+              to="/"
+              className={location.pathname === "/" ? "nav-link active" : "nav-link"}
+            >
+              Home
+            </RouterLink>
             <RouterLink
               to="/favori-kullanicilarim"
               className={location.pathname === "/favori-kullanicilarim" ? "nav-link active" : "nav-link"}
@@ -61,6 +67,13 @@ const Navbar = () => {
 
         {/* Sidebar Links */}
         <div className="sidebar-links">
+        <RouterLink
+            to="/"
+            className={location.pathname === "/" ? "sidebar-link active" : "sidebar-link"}
+            onClick={toggleSidebar}
+          >
+           Home
+          </RouterLink>
           <RouterLink
             to="/favori-kullanicilarim"
             className={location.pathname === "/favori-kullanicilarim" ? "sidebar-link active" : "sidebar-link"}
