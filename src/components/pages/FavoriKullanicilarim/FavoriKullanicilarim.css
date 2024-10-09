@@ -121,6 +121,8 @@
     margin-top: 20px; /* Üstten boşluk ekle */
   }
 
+  
+
   /* Responsive: Mobil ve küçük ekranlar için */
 @media (max-width: 768px) {
   .favorites-header {

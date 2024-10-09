@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+
 import { Link } from "react-router-dom";
 import "./EnGuvendiklerim.css";
 import twitterLogo from "../../../../assets/twitter.svg";
@@ -9,31 +10,62 @@ import StarIcon from "../../../../StarIcons/StarIcon";
 import EmptyStarIcon from "../../../../StarIcons/EmptyStarIcon";
 import deleteIcon from "../../../../assets/delete.svg";
 import { useEnGuvendiklerim } from "./useEnGuvendiklerim";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner, faSearch } from "@fortawesome/free-solid-svg-icons"; // Arama simgesi için
 
 const EnGuvendiklerim = () => {
   const [showAddUserModal, setShowAddUserModal] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false); // Arama çubuğunu açıp kapamak için state
+  const searchBarRef = useRef(null);
+const searchIconRef = useRef(null);
 
 
-  const { enGuvendiklerimUsers, handleToggleFavorite, handleDeleteUser, handleAddUser, isUserSelected, loading  } = useEnGuvendiklerim();
-
- 
- 
+  const {
+    enGuvendiklerimUsers,
+    handleToggleFavorite,
+    handleDeleteUser,
+    handleAddUser,
+    isUserSelected,
+    loading,
+  } = useEnGuvendiklerim();
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState(""); // Arama çubuğu için state
   const itemsPerPage = 20;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentUsers = enGuvendiklerimUsers.slice(
-    indexOfFirstItem,
-    indexOfLastItem
+
+  // Arama çubuğuna girilen metne göre filtrelenmiş kullanıcılar
+  const filteredUsers = enGuvendiklerimUsers.filter((user) =>
+    user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const currentUsers = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(enGuvendiklerimUsers.length / itemsPerPage);
 
-  // Pagination'ın gösterilip gösterilmediğini takip eden state
-  const [isPaginationVisible, setIsPaginationVisible] = useState(false);
+  const handleSearchIconClick = () => {
+    setSearchOpen(!searchOpen); // Arama çubuğunu aç/kapat
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        searchOpen &&
+        searchBarRef.current &&
+        !searchBarRef.current.contains(event.target) &&
+        searchIconRef.current &&
+        !searchIconRef.current.contains(event.target)
+      ) {
+        setSearchOpen(false);
+      }
+    };
+  
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [searchOpen]);
+  
 
   if (loading) {
     return (
@@ -42,21 +74,45 @@ const EnGuvendiklerim = () => {
       </div>
     );
   }
+
   return (
     <div className="container">
       <header className="favorites-header">
-        <h1>Crypto Influencers</h1>
+        <div className="title-and-icon">
+          <h1>Crypto Influencers</h1>
+          <div
+  className="search-icon-container"
+  onClick={handleSearchIconClick}
+  ref={searchIconRef}
+>
+  <FontAwesomeIcon icon={faSearch} className="search-icon" />
+</div>
+
+        </div>
+
+     
+        {searchOpen && (
+  <div className="search-bar-container" ref={searchBarRef}>
+    <input
+      type="text"
+      placeholder="Search Influencers"
+      className="search-bar"
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+    />
+  </div>
+)}
+
       </header>
-      {/* "Card Ekle" Button */}
+
       <button
-        className={`add-card-button ${isPaginationVisible ? "with-pagination" : ""}`}
+        className={`add-card-button ${totalPages > 1 ? "with-pagination" : ""}`}
         onClick={() => setShowAddUserModal(true)}
       >
         <span className="desktop-text">Add Influencer</span>
         <span className="mobile-text">+</span>
       </button>
 
-      {/* New User Modal */}
       <Modal
         isOpen={showAddUserModal}
         onClose={() => setShowAddUserModal(false)}
@@ -73,15 +129,15 @@ const EnGuvendiklerim = () => {
 
           return (
             <div key={user._id} className="user-card">
-              {/* Delete Icon */}
+              {/* Silme İkonu */}
               <div
                 className="delete-icon-container"
                 onClick={() => handleDeleteUser(user._id)}
               >
-                <img src={deleteIcon} alt="Sil" className="delete-icon" />
+                <img src={deleteIcon} alt="Delete" className="delete-icon" />
               </div>
 
-              {/* Star Icon */}
+              {/* Yıldız İkonu */}
               <div
                 className="star-icon-container"
                 onClick={() => handleToggleFavorite(user)}
@@ -94,7 +150,7 @@ const EnGuvendiklerim = () => {
                 <img src={twitterLogo} alt="Twitter" className="twitter-logo" />
               </a>
 
-              {/* User Name */}
+              {/* Kullanıcı İsmi */}
               <Link to={`/user/${user._id}`} className="user-name-link">
                 <h3 className="user-name">{user.name}</h3>
               </Link>
@@ -102,12 +158,12 @@ const EnGuvendiklerim = () => {
           );
         })}
       </div>
+
       {totalPages > 1 && (
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
-          onVisibilityChange={setIsPaginationVisible} // Pagination görünürlüğünü buradan takip ediyoruz
         />
       )}
     </div>

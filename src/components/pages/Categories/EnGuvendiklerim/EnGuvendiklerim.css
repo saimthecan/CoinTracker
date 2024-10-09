@@ -198,25 +198,28 @@
     height: 22px;
   }
 
-  .favorites-header {
-    width: 99%;
-    padding: 10px 20px; /* Yüksekliği azaltmak için padding değerleri küçültüldü */
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; /* Dikey ortalamak için eklendi */
-    text-align: center; /* Metni ortala */
-  }
+ /* Header bölümündeki arama çubuğunu sağ üst köşeye taşıyoruz */
+ .favorites-header {
+  width: 100%;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column; /* Dikey hizalama */
+  position: relative;
+}
+
   
-  .favorites-header h1 {
-    font-size: 1.8rem; /* Başlık boyutunu küçülttük */
-    margin: 0;
-    color: var(--text-color, #333);
-  }
+/* Başlık ve arama ikonunu yan yana yerleştirme */
+.favorites-header h1 {
+  font-size: 1.8rem;
+  margin: 0;
+  color: var(--text-color, #333);
+  display: flex;
+  align-items: center; /* Başlık ve ikon aynı hizada */
+}
   
   .favorites-header p {
     font-size: 1rem; /* Alt metnin boyutunu sabit tuttuk */
@@ -224,6 +227,52 @@
     margin: 0;
   }
 
+  /* Başlık ve Arama Simgesi */
+.title-and-icon {
+  display: flex;
+  align-items: center;
+}
+
+.title-and-icon h1 {
+  margin: 0;
+  color: var(--text-color, #333);
+}
+
+  .search-icon-container {
+    cursor: pointer;
+    margin-left: 10px; /* Başlık ile arama simgesi arasında boşluk */
+  }
+  
+  .search-icon {
+    font-size: 1.5rem;
+    color: #333;
+    transition: color 0.3s ease;
+  }
+  
+  .search-icon:hover {
+    color: #007bff;
+  }
+  
+  /* Arama Çubuğu */
+  .search-bar-container {
+    margin-top: 10px;
+  }
+  
+  .search-bar {
+    padding: 8px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    font-size: 0.9rem;
+    width: 100%; /* Mobil uyumluluk için genişliği yüzdeye çevirdik */
+    max-width: 400px; /* Maksimum genişlik */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .search-bar:focus {
+    outline: none;
+    border-color: #007BFF;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+  }
 
 
 /* Mobile View */
@@ -279,5 +328,13 @@
 
 .favorites-header p {
   font-size: 0.9rem; /* Alt metnin boyutunu küçülttük */
+}
+
+.title-and-icon h1 {
+  font-size: 1.5rem;
+}
+
+.search-bar {
+  width: 100%;
 }
 }

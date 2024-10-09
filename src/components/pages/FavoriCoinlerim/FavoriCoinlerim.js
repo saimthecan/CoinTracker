@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { faSpinner, faSearch } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import DexScreenerIcon from '../../../assets/dexscreener.png';
 import StarIcon from '../../../StarIcons/StarIcon';
 import EmptyStarIcon from '../../../StarIcons/EmptyStarIcon';
 import defaultImage from '../../../assets/logo-free.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import './FavoriCoinlerim.css';
 import Pagination from '../../../Pagination/Pagination';
 
@@ -23,14 +23,19 @@ const FavoriCoinlerim = () => {
   const [loading, setLoading] = useState(true);
 
   // Yeni eklenen state'ler
-const [sortCriteria, setSortCriteria] = useState("");
-const [sortOrder, setSortOrder] = useState("asc");
-const [selectedNetwork, setSelectedNetwork] = useState("");
-const [allNetworks, setAllNetworks] = useState([]);
+  const [sortCriteria, setSortCriteria] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [selectedNetwork, setSelectedNetwork] = useState("");
+  const [allNetworks, setAllNetworks] = useState([]);
 
-// Pagination için state
-const [currentPage, setCurrentPage] = useState(1);
-const coinsPerPage = 20; // Her sayfada gösterilecek coin sayısı
+  // Pagination için state
+  const [currentPage, setCurrentPage] = useState(1);
+  const coinsPerPage = 20; // Her sayfada gösterilecek coin sayısı
+
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const searchBarRef = useRef(null);
+  const searchIconRef = useRef(null);
 
   const API_URL = 'https://calm-harbor-22861-fa5a63bab33f.herokuapp.com';
 
@@ -103,8 +108,8 @@ const coinsPerPage = 20; // Her sayfada gösterilecek coin sayısı
         );
 
         // Tüm ağları topluyoruz
-      const networks = Array.from(new Set(updatedCoins.map((coin) => coin.network)));
-      setAllNetworks(networks); // Ağları kaydediyoruz
+        const networks = Array.from(new Set(updatedCoins.map((coin) => coin.network)));
+        setAllNetworks(networks); // Ağları kaydediyoruz
 
         setCoins(updatedCoins);
         setFlipped(new Array(updatedCoins.length).fill(false));
@@ -117,29 +122,36 @@ const coinsPerPage = 20; // Her sayfada gösterilecek coin sayısı
 
     fetchFavoriteCoins();
   }, []);
-// Sıralama ve filtreleme işlemlerini uyguluyoruz
-const sortedCoins = sortCoins(coins, sortCriteria, sortOrder);
-const filteredCoins = filterCoinsByNetwork(sortedCoins, selectedNetwork);
 
-// Coins'in gösterileceği sayfalara göre bölünmesi
-const indexOfLastCoin = currentPage * coinsPerPage;
-const indexOfFirstCoin = indexOfLastCoin - coinsPerPage;
-const currentCoins = filteredCoins.slice(indexOfFirstCoin, indexOfLastCoin);
+  // Arama işlemi için fonksiyon
+  const filterCoinsBySearchTerm = (coins, searchTerm) => {
+    if (!searchTerm) return coins;
+    return coins.filter((coin) =>
+      coin.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      coin.symbol.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  };
 
-// Toplam sayfa sayısını hesapla
-const totalPages = Math.ceil(filteredCoins.length / coinsPerPage);
+  // Sıralama ve filtreleme işlemlerini uyguluyoruz
+  const sortedCoins = sortCoins(coins, sortCriteria, sortOrder);
+  const filteredCoinsByNetwork = filterCoinsByNetwork(sortedCoins, selectedNetwork);
+  const filteredCoins = filterCoinsBySearchTerm(filteredCoinsByNetwork, searchTerm);
 
-const handlePageChange = (pageNumber) => {
-  setCurrentPage(pageNumber);
-};
+  // Coins'in gösterileceği sayfalara göre bölünmesi
+  const indexOfLastCoin = currentPage * coinsPerPage;
+  const indexOfFirstCoin = indexOfLastCoin - coinsPerPage;
+  const currentCoins = filteredCoins.slice(indexOfFirstCoin, indexOfLastCoin);
 
- 
+  // Toplam sayfa sayısını hesapla
+  const totalPages = Math.ceil(filteredCoins.length / coinsPerPage);
 
-const toggleSortOrder = () => {
-  setSortOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
-};
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
-
+  const toggleSortOrder = () => {
+    setSortOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
+  };
 
   // calculateMarketCapChange fonksiyonu
   const calculateMarketCapChange = (shareMarketCap, currentMarketCap) => {
@@ -156,6 +168,11 @@ const toggleSortOrder = () => {
       return newFlipped;
     });
   };
+
+  const handleSearchIconClick = () => {
+    setSearchOpen(!searchOpen);
+  };
+  
 
   // Favori durumunu değiştirme fonksiyonu
   const handleToggleFavoriteCoin = async (coinId, userId, isCurrentlyFavorite) => {
@@ -184,7 +201,26 @@ const toggleSortOrder = () => {
       alert('Favori durum değiştirilirken bir hata oluştu.');
     }
   };
-  
+
+  // Arama çubuğunu dışına tıklanınca kapatma
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        searchOpen &&
+        searchBarRef.current &&
+        !searchBarRef.current.contains(event.target) &&
+        searchIconRef.current &&
+        !searchIconRef.current.contains(event.target)
+      ) {
+        setSearchOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [searchOpen]);
 
   if (loading) {
     return (
@@ -193,11 +229,34 @@ const toggleSortOrder = () => {
       </div>
     );
   }
+
   return (
     <div className="coin-container">
-    <header className="favorites-header">
-        <h1>Star Coins</h1>
-      </header>
+   <header className="favorites-header">
+  <div className="title-and-icon">
+    <h1>Star Coins</h1>
+    <div
+      className="search-icon-container"
+      onClick={handleSearchIconClick}
+      ref={searchIconRef}
+    >
+      <FontAwesomeIcon icon={faSearch} className="search-icon" />
+    </div>
+  </div>
+
+  {/* Arama Çubuğu */}
+  {searchOpen && (
+    <div className="search-bar-container" ref={searchBarRef}>
+      <input
+        type="text"
+        placeholder="Search Coin"
+        className="search-bar"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+    </div>
+  )}
+</header>
 
       <div className="controls">
   <div className="filter-section">
