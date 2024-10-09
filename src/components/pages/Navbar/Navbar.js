@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
-import { FaBars, FaHome, FaStar, FaUserFriends, FaNewspaper } from "react-icons/fa"; // İkonlar eklendi
+import { FaBars, FaHome, FaStar, FaUserFriends, FaNewspaper, FaChartLine, FaHeart } from "react-icons/fa"; // İkonlar eklendi
 import Logo from "../../../assets/logo.png";
 import "./Navbar.css"; // Import the external CSS
 
@@ -53,10 +53,13 @@ const Navbar = () => {
               Star Coins
             </RouterLink>
             <RouterLink to="/favori-kullanicilarim" className={location.pathname === "/favori-kullanicilarim" ? "nav-link active" : "nav-link"}>
-              Favorite Influencers
+             My Favorite Influencers
             </RouterLink>
             <RouterLink to="/en-guvendiklerim" className={location.pathname === "/en-guvendiklerim" ? "nav-link active" : "nav-link"}>
               Crypto Influencers
+            </RouterLink>
+            <RouterLink to="/average-profits" className={location.pathname === "/average-profits" ? "nav-link active" : "nav-link"}>
+              Average Profits/Loss
             </RouterLink>
             <RouterLink to="/news" className={location.pathname === "/news" ? "nav-link active" : "nav-link"}>
               News
@@ -80,11 +83,14 @@ const Navbar = () => {
             <FaStar className="sidebar-icon" /> Star Coins
           </RouterLink>
           <RouterLink to="/favori-kullanicilarim" className={location.pathname === "/favori-kullanicilarim" ? "sidebar-link active" : "sidebar-link"} onClick={toggleSidebar}>
-            <FaUserFriends className="sidebar-icon" /> Favorite Influencers
-          </RouterLink>
+  <FaHeart className="sidebar-icon" /> My Favorite Influencers
+</RouterLink>
           <RouterLink to="/en-guvendiklerim" className={location.pathname === "/en-guvendiklerim" ? "sidebar-link active" : "sidebar-link"} onClick={toggleSidebar}>
             <FaUserFriends className="sidebar-icon" /> Crypto Influencers
           </RouterLink>
+          <RouterLink to="/average-profits" className={location.pathname === "/average-profits" ? "sidebar-link active" : "sidebar-link"} onClick={toggleSidebar}>
+  <FaChartLine className="sidebar-icon" /> Average Profits/Loss
+</RouterLink>
           <RouterLink to="/news" className={location.pathname === "/news" ? "sidebar-link active" : "sidebar-link"} onClick={toggleSidebar}>
             <FaNewspaper className="sidebar-icon" /> News
           </RouterLink>

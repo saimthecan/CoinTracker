@@ -447,6 +447,7 @@ router.get('/average-profits', async (req, res) => {
           userId: user._id,
           userName: user.name,
           avgProfit: avgProfit,
+          coinCount: coins.length, 
         });
       }
     }
