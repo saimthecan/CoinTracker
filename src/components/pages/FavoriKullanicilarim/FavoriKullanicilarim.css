@@ -9,24 +9,29 @@
   
   /* Kart Konteyneri */
   .card-container {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    margin-bottom: 3rem;
     gap: 2rem;
-    justify-content: flex-start;
-    max-width: 100%;
   }
   
   /* Kullanıcı Kartı */
   .user-card {
-    position: relative;
+    display: flex;
+    flex-direction: column; /* Dikeyde hizalama için */
+    justify-content: center; /* Yatayda ortala */
+    align-items: center; /* Dikeyde ortala */
     background-color: var(--card-background);
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 250px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100px; /* Yeterli yüksekliği sağlamak için */
     padding: 1.5rem;
     text-align: center;
+    position: relative; /* Diğer ikonların yerleşimi için */
   }
-  
+
   /* Kullanıcı İsmi */
   .user-name {
     font-size: 1.5rem;
