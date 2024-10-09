@@ -1,36 +1,31 @@
-# Coin-Tracker Uygulaması
+# Coin-Tracker Application
 
-<img src="./src/assets/logo.png" alt="Coin-Tracker Logo" width="100" margin-left="auto" margin-right="auto" />
+<img src="./src/assets/logo.png" alt="Coin-Tracker Logo" width="100" style="margin-left: auto; margin-right: auto; display: block;" />
 
+## 📈 Project Description
 
-## 📈 Proje Açıklaması
+**Coin-Tracker** is a comprehensive web application that allows users to track the performance of coins shared by their favorite crypto influencers, manage their favorite coins, and perform average profit/loss analysis. The application fetches real-time data using the **DexScreener API** to provide current price and market cap information. Additionally, it delivers the most up-to-date cryptocurrency news via **RSS feeds**, allowing users to read the latest news directly within the app. Coin-Tracker aims to provide valuable insights for crypto investors by focusing on the success of influencers' shared coins through its user-friendly interface and efficient data management.
 
-**Coin-Tracker**, kullanıcıların favori kripto fenomenlerinin paylaştığı coinlerin performansını takip etmelerini, favori coinlerini yönetmelerini ve ortalama kâr/zarar analizleri yapmalarını sağlayan kapsamlı bir web uygulamasıdır. Gerçek zamanlı veri çekmek için **DexScreener API'si** kullanılarak güncel fiyat ve piyasa değeri bilgileri alınmaktadır. Ayrıca, uygulama **RSS beslemeleri** aracılığıyla en güncel kripto haberlerini kullanıcılarına sunmakta ve bu haberleri okumalarına olanak tanımaktadır. Coin-Tracker, kullanıcı dostu arayüzü ve etkili veri yönetimi ile kripto para yatırımcılarına fenomenlerin coin başarılarına dair değerli bilgiler sunmayı hedeflemektedir.
+🔗 **Live Demo:** [Access Coin-Tracker Here](https://cointracker-canozgen.netlify.app/)
 
-
-🔗 **Canlı Demo:** [Coin-Tracker'a Buradan Ulaşabilirsiniz](https://cointracker-canozgen.netlify.app/)
-
-## 🛠️ Kullanılan Teknolojiler
+## 🛠️ Technologies Used
 
 ### **Frontend:**
-- **React**: Kullanıcı arayüzünün oluşturulmasında temel framework.
-- **React Router DOM**: Sayfalar arası navigasyon için.
-- **Axios**: HTTP isteklerini yönetmek için.
-- **FontAwesome**: İkon kullanımı için.
-- **React Beautiful DnD**: Sürükle-bırak özelliği için.
-- **React Fast Marquee**: Akıcı kayan metinler için.
-- **React Icons**: Ek ikonlar için.
-- **React Number Format**: Sayısal verilerin formatlanması için.
-- **CSS Grid & Flexbox**: Duyarlı ve esnek düzenler oluşturmak için.
-- **Responsive Tasarım**: Medya sorguları ile farklı cihazlara uyum sağlama.
+- **React**: Core framework for building the user interface.
+- **React Router DOM**: For navigation between pages.
+- **Axios**: For managing HTTP requests.
+- **FontAwesome**: For icon usage.
+- **React Beautiful DnD**: For drag-and-drop functionality.
+- **React Fast Marquee**: For smooth scrolling text.
+- **React Icons**: For additional icons.
+- **React Number Format**: For formatting numerical data.
+- **CSS Grid & Flexbox**: For creating responsive and flexible layouts.
+- **Responsive Design**: Ensuring adaptability across various devices using media queries.
 
 ### **Backend:**
-- **Node.js & Express**: Sunucu tarafı geliştirme için.
-- **MongoDB & Mongoose**: Veri tabanı yönetimi için.
-- **Axios**: Dış API'lerle etkileşim için.
-- **Cors**: CORS politikalarını yönetmek için.
-- **Dotenv**: Ortam değişkenlerini yönetmek için.
-- **Body-Parser**: HTTP isteklerinin gövdelerini işlemek için.
-
-
-
+- **Node.js & Express**: For server-side development.
+- **MongoDB & Mongoose**: For database management.
+- **Axios**: For interacting with external APIs.
+- **Cors**: For managing CORS policies.
+- **Dotenv**: For handling environment variables.
+- **Body-Parser**: For parsing the body of HTTP requests.
