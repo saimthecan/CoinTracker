@@ -1,6 +1,6 @@
 # Coin-Tracker Uygulaması
 
-<img src="./src/assets/logo.png" alt="Coin-Tracker Logo" width="100" />
+<img src="./src/assets/logo.png" alt="Coin-Tracker Logo" width="100" margin-left="auto" margin-right="auto" />
 
 
 ## 📈 Proje Açıklaması
@@ -32,11 +32,5 @@
 - **Dotenv**: Ortam değişkenlerini yönetmek için.
 - **Body-Parser**: HTTP isteklerinin gövdelerini işlemek için.
 
-## 🚀 Kurulum
-
-### **Ön Koşullar**
-- **Node.js** (v14 veya üzeri)
-- **npm** veya **yarn**
-- **MongoDB** (Yerel veya bulut tabanlı)
 
 
