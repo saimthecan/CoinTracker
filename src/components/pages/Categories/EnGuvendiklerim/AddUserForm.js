@@ -5,14 +5,14 @@ import twitterIcon from '../../../../assets/twitter.svg';
 
 const AddUserForm = ({ onAddUser, onClose }) => {
   const [name, setName] = useState('');
-  const [twitter, setTwitter] = useState('');
+  const [twitterUsername, setTwitter] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const newUser = {
       name,
-      twitter,
+      twitter: `https://x.com/${twitterUsername}`,
       category: 'en_güvendiklerim',
       coins: [],
     };
@@ -41,9 +41,9 @@ const AddUserForm = ({ onAddUser, onClose }) => {
       <div className="input-group">
         <img src={twitterIcon} alt="Twitter" className="input-icon" />
         <input
-          type="url"
-          placeholder="X Address"
-          value={twitter}
+         type="text"
+           placeholder="X Username (without @)"
+          value={twitterUsername}
           onChange={(e) => setTwitter(e.target.value)}
           required
         />
