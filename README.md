@@ -1,11 +1,11 @@
 # Coin-Tracker Uygulaması
 
-![Coin-Tracker Logo](./src/assets/logo.png)
+![Coin-Tracker Logo] <img src="./src/assets/logo.png" alt="Coin-Tracker Logo" width="200" />
 
 
 ## 📈 Proje Açıklaması
 
-**Coin-Tracker**, kullanıcıların çeşitli kripto para birimlerinin performansını takip etmelerini, favori coinlerini yönetmelerini ve ortalama kâr/zarar analizleri yapmalarını sağlayan kapsamlı bir web uygulamasıdır. Gerçek zamanlı veri çekmek için DexScreener API'si kullanılarak güncel fiyat ve piyasa değeri bilgileri alınmaktadır. Uygulama, kullanıcı dostu arayüzü ve etkili veri yönetimi ile kripto para yatırımcılarına değerli bilgiler sunmayı hedeflemektedir.
+**Coin-Tracker**, kullanıcıların favori kripto fenomenlerinin paylaştığı coinlerin performansını takip etmelerini sağlayan kapsamlı bir web uygulamasıdır. Uygulama, fenomenlerin paylaştığı coinlerin başarılarını analiz etmeye odaklanarak, kullanıcıların favori coinlerini yönetmelerine ve ortalama kâr/zarar analizleri yapmalarına yardımcı olur. Gerçek zamanlı veri çekmek için **DexScreener API** kullanılarak güncel fiyat ve piyasa değeri bilgileri alınmaktadır. Coin-Tracker, kullanıcı dostu arayüzü ve etkili veri yönetimi ile kripto para yatırımcılarına fenomenlerin coin başarılarına dair değerli içgörüler sunmayı amaçlamaktadır.
 
 🔗 **Canlı Demo:** [Coin-Tracker'a Buradan Ulaşabilirsiniz](https://cointracker-canozgen.netlify.app/)
 
