@@ -4,7 +4,7 @@
 
 ## 📈 Project Description
 
-**Coin-Tracker** is a comprehensive web application that allows users to track the performance of coins shared by their favorite crypto influencers, manage their favorite coins, and perform average profit/loss analysis. The application fetches real-time data using the **DexScreener API** to provide current price and market cap information. Additionally, it delivers the most up-to-date cryptocurrency news via **RSS feeds**, allowing users to read the latest news directly within the app. Coin-Tracker aims to provide valuable insights for crypto investors by focusing on the success of influencers' shared coins through its user-friendly interface and efficient data management.
+**Coin-Tracker** is a comprehensive web application that allows users to track the performance of coins shared by their favorite crypto influencers, manage their favorite coins, and perform average profit/loss analysis. The application fetches real-time data using the **DexScreener API** to provide current price and market cap information. Additionally, it delivers the most up-to-date cryptocurrency news via **RSS feeds**, allowing users to read the latest news directly within the app. Coin-Tracker aims to provide valuable insights for crypto investors by focusing on the success of influencers' shared coins, helping users navigate the high-risk, high-reward **GEM market** by relying on insights from influencers through its user-friendly interface and efficient data management.
 
 🔗 **Live Demo:** [Access Coin-Tracker Here](https://cointracker-canozgen.netlify.app/)
 
@@ -21,7 +21,7 @@ The home page displays a real-time ticker of top 50 coin prices, along with key 
 ---
 
 ### **Influencers Page**
-The page where users can manage their favorite influencers and the coins they follow.
+The page where users can manage their favorite influencers they follow.
 
 ![Influencers Page](./screenshots/Influencers.PNG)
 
@@ -42,7 +42,7 @@ The mobile version of the "Starred Coins" section, allowing users to manage favo
 ---
 
 ### **Profit/Loss Table**
-A detailed table showing the profit/loss analysis of various coins.
+A detailed table showing the average profit/loss analysis of influencers.
 
 ![Profit/Loss Table](./screenshots/profit-loss-table.PNG)
 
