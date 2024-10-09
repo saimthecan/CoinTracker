@@ -13,9 +13,10 @@
 ## 🖼️ Application Screenshots
 
 ### **Home Page**
-The home page where users can view the overall performance of coins shared by influencers.
+The home page displays a real-time ticker of top 50 coin prices, along with key insights such as **Influencer with Highest Average Profit**, **Top Performing Coin**, and **Influencer with Most Coins**.
 
 ![Home Page](./screenshots/home.PNG)
+
 
 ---
 
@@ -50,7 +51,7 @@ A detailed table showing the profit/loss analysis of various coins.
 ### **Favorite Influencers Page**
 Where users can manage their favorite influencers, who they trust the most for crypto insights.
 
-![Favorite Influencers Page](./screenshots/favorite-influencers.PNG)
+![Favorite Influencers Page](./screenshots/favorite-influencers-mobile.PNG)
 
 ---
 
