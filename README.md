@@ -8,6 +8,59 @@
 
 🔗 **Live Demo:** [Access Coin-Tracker Here](https://cointracker-canozgen.netlify.app/)
 
+---
+
+## 🖼️ Application Screenshots
+
+### **Home Page**
+The home page where users can view the overall performance of coins shared by influencers.
+
+![Home Page](./screenshots/home.PNG)
+
+---
+
+### **Influencers Page**
+The page where users can manage their favorite influencers and the coins they follow.
+
+![Influencers Page](./screenshots/Influencers.PNG)
+
+---
+
+### **News Page**
+The RSS feed page that displays the latest cryptocurrency news for users.
+
+![News Page](./screenshots/news.PNG)
+
+---
+
+### **Starred Coins - Mobile View**
+The mobile version of the "Starred Coins" section, allowing users to manage favorite coins easily on smaller devices.
+
+![Starred Coins Mobile](./screenshots/star-coins-mobile.PNG)
+
+---
+
+### **Profit/Loss Table**
+A detailed table showing the profit/loss analysis of various coins.
+
+![Profit/Loss Table](./screenshots/profit-loss-table.PNG)
+
+---
+
+### **Favorite Influencers Page**
+Where users can manage their favorite influencers, who they trust the most for crypto insights.
+
+![Favorite Influencers Page](./screenshots/favorite-influencers.PNG)
+
+---
+
+### **User Profile Page**
+Each user's profile page where specific information about their coin performance is displayed.
+
+![User Profile Page](./screenshots/user-page.PNG)
+
+---
+
 ## 🛠️ Technologies Used
 
 ### **Frontend:**
