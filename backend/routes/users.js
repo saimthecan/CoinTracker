@@ -395,69 +395,97 @@ router.get('/highlights', async (req, res) => {
   }
 });
 
-// Tüm kullanıcıların ortalama kâr/zararını getirme
+// Fonksiyonun başında tanımlayın
+const coinMarketCapCache = {};
+
+
 router.get('/average-profits', async (req, res) => {
   try {
     const users = await User.find();
 
-    const userProfitData = [];
-
-    // Tüm kullanıcılar için kâr/zarar hesaplama
-    for (const user of users) {
+    // Tüm kullanıcılar için asenkron fonksiyonlar oluşturun
+    const userPromises = users.map(async (user) => {
       const coins = user.coins;
 
       if (coins.length === 0) {
         // Kullanıcının coini yoksa atla
-        continue;
+        return null;
       }
 
       let totalProfit = 0;
       let validCoinCount = 0;
 
-      for (const coin of coins) {
+      const coinPromises = coins.map(async (coin) => {
         const caAddress = coin.caAddress;
 
-        try {
-          const response = await axios.get(
-            `https://api.dexscreener.com/latest/dex/tokens/${caAddress}`
-          );
+        if (!coinMarketCapCache[caAddress]) {
+          try {
+            const response = await axios.get(
+              `https://api.dexscreener.com/latest/dex/tokens/${caAddress}`
+            );
 
-          const pairs = response.data.pairs;
-          if (pairs && pairs.length > 0) {
-            const pair = pairs[0];
-            const currentMarketCap = pair.marketCap;
-            const shareMarketCap = coin.shareMarketCap;
+            const pairs = response.data.pairs;
+            if (pairs && pairs.length > 0) {
+              const pair = pairs[0];
+              const currentMarketCap = pair.marketCap;
 
-            if (currentMarketCap && shareMarketCap) {
-              const profitPercentage = ((currentMarketCap - shareMarketCap) / shareMarketCap) * 100;
-              totalProfit += profitPercentage;
-              validCoinCount += 1;
+              coinMarketCapCache[caAddress] = currentMarketCap;
+            } else {
+              console.error(`No pairs found for CA: ${caAddress}`);
+              coinMarketCapCache[caAddress] = null;
             }
+          } catch (err) {
+            console.error(`Error fetching data for CA: ${caAddress}`, err);
+            coinMarketCapCache[caAddress] = null;
           }
-        } catch (err) {
-          console.error(`CA adresi için veri alınırken hata oluştu (${caAddress}):`, err);
-          // Hata varsa bu coini atla
-          continue;
         }
-      }
+
+        const currentMarketCap = coinMarketCapCache[caAddress];
+        const shareMarketCap = coin.shareMarketCap;
+
+        if (!currentMarketCap || !shareMarketCap) {
+          return null;
+        }
+
+        const profitPercentage = ((currentMarketCap - shareMarketCap) / shareMarketCap) * 100;
+        return profitPercentage;
+      });
+
+      const coinResults = await Promise.all(coinPromises);
+
+      coinResults.forEach((profitPercentage) => {
+        if (profitPercentage !== null) {
+          totalProfit += profitPercentage;
+          validCoinCount += 1;
+        }
+      });
 
       if (validCoinCount > 0) {
         const avgProfit = totalProfit / validCoinCount;
-        userProfitData.push({
+        return {
           userId: user._id,
           userName: user.name,
           avgProfit: avgProfit,
-          coinCount: coins.length, 
-        });
+          coinCount: coins.length,
+        };
+      } else {
+        return null;
       }
-    }
+    });
 
-    res.json(userProfitData);
+    // Tüm kullanıcı işlemlerini paralel olarak çalıştırın
+    const userProfitData = await Promise.all(userPromises);
+
+    // Geçerli sonuçları filtreleyin
+    const validUserProfitData = userProfitData.filter((data) => data !== null);
+
+    res.json(validUserProfitData);
   } catch (err) {
     console.error('Ortalama kârlar alınırken hata oluştu:', err);
     res.status(500).json({ message: 'Ortalama kârlar alınırken hata oluştu' });
   }
 });
+
 
 // Tüm kullanıcıları alma veya favorilere göre filtreleme
 router.get('/', async (req, res) => {
