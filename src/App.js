@@ -22,10 +22,10 @@ function App() {
         <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/average-profits" element={<AverageProfits />} />
-          <Route path="/favori-kullanicilarim" element={<FavoriKullanicilarim />} />
-          <Route path="/en-guvendiklerim" element={<EnGuvendiklerim />} />
+          <Route path="/my-favorite-influencers" element={<FavoriKullanicilarim />} />
+          <Route path="/crypto-influencers" element={<EnGuvendiklerim />} />
           <Route path="/user/:id" element={<UserPage />} />
-          <Route path="/favori-coinlerim" element={<FavoriCoinlerim />} />
+          <Route path="/star-coins" element={<FavoriCoinlerim />} />
           <Route path="/news" element={<News />} />
         </Routes>
         </div>

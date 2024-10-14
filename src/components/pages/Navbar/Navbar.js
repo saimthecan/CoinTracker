@@ -49,13 +49,13 @@ const Navbar = () => {
             <RouterLink to="/" className={location.pathname === "/" ? "nav-link active" : "nav-link"}>
               Home
             </RouterLink>
-            <RouterLink to="/favori-coinlerim" className={location.pathname === "/favori-coinlerim" ? "nav-link active" : "nav-link"}>
+            <RouterLink to="/star-coins" className={location.pathname === "/star-coins" ? "nav-link active" : "nav-link"}>
               Star Coins
             </RouterLink>
-            <RouterLink to="/favori-kullanicilarim" className={location.pathname === "/favori-kullanicilarim" ? "nav-link active" : "nav-link"}>
+            <RouterLink to="/my-favorite-influencers" className={location.pathname === "/my-favorite-influencers" ? "nav-link active" : "nav-link"}>
              My Favorite Influencers
             </RouterLink>
-            <RouterLink to="/en-guvendiklerim" className={location.pathname === "/en-guvendiklerim" ? "nav-link active" : "nav-link"}>
+            <RouterLink to="/crypto-influencers" className={location.pathname === "/crypto-influencers" ? "nav-link active" : "nav-link"}>
               Crypto Influencers
             </RouterLink>
             <RouterLink to="/average-profits" className={location.pathname === "/average-profits" ? "nav-link active" : "nav-link"}>
@@ -79,13 +79,13 @@ const Navbar = () => {
           <RouterLink to="/" className={location.pathname === "/" ? "sidebar-link active" : "sidebar-link"} onClick={toggleSidebar}>
             <FaHome className="sidebar-icon" /> Home
           </RouterLink>
-          <RouterLink to="/favori-coinlerim" className={location.pathname === "/favori-coinlerim" ? "sidebar-link active" : "sidebar-link"} onClick={toggleSidebar}>
+          <RouterLink to="/star-coins" className={location.pathname === "/star-coins" ? "sidebar-link active" : "sidebar-link"} onClick={toggleSidebar}>
             <FaStar className="sidebar-icon" /> Star Coins
           </RouterLink>
-          <RouterLink to="/favori-kullanicilarim" className={location.pathname === "/favori-kullanicilarim" ? "sidebar-link active" : "sidebar-link"} onClick={toggleSidebar}>
+          <RouterLink to="/my-favorite-influencers" className={location.pathname === "/my-favorite-influencers" ? "sidebar-link active" : "sidebar-link"} onClick={toggleSidebar}>
   <FaHeart className="sidebar-icon" /> My Favorite Influencers
 </RouterLink>
-          <RouterLink to="/en-guvendiklerim" className={location.pathname === "/en-guvendiklerim" ? "sidebar-link active" : "sidebar-link"} onClick={toggleSidebar}>
+          <RouterLink to="/crypto-influencers" className={location.pathname === "/crypto-influencers" ? "sidebar-link active" : "sidebar-link"} onClick={toggleSidebar}>
             <FaUserFriends className="sidebar-icon" /> Crypto Influencers
           </RouterLink>
           <RouterLink to="/average-profits" className={location.pathname === "/average-profits" ? "sidebar-link active" : "sidebar-link"} onClick={toggleSidebar}>
