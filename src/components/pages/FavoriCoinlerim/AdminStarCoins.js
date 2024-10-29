@@ -42,14 +42,13 @@ const FavoriCoinlerim = () => {
   useEffect(() => {
     const fetchFavoriteCoins = async () => {
       try {
-        const storedUser = JSON.parse(localStorage.getItem('user'));
-        const response = await axios.get(`${API_URL}/appUser/${storedUser.userId}/coins/favorites`, {
-          headers: {
-            Authorization: `Bearer ${storedUser.token}`,
-          },
-        });
-
-        const favoriteCoins = response.data;
+        const response = await axios.get(`${API_URL}/users/coins/favorites`);
+        const favoriteCoins = response.data.map((item) => ({
+          ...item.coin,
+          userName: item.userName,
+          userTwitter: item.userTwitter,
+          userId: item.userId,
+        }));
 
         // Coin verilerini güncelle
         const updatedCoins = await Promise.all(
@@ -107,8 +106,7 @@ const FavoriCoinlerim = () => {
             }
           })
         );
-      
-        
+
         // Tüm ağları topluyoruz
         const networks = Array.from(new Set(updatedCoins.map((coin) => coin.network)));
         setAllNetworks(networks); // Ağları kaydediyoruz
@@ -177,29 +175,20 @@ const FavoriCoinlerim = () => {
   
 
   // Favori durumunu değiştirme fonksiyonu
-  const handleToggleFavoriteCoin = async (coinId, influencerId, isCurrentlyFavorite) => {
+  const handleToggleFavoriteCoin = async (coinId, userId, isCurrentlyFavorite) => {
     try {
-      const storedUser = JSON.parse(localStorage.getItem('user'));
       if (isCurrentlyFavorite) {
         // Coin'i favoriden çıkar
-        await axios.delete(`${API_URL}/appUser/${storedUser.userId}/influencer/${influencerId}/coins/${coinId}/favorite`, {
-          headers: {
-            Authorization: `Bearer ${storedUser.token}`,
-          },
-        });
-  
-        // Coin'i listeden kaldır
+        await axios.delete(`${API_URL}/users/${userId}/coins/${coinId}/favorite`);
+        
+        // Coin'i coins listesinden kaldır
         setCoins((prevCoins) =>
           prevCoins.filter((coin) => coin._id !== coinId)
         );
       } else {
-        // Coin'i favorilere ekle
-        await axios.put(`${API_URL}/appUser/${storedUser.userId}/influencer/${influencerId}/coins/${coinId}/favorite`, {}, {
-          headers: {
-            Authorization: `Bearer ${storedUser.token}`,
-          },
-        });
-  
+        // Coin'i favorile
+        await axios.put(`${API_URL}/users/${userId}/coins/${coinId}/favorite`);
+        
         // Coin'in favori durumunu güncelle
         setCoins((prevCoins) =>
           prevCoins.map((coin) =>
@@ -212,8 +201,6 @@ const FavoriCoinlerim = () => {
       alert('Favori durum değiştirilirken bir hata oluştu.');
     }
   };
-  
-  
 
   // Arama çubuğunu dışına tıklanınca kapatma
   useEffect(() => {
@@ -242,8 +229,6 @@ const FavoriCoinlerim = () => {
       </div>
     );
   }
-
-  
 
   return (
     <div className="coin-container">
@@ -319,7 +304,6 @@ const FavoriCoinlerim = () => {
 
       <div className="coin-grid">
       {currentCoins.map((coin, index) => (
-        
           <div
             key={coin._id}
             className={`card ${flipped[index] ? 'flipped' : ''}`}
@@ -348,7 +332,7 @@ const FavoriCoinlerim = () => {
                   className="favorite-button"
                   onClick={(e) => {
                     e.stopPropagation();
-                     handleToggleFavoriteCoin(coin._id, coin.influencerId, coin.isFavorite);
+                    handleToggleFavoriteCoin(coin._id, coin.userId, coin.isFavorite);
                   }}
                 >
                   {coin.isFavorite ? <StarIcon /> : <EmptyStarIcon />}
@@ -380,7 +364,7 @@ const FavoriCoinlerim = () => {
                 <div className="network-row network-bottom">
                   <div className="network-item">
                     <p className="info-value">
-                      ({coin.influencerName}) ({coin.network})
+                      ({coin.userName}) ({coin.network})
                     </p>
                   </div>
                 </div>

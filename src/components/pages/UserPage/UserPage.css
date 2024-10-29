@@ -211,6 +211,31 @@ h3 {
   height: 100%;
 }
 
+/* Dex Screener İkonu - Sol Üst Köşe */
+.dex-screener-button.top-left {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  z-index: 2;
+}
+
+/* Dex Screener İkonu - Sağ Alt Köşe */
+.dex-screener-button.bottom-right {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  z-index: 2;
+}
 
 .dex-screener-icon:hover {
   transform: scale(1.1); /* Hover efekt */

@@ -30,9 +30,16 @@ mongoose.connect(process.env.MONGODB_URI)
     console.error('MongoDB bağlantı hatası:', error);
   });
 
+
 // API Rotaları
-const usersRouter = require('./routes/users');
-app.use('/users', usersRouter);
+const authRouter = require('./routes/auth'); // auth ile ilgili rotalar
+app.use('/auth', authRouter); // auth işlemleri için
+
+
+// appUser Rotaları
+const appUser = require('./routes/appUser'); // auth ile ilgili rotalar
+app.use('/appUser', appUser); // auth işlemleri için
+
 
 // Sunucuyu Başlatma
 app.listen(port, () => {

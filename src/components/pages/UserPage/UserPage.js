@@ -6,18 +6,22 @@ import DexScreenerIcon from "../../../assets/dexscreener.png";
 import AddCoinModal from "./AddCoinModal";
 import EditCoinModal from "./EditCoinModal"; // EditCoinModal'ı import ediyoruz
 import { useUserPage } from "./useUserPage"; // Hook'u import ediyoruz
+import { useAdminUserPage } from "./useAdminUserPage"; // Hook'u import ediyoruz
 import { formatPriceWithConditionalZeros, formatMarketCap } from "./Utils"; // Import ediyoruz
 import Pagination from "../../../Pagination/Pagination";
 import "./UserPage.css";
 import StarIcon from "../../../StarIcons/StarIcon"; // Yıldız ikonunun yolu
 import EmptyStarIcon from "../../../StarIcons/EmptyStarIcon"; // Boş yıldız ikonunun yolu
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
 
 const UserPage = () => {
   const { id } = useParams();
+  const { role } = useSelector((state) => state.user);
 
-  // Hook'tan dönen veriler ve fonksiyonlar
+  // Kullanıcının rolüne göre uygun hook'u seçiyoruz
+  const hook = role === "admin" ? useAdminUserPage : useUserPage;
   const {
     user,
     coins,
@@ -27,7 +31,7 @@ const UserPage = () => {
     handleFlip,
     handleDeleteCoin,
     handleAddCoin,
-    handleUpdateCoin, // Düzenleme fonksiyonu
+    handleUpdateCoin,
     handleToggleFavoriteCoin,
     sortCriteria,
     setSortCriteria,
@@ -37,8 +41,9 @@ const UserPage = () => {
     setSelectedNetwork,
     defaultImage,
     getTwitterUsername,
+    isAdminInfluencer,
     allNetworks,
-  } = useUserPage(id);
+  } = hook(id);
 
   const [showAddCoinModal, setShowAddCoinModal] = useState(false);
   const [coinBeingEdited, setCoinBeingEdited] = useState(null); // Düzenlenen coin'in state'i
@@ -106,23 +111,26 @@ const UserPage = () => {
           <h1 className="user-name">{user.name}</h1>
         </div>
 
-        <div className="add-coin-and-twitter">
-          <button
-            className={`add-coin-button ${
-              isPaginationVisible ? "with-pagination" : ""
-            }`}
-            onClick={() => setShowAddCoinModal(true)}
-          >
-            <span className="desktop-text">Add</span>
-            <span className="mobile-text">+</span>
-          </button>
-        </div>
+{/* Add Coin butonunu admin kullanıcı veya admin olmayan ve isAdminInfluencer false ise göster */}
+{(role === "admin" || (!isAdminInfluencer && role !== "admin")) && (
+  <div className="add-coin-and-twitter">
+    <button
+      className={`add-coin-button ${
+        isPaginationVisible ? "with-pagination" : ""
+      }`}
+      onClick={() => setShowAddCoinModal(true)}
+    >
+      <span className="desktop-text">Add</span>
+      <span className="mobile-text">+</span>
+    </button>
+  </div>
+)}
       </div>
 
       {/* Sıralama ve Filtreleme Kontrolleri */}
       <div className="controls">
         <div className="filter-section">
-        <label htmlFor="sortCriteria">Sort: </label>
+          <label htmlFor="sortCriteria">Sort: </label>
 
           <span
             className={`sort-icon-container ${
@@ -143,10 +151,10 @@ const UserPage = () => {
             value={sortCriteria}
             onChange={(e) => setSortCriteria(e.target.value)}
           >
-           <option value="">Select Sorting Criteria</option>
-      <option value="shareDate">By Share Date</option>
-      <option value="profitPercentage">By Profit Percentage</option>
-      <option value="currentMarketCap">By Current MarketCap</option>
+            <option value="">Select Sorting Criteria</option>
+            <option value="shareDate">By Share Date</option>
+            <option value="profitPercentage">By Profit Percentage</option>
+            <option value="currentMarketCap">By Current MarketCap</option>
           </select>
 
           <label htmlFor="networkFilter">By Network: </label>
@@ -199,52 +207,79 @@ const UserPage = () => {
             {/* Ön Yüz */}
             <div className="card-inner">
               <div className="card-front">
-                <button
-                  className="delete-button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteCoin(coin._id);
-                  }}
-                >
-                  ❌
-                </button>
+                {/* Dex Screener ikonunu koşullu olarak sadece bir yerde gösteriyoruz */}
+                {isAdminInfluencer && (
+                  <button
+                    className={`dex-screener-button ${
+                      role === "admin" ? "bottom-right" : "top-left"
+                    }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(coin.url || "#", "_blank");
+                    }}
+                  >
+                    <img
+                      src={DexScreenerIcon}
+                      alt="Dex Screener"
+                      className="dex-screener-icon"
+                    />
+                  </button>
+                )}
+                {/* Diğer butonları yalnızca kullanıcı admin değilse veya influencer admin değilse gösteriyoruz */}
+                {role === "admin" || !isAdminInfluencer ? (
+                  <>
+                    <button
+                      className="delete-button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteCoin(coin._id);
+                      }}
+                    >
+                      ❌
+                    </button>
 
-                {/* Düzenle Butonu */}
-                <button
-                  className="edit-button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleEditCoin(coin);
-                  }}
-                >
-                  ✏️
-                </button>
+                    <button
+                      className="edit-button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEditCoin(coin);
+                      }}
+                    >
+                      ✏️
+                    </button>
+                  </>
+                ) : null}
 
-                {/* Yıldız İkonu - Sağ Alt Köşeye Eklenecek */}
+                {/* Yıldız İkonu */}
                 <button
                   className="favorite-button"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleToggleFavoriteCoin(coin._id, coin.isFavorite);
+                    handleToggleFavoriteCoin(
+                      coin._id,
+                      coin.influencerId,
+                      coin.isFavorite
+                    );
                   }}
                 >
                   {coin.isFavorite ? <StarIcon /> : <EmptyStarIcon />}
                 </button>
 
-                <button
-                  className="dex-screener-button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    window.open(coin.url || "#", "_blank");
-                  }}
-                >
-                  <img
-                    src={DexScreenerIcon}
-                    alt="Dex Screener"
-                    className="dex-screener-icon"
-                  />
-                </button>
-
+                {!(role !== "admin" && isAdminInfluencer) && (
+                  <button
+                    className="dex-screener-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(coin.url || "#", "_blank");
+                    }}
+                  >
+                    <img
+                      src={DexScreenerIcon}
+                      alt="Dex Screener"
+                      className="dex-screener-icon"
+                    />
+                  </button>
+                )}
                 <img
                   src={coin.imageUrl}
                   alt={coin.name}
@@ -267,7 +302,6 @@ const UserPage = () => {
                   </div>
                 </div>
               </div>
-
               {/* Arka Yüz */}
               <div className="card-back">
                 {/* Detaylar */}

@@ -4,23 +4,44 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './Home.css';
-import CoinIcon from '../../../assets/star.svg'; // Example coin icon
-import UserIcon from '../../../assets/user.svg'; // Example user icon
-import NewsIcon from '../../../assets/news.png'; // Example news icon
-import HomeImage from '../../../assets/home.png'; // Image for the hero section
+import CoinIcon from '../../../assets/star.svg';
+import UserIcon from '../../../assets/user.svg';
+import NewsIcon from '../../../assets/news.png';
+import HomeImage from '../../../assets/home.png';
+import Highlights from '../../../assets/highlights.png';
 import CryptoTicker from './CryptoTicker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from "react-redux";
 
 const Home = () => {
+
   const [highlights, setHighlights] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const user = useSelector((state) => state.user);
+  
   useEffect(() => {
-    // Fetch highlights data from backend
     const fetchHighlights = async () => {
+      setLoading(true);
       try {
-        const response = await axios.get('https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users/highlights');
+        // Token'ı ve kullanıcı ID'sini localStorage'dan alıyoruz
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+        const token = storedUser ? storedUser.token : null;
+        const appUserId = user.userId
+
+       
+
+        // Dinamik olarak URL'yi oluşturuyoruz
+        const url = `https://cointracker-backend-7786c0daa55a.herokuapp.com/appUser/${appUserId}/influencers/highlights`;
+
+        // Yetkilendirme başlığı ile birlikte isteği yapıyoruz
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         setHighlights(response.data);
       } catch (error) {
         console.error('Error fetching highlights:', error);
@@ -28,9 +49,9 @@ const Home = () => {
         setLoading(false);
       }
     };
-
     fetchHighlights();
-  }, []);
+  }, [user.userId]);
+
 
   return (
     <div className="home-container">
@@ -45,7 +66,7 @@ const Home = () => {
           <div className="hero-text">
             <h1>Step into the Gem Market!</h1>
             <p>
-              Discover the world of gem coins, where high volatility meets high risk, but with the potential for incredible gains. These under-the-radar cryptocurrencies, often promoted by trusted Twitter influencers, can see explosive growth in short periods. By tracking their performance and understanding their market movements, you can capitalize on the most promising opportunities. Stay ahead of the curve by adding your most trusted influencers, and build a portfolio that leverages both high risk and high reward to maximize your crypto investments.
+              Discover the world of gem coins, where high volatility meets high risk, but with the potential for incredible gains. These under-the-radar cryptocurrencies, often promoted by trusted Twitter influencers, can see explosive growth in short periods. By tracking their performance and understanding their market movements, you can capitalize on the most promising opportunities.
             </p>
           </div>
         </div>
@@ -56,8 +77,8 @@ const Home = () => {
         <div className="feature-card">
           <img src={UserIcon} alt="Favorite Influencers" className="feature-icon" />
           <h3>Add Your Favorite Influencers</h3>
-          <p>Track trusted Twitter influencers and the coins they share. Stay informed on their latest picks and monitor their performance.</p>
-          <Link to="/crypto-influencers" className="feature-button">Start</Link>
+          <p>Track trusted Twitter influencers and the coins they share.</p>
+          <Link to="/admin-influencers" className="feature-button">Start</Link>
         </div>
 
         <div className="feature-card">
@@ -68,58 +89,57 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Highlights Section */}
-      <section className="highlights-section">
-        <h2>Highlights</h2>
+        {/* Highlights Section - Yalnızca Giriş Yapmış Kullanıcılar İçin */}
+        {user &&  (
+        <section className="highlights-section">
+          <h2>Highlights</h2>
 
-        {loading ? (
-          <div className="loading-icon">
-            <FontAwesomeIcon icon={faSpinner} spin /> {/* Loading icon */}
-          </div>
-        ) : highlights ? (
-          <div className="highlights-grid">
-            <div className="highlight-card">
-              <img src={UserIcon} alt="Influencer" className="highlight-icon" />
-              <h3>Influencer with Highest Average Profit</h3>
-              <p>
-                Name:{' '}
-                <Link to={`/user/${highlights.highestAvgProfitUser._id}`}>
-                  {highlights.highestAvgProfitUser.name}
-                </Link>
-              </p>
-              <p>Average Profit: {highlights.highestAvgProfitUser.avgProfit.toFixed(2)}%</p>
+          {loading ? (
+            <div className="loading-icon">
+              <FontAwesomeIcon icon={faSpinner} spin />
             </div>
-            <div className="highlight-card">
-              <img src={CoinIcon} alt="Coin" className="highlight-icon" />
-              <h3>Top Performing Coin</h3>
-              <p>
-                Coin:{' '}
-                {highlights.highestProfitCoin.name} ({highlights.highestProfitCoin.symbol})
-              </p>
-              <p>Profit: {highlights.highestProfitCoin.profitPercentage.toFixed(2)}%</p>
-              <p>
-                Shared by:{' '}
-                <Link to={`/user/${highlights.highestProfitCoin.userId}`}>
-                  {highlights.highestProfitCoin.userName}
-                </Link>
-              </p>
+          ) : highlights ? (
+            <div className="highlights-grid">
+           {highlights.highestAvgProfitUser && (
+  <div className="highlight-card">
+    <img src={UserIcon} alt="Influencer" className="highlight-icon" />
+    <h3>Influencer with Highest Average Profit</h3>
+    <p>
+      Name: <Link to={`/user/${highlights.highestAvgProfitUser._id}`}>
+        {highlights.highestAvgProfitUser.name}
+      </Link>
+    </p>
+    <p>Average Profit: {highlights.highestAvgProfitUser.avgProfit.toFixed(2)}%</p>
+  </div>
+)}
+
+{highlights.highestProfitCoin && (
+  <div className="highlight-card">
+    <img src={CoinIcon} alt="Coin" className="highlight-icon" />
+    <h3>Top Performing Coin</h3>
+    <p>Coin: {highlights.highestProfitCoin.name} ({highlights.highestProfitCoin.symbol})</p>
+    <p>Profit: {highlights.highestProfitCoin.profitPercentage.toFixed(2)}%</p>
+  </div>
+)}
+
+{highlights.mostCoinsInfluencer && (
+  <div className="highlight-card">
+    <img src={UserIcon} alt="Influencer" className="highlight-icon" />
+    <h3>Influencer with Most Coins</h3>
+    <p>Name: <Link to={`/user/${highlights.mostCoinsInfluencer._id}`}>{highlights.mostCoinsInfluencer.name}</Link></p>
+    <p>Number of Coins: {highlights.mostCoinsInfluencer.coinCount}</p>
+  </div>
+)}
+
             </div>
-            <div className="highlight-card">
-              <img src={UserIcon} alt="Influencer" className="highlight-icon" />
-              <h3>Influencer with Most Coins</h3>
-              <p>
-                Name:{' '}
-                <Link to={`/user/${highlights.mostCoinsUser._id}`}>
-                  {highlights.mostCoinsUser.name}
-                </Link>
-              </p>
-              <p>Number of Coins: {highlights.mostCoinsUser.coins.length}</p>
-            </div>
-          </div>
-        ) : (
-          <p>Error loading highlights</p>
-        )}
-      </section>
+          ) : (
+            <section className="login-prompt-section">
+            <p>Please log in to view personalized highlights and insights.</p>
+            <img src={Highlights} alt="Login Prompt" className="login-prompt-image" />
+          </section>
+          )}
+        </section>
+      )}
     </div>
   );
 };

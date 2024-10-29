@@ -1,53 +1,60 @@
 // src/components/Home.js
-import React, { useContext, useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import './FavoriKullanicilarim.css';
-import twitterLogo from '../../../assets/twitter.svg';
-import { UserContext } from '../../../../src/context/UserContext';
+import twitterLogo from '../../../assets/x.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { useAppUser } from '../Categories/AppUser/useAppUser';
+import { useAdminInfluencer } from '../Categories/AdminInfluencer/useAdminInfluencer'; // useAppUser hook'unu import edin
+import { useSelector } from 'react-redux'; // role almak için
 
 const FavoriKullanicilarim = () => {
-  const { selectedUsers, removeUserFromSelected, fetchFavorites } = useContext(UserContext);
-  const [loading, setLoading] = useState(true);  // Yüklenme durumu için state
+  const { role } = useSelector((state) => state.user);
+  const isAdmin = role === 'admin';
 
-  useEffect(() => {
-    // Favori kullanıcıları çekmeye başladığımızda loading state'ini true yap
-    setLoading(true);
+    // Admin kullanıcı için useAdminInfluencer hook'unu, normal kullanıcı için useAppUser hook'unu kullan
+    const {
+      AdminInfluencerUsers,
+      handleToggleFavorite: handleToggleFavoriteAdmin,
+      loading: loadingAdminInfluencer
+    } = useAdminInfluencer();
 
-    fetchFavorites().finally(() => {
-      // API çağrısı tamamlandığında loading state'ini false yap
-      setLoading(false);
-    });
-  }, [fetchFavorites]); // fetchFavorites artık sabit bir fonksiyon referansına sahip
+    const {
+      AppUserUsers,
+      handleToggleFavorite,
+      loading: loadingAppUser
+    } = useAppUser();
 
-  const handleToggleFavorite = (user) => {
-    removeUserFromSelected(user._id);
-  };
+     // Seçilen hook'a göre favori kullanıcıları al
+  const favoriteUsers = isAdmin
+  ? AdminInfluencerUsers.filter(user => user.isFavorite)
+  : AppUserUsers.filter(user => user.isFavorite);
 
-  if (loading) {
-    return (
-      <div className="loading-icon">
-        <FontAwesomeIcon icon={faSpinner} spin /> {/* Loading icon */}
-      </div>
-    );
-  }
 
+  const loading = isAdmin ? loadingAdminInfluencer : loadingAppUser;
+  const handleFavoriteToggle = isAdmin ? handleToggleFavoriteAdmin : handleToggleFavorite;
+  
+    if (loading) {
+      return (
+        <div className="loading-icon">
+          <FontAwesomeIcon icon={faSpinner} spin /> {/* Loading icon */}
+        </div>
+      );
+    }
+
+    
   return (
     <div className="container">
-        <header className="favorites-header">
-        <h1>Favorite Influencers</h1>
-      </header>
-      <div className="card-container">
-        {loading ? (  // Eğer loading true ise "Loading" mesajını göster
-         <div className="loading-icon">
-         <FontAwesomeIcon icon={faSpinner} spin /> {/* Loading icon */}
-       </div>
-        ) : selectedUsers.length > 0 ? (  // Eğer kullanıcılar varsa bunları göster
-          selectedUsers.map(user => (
-            <div key={user._id} className="user-card">
+    <header className="favorites-header">
+      <h1>Favorite Influencers</h1>
+    </header>
+    <div className="card-container">
+      {favoriteUsers.length > 0 ? (
+        favoriteUsers.map(user => (
+          <div key={user._id} className="user-card">
               {/* Star Icon */}
-              <div className="star-icon-container" onClick={() => handleToggleFavorite(user)}>
+              <div className="star-icon-container" onClick={() => handleFavoriteToggle(user)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"

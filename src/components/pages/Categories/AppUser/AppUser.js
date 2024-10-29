@@ -1,33 +1,33 @@
 import React, { useState, useRef, useEffect } from "react";
 
 import { Link } from "react-router-dom";
-import "./EnGuvendiklerim.css";
-import twitterLogo from "../../../../assets/twitter.svg";
+import "./AppUser.css";
+import twitterLogo from "../../../../assets/x.svg";
 import Modal from "../Modal/Modal";
 import Pagination from "../../../../Pagination/Pagination";
 import AddUserForm from "./AddUserForm";
 import StarIcon from "../../../../StarIcons/StarIcon";
 import EmptyStarIcon from "../../../../StarIcons/EmptyStarIcon";
 import deleteIcon from "../../../../assets/delete.svg";
-import { useEnGuvendiklerim } from "./useEnGuvendiklerim";
+import { useAppUser } from "./useAppUser";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faSearch } from "@fortawesome/free-solid-svg-icons"; // Arama simgesi için
 
-const EnGuvendiklerim = () => {
+const AppUser = () => {
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false); // Arama çubuğunu açıp kapamak için state
   const searchBarRef = useRef(null);
-const searchIconRef = useRef(null);
+  const searchIconRef = useRef(null);
 
 
   const {
-    enGuvendiklerimUsers,
+    AppUserUsers,
     handleToggleFavorite,
     handleDeleteUser,
     handleAddUser,
-    isUserSelected,
     loading,
-  } = useEnGuvendiklerim();
+  } = useAppUser();
+
 
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState(""); // Arama çubuğu için state
@@ -36,12 +36,12 @@ const searchIconRef = useRef(null);
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
   // Arama çubuğuna girilen metne göre filtrelenmiş kullanıcılar
-  const filteredUsers = enGuvendiklerimUsers.filter((user) =>
+  const filteredUsers = AppUserUsers.filter((user) =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const currentUsers = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(enGuvendiklerimUsers.length / itemsPerPage);
+  const totalPages = Math.ceil(AppUserUsers.length / itemsPerPage);
 
   const handleSearchIconClick = () => {
     setSearchOpen(!searchOpen); // Arama çubuğunu aç/kapat
@@ -70,7 +70,7 @@ const searchIconRef = useRef(null);
   if (loading) {
     return (
       <div className="loading-icon">
-        <FontAwesomeIcon icon={faSpinner} spin /> {/* Loading icon */}
+        <FontAwesomeIcon icon={faSpinner} spin />
       </div>
     );
   }
@@ -125,7 +125,7 @@ const searchIconRef = useRef(null);
 
       <div className="card-container">
         {currentUsers.map((user) => {
-          const isSelected = isUserSelected(user._id);
+          const isSelected = user.isFavorite;
 
           return (
             <div key={user._id} className="user-card">
@@ -170,4 +170,4 @@ const searchIconRef = useRef(null);
   );
 };
 
-export default EnGuvendiklerim;
+export default AppUser;

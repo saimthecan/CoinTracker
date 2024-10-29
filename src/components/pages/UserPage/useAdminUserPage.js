@@ -1,64 +1,61 @@
-// src/hooks/useUserPage.js
+// src/hooks/useAdminUserPage.js
 
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import defaultImage from "../../../assets/logo-free.png";
 import { sortCoins, filterCoinsByNetwork } from "./Utils";
 import { useSelector } from 'react-redux';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 
 const API_URL = "https://cointracker-backend-7786c0daa55a.herokuapp.com";
 
-export const useUserPage = (id) => {
+export const useAdminUserPage = (id) => {
   const [user, setUser] = useState(null);
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [flipped, setFlipped] = useState([]);
   const [sortCriteria, setSortCriteria] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc")
+  const [sortOrder, setSortOrder] = useState("asc");
   const [selectedNetwork, setSelectedNetwork] = useState("");
   const [allNetworks, setAllNetworks] = useState([]);
-  const [isAdminInfluencer, setIsAdminInfluencer] = useState(false); 
 
-  const { userId, token, isAuthenticated, isLoading } = useSelector((state) => state.user);
+  const { token } = useSelector((state) => state.user);
 
-
-
-  // Axios interceptor token eklemek için
-axios.interceptors.request.use(
-  (config) => {
-    const storedUserData = localStorage.getItem('user');
-    if (storedUserData) {
-      const userData = JSON.parse(storedUserData);
-      config.headers['Authorization'] = `Bearer ${userData.token}`;
+  // Axios isteklerine token eklemek için interceptor
+  axios.interceptors.request.use(
+    (config) => {
+      const storedUserData = localStorage.getItem('user');
+      if (storedUserData) {
+        const userData = JSON.parse(storedUserData);
+        config.headers['Authorization'] = `Bearer ${userData.token}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
     }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+  );
 
- // Token geçerliliğini kontrol eden fonksiyon
- const checkTokenValidity = () => {
-  const storedUserData = localStorage.getItem('user');
-  if (!storedUserData) {
-    return false;
-  }
-  
-  const userData = JSON.parse(storedUserData);
-  const decodedToken = jwtDecode(userData.token);
-  const currentTime = Date.now() / 1000;
-  
-  // Token süresi dolmuşsa false döner
-  if (decodedToken.exp < currentTime) {
-    localStorage.removeItem('user');
-    return false;
-  }
+  // Token geçerliliğini kontrol eden fonksiyon
+  const checkTokenValidity = () => {
+    const storedUserData = localStorage.getItem('user');
+    if (!storedUserData) {
+      return false;
+    }
 
-  return true;
-};
+    const userData = JSON.parse(storedUserData);
+    const decodedToken = jwtDecode(userData.token);
+    const currentTime = Date.now() / 1000;
+
+    // Token süresi dolmuşsa false döner
+    if (decodedToken.exp < currentTime) {
+      localStorage.removeItem('user');
+      return false;
+    }
+
+    return true;
+  };
 
   // Twitter kullanıcı adını çıkaran fonksiyon
   const getTwitterUsername = (twitterUrl) => {
@@ -74,65 +71,34 @@ axios.interceptors.request.use(
 
   const fetchAdminInfluencerData = useCallback(async () => {
     try {
+      // Token geçerliliği kontrolü
+      if (!checkTokenValidity()) {
+        throw new Error("Token geçersiz veya bulunamadı.");
+      }
+
+      const storedUserData = JSON.parse(localStorage.getItem('user'));
+      const userToken = storedUserData?.token;
+
+      if (!userToken) {
+        throw new Error("Token bulunamadı");
+      }
+
+      // Influencer bilgisini ve coinlerini alıyoruz
       const response = await axios.get(
         `${API_URL}/appUser/admin-influencers/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            'Authorization': `Bearer ${userToken}`,
           },
         }
       );
-      setIsAdminInfluencer(true); // Admin influencer bulundu
-      return response.data;
-    } catch (error) {
-      console.error("Admin influencer verileri alınırken hata oluştu:", error);
-      return null;
-    }
-  }, [id, token]);
 
-  const fetchUserData = useCallback(async () => {
-    try {
-      // Eğer token geçersizse hata fırlat
-      if (!checkTokenValidity()) {
-        throw new Error("Token geçersiz veya bulunamadı.");
-      }
-  
-      if (!token || !userId) {
-        throw new Error("Token veya userId bulunamadı");
-      }
-  
-      let influencer = null;
-  
-      try {
-        // İlk olarak kullanıcının kendi influencer listesinde arıyoruz
-        const response = await axios.get(
-          `${API_URL}/appUser/${userId}/influencer/${id}`,
-          {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            },
-          }
-        );
-        influencer = response.data;
-        setIsAdminInfluencer(false); 
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
-          // Influencer bulunamadıysa, admin influencer'ı arıyoruz
-          influencer = await fetchAdminInfluencerData();
-          if (!influencer) {
-            throw new Error("Influencer bulunamadı");
-          }
-        } else {
-          // Başka bir hata oluştuysa, hatayı fırlatıyoruz
-          throw error;
-        }
-      }
-  
+      const influencer = response.data;
       setUser(influencer);
-  
+
       // Coinler influencer nesnesinin içinde
       const influencerCoins = influencer.coins;
-  
+
       const updatedCoins = await Promise.all(
         influencerCoins.map(async (coin) => {
           try {
@@ -143,21 +109,22 @@ axios.interceptors.request.use(
             if (!pairs || pairs.length === 0) {
               throw new Error("Coin verileri alınamadı.");
             }
-  
+
             const pair = pairs[0];
             const currentPrice = parseFloat(pair.priceUsd);
             const currentMarketCap = pair.marketCap;
-            const imageUrl = pair.chainId && coin.caAddress && pair.priceUsd && pair.imageUrl !== ""
-              ? `https://dd.dexscreener.com/ds-data/tokens/${pair.chainId}/${coin.caAddress}.png?size=lg&key=a459db`
-              : defaultImage;
-  
+            const imageUrl =
+              pair.chainId && coin.caAddress && pair.priceUsd && pair.imageUrl !== ""
+                ? `https://dd.dexscreener.com/ds-data/tokens/${pair.chainId}/${coin.caAddress}.png?size=lg&key=a459db`
+                : defaultImage;
+
             const url = pair.url || "";
-  
+
             const marketCapComparison = calculateMarketCapChange(
               coin.shareMarketCap,
               currentMarketCap
             );
-  
+
             const chainIdToNetwork = {
               ethereum: "Ethereum",
               bsc: "Binance Smart Chain",
@@ -167,9 +134,9 @@ axios.interceptors.request.use(
               avalanche: "Avalanche",
               fantom: "Fantom",
             };
-  
+
             const network = chainIdToNetwork[pair.chainId] || pair.chainId;
-  
+
             return {
               ...coin,
               currentPrice,
@@ -194,38 +161,31 @@ axios.interceptors.request.use(
           }
         })
       );
-  
+
       // Tüm ağları topluyoruz
       const networks = Array.from(
         new Set(updatedCoins.map((coin) => coin.network))
       );
       setAllNetworks(networks); // Ağları kaydediyoruz
-  
+
       setCoins(updatedCoins);
       setLoading(false);
     } catch (error) {
-      setError("Kullanıcı bulunamadı");
+      console.error('Admin influencer verileri alınırken hata oluştu:', error);
+      setError("Influencer bulunamadı");
       setLoading(false);
     }
-  }, [token, userId, id, fetchAdminInfluencerData]);
-  
+  }, [id]);
 
   useEffect(() => {
-    if (isAuthenticated && !isLoading) {
-      fetchUserData();
-    }
-  }, [fetchUserData, isAuthenticated, isLoading]);
-  
-
-  useEffect(() => {
-    fetchUserData();
+    fetchAdminInfluencerData();
 
     const intervalId = setInterval(() => {
-      fetchUserData();
+      fetchAdminInfluencerData();
     }, 50000);
 
     return () => clearInterval(intervalId);
-  }, [fetchUserData]);
+  }, [fetchAdminInfluencerData]);
 
   const handleFlip = (index) => {
     const newFlipped = [...flipped];
@@ -236,25 +196,27 @@ axios.interceptors.request.use(
   const handleDeleteCoin = async (coinId) => {
     if (window.confirm("Bu coin'i silmek istediğinizden emin misiniz?")) {
       try {
-        await axios.delete(`${API_URL}/appUser/${userId}/influencer/${id}/coins/${coinId}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-        // Coin listesini güncellemek için tekrar veri çekiyoruz
-        await fetchUserData();
+        await axios.delete(
+          `${API_URL}/appUser/admin-influencers/${id}/coins/${coinId}`,
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          }
+        );
+        // Verileri yenilemek için tekrar çekiyoruz
+        await fetchAdminInfluencerData();
       } catch (error) {
         console.error("Coin silinirken hata oluştu:", error);
         alert("Coin silinirken bir hata oluştu.");
       }
     }
   };
-  
 
   const handleAddCoin = async (newCoin) => {
     try {
       await axios.post(
-        `${API_URL}/appUser/${userId}/influencer/${id}/coins`,
+        `${API_URL}/appUser/admin-influencers/${id}/coins`,
         newCoin,
         {
           headers: {
@@ -263,7 +225,7 @@ axios.interceptors.request.use(
         }
       );
       // Yeni coin eklendikten sonra verileri tekrar çekiyoruz
-      await fetchUserData();
+      await fetchAdminInfluencerData();
       // Artık setCoins ile coinleri güncellememize gerek yok
     } catch (error) {
       console.error("Coin eklenirken hata oluştu:", error);
@@ -272,11 +234,10 @@ axios.interceptors.request.use(
   };
   
 
-  // Coin güncelleme fonksiyonu
   const handleUpdateCoin = async (updatedCoin) => {
     try {
       await axios.put(
-        `${API_URL}/appUser/${userId}/influencer/${id}/coins/${updatedCoin._id}`,
+        `${API_URL}/appUser/admin-influencers/${id}/coins/${updatedCoin._id}`,
         updatedCoin,
         {
           headers: {
@@ -284,43 +245,43 @@ axios.interceptors.request.use(
           },
         }
       );
-      // Coin listesini güncellemek için kullanıcı verilerini tekrar çekiyoruz
-      await fetchUserData();
+      // Verileri yenilemek için tekrar çekiyoruz
+      await fetchAdminInfluencerData();
     } catch (error) {
       console.error("Coin güncellenirken hata oluştu:", error);
       alert("Coin güncellenirken bir hata oluştu.");
     }
   };
 
- // userId parametresini kaldırıyoruz ve influencerId ekliyoruz
-const handleToggleFavoriteCoin = async (coinId, influencerId, isCurrentlyFavorite) => {
-  try {
-    if (isCurrentlyFavorite) {
-      await axios.delete(`${API_URL}/appUser/${userId}/influencer/${influencerId}/coins/${coinId}/favorite`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-    } else {
-      await axios.put(`${API_URL}/appUser/${userId}/influencer/${influencerId}/coins/${coinId}/favorite`, {}, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
+  const handleToggleFavoriteCoin = async (coinId, influencerId, isCurrentlyFavorite) => {
+    try {
+      const endpoint = `${API_URL}/appUser/admin-influencers/${influencerId}/coins/${coinId}/favorite`;
+      
+      if (isCurrentlyFavorite) {
+        await axios.delete(endpoint, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+      } else {
+        await axios.put(endpoint, {}, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+      }
+      
+      setCoins((prevCoins) =>
+        prevCoins.map((coin) =>
+          coin._id === coinId ? { ...coin, isFavorite: !isCurrentlyFavorite } : coin
+        )
+      );
+    } catch (error) {
+      console.error('Favori durum değiştirilirken hata oluştu:', error);
+      alert('Favori durum değiştirilirken bir hata oluştu.');
     }
-    
-    setCoins((prevCoins) =>
-      prevCoins.map((coin) =>
-        coin._id === coinId ? { ...coin, isFavorite: !isCurrentlyFavorite } : coin
-      )
-    );
-  } catch (error) {
-    console.error('Favori durum değiştirilirken hata oluştu:', error);
-    alert('Favori durum değiştirilirken bir hata oluştu.');
-  }
-};
-
-
+   };
+   
 
   const calculateMarketCapChange = (shareMarketCap, currentMarketCap) => {
     if (!shareMarketCap || !currentMarketCap) return "Loading";
@@ -334,7 +295,7 @@ const handleToggleFavoriteCoin = async (coinId, influencerId, isCurrentlyFavorit
 
   return {
     user,
-    coins: filteredCoins, // Filtrelenmiş ve sıralanmış coinleri döndürüyoruz
+    coins: filteredCoins,
     loading,
     error,
     flipped,
@@ -345,13 +306,12 @@ const handleToggleFavoriteCoin = async (coinId, influencerId, isCurrentlyFavorit
     handleToggleFavoriteCoin,
     sortCriteria,
     setSortCriteria,
-    sortOrder, // Sıralama yönünü döndürüyoruz
-    setSortOrder, // Sıralama yönünü değiştirmek için kullanıyoruz
+    sortOrder,
+    setSortOrder,
     selectedNetwork,
     setSelectedNetwork,
     defaultImage,
     getTwitterUsername,
-    isAdminInfluencer,
     allNetworks,
   };
 };

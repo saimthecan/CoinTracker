@@ -1,7 +1,7 @@
 // src/components/AddUserForm.js
 import React, { useState } from 'react';
 import userIcon from '../../../../assets/user.svg';
-import twitterIcon from '../../../../assets/twitter.svg';
+import twitterIcon from '../../../../assets/x.svg';
 
 const AddUserForm = ({ onAddUser, onClose }) => {
   const [name, setName] = useState('');
@@ -10,14 +10,14 @@ const AddUserForm = ({ onAddUser, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newUser = {
+    const newInfluencer = {
       name,
       twitter: `https://x.com/${twitterUsername}`,
-      category: 'en_güvendiklerim',
       coins: [],
     };
+  
 
-    onAddUser(newUser);
+    onAddUser(newInfluencer);
 
     // Formu temizle ve modalı kapat
     setName('');

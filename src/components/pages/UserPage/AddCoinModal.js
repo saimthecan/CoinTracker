@@ -62,7 +62,6 @@ const AddCoinModal = ({ onClose, onAddCoin }) => {
         sharePrice: calculatedSharePrice,
       };
 
-      console.log("Yeni coin nesnesi:", newCoin);
       onAddCoin(newCoin); // Yeni coin ekleniyor
       onClose(); // Modalı kapat
     } catch (error) {

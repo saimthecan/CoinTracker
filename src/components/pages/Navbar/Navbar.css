@@ -6,7 +6,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     height: 10px; /* Compact navbar */
     display: flex;
-    justify-content: center; /* Center horizontally */
+    justify-content: space-between;  /* Center horizontally */
     align-items: center; /* Center vertically */
     position: fixed; /* Fixed at the top */
     top: 0;
@@ -17,19 +17,19 @@
   /* Navbar Content */
   .navbar-content {
     display: flex;
-    justify-content: center; /* İçeriği yatayda ortala */
     align-items: center;
     width: 100%;
-    max-width: 1200px; /* İçerik genişliğini sınırlamak için */
-    padding: 0 20px; /* Yatay padding */
+    padding-right: 25px;
     gap: 20px; /* Logo ve linkler arasına boşluk ekle */
   }
   
-  /* Logo Style */
-  .logo-container {
-    flex-shrink: 0; /* Fixed logo size */
-  }
-  
+ /* Logo Style */
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+
   .navbar-logo {
     width: 45px; /* Small, minimal logo */
     height: auto;
@@ -58,6 +58,40 @@
   .nav-link.active {
     color: #0071e3; /* Blue for active link */
   }
+
+
+  .auth-buttons {
+    display: flex;
+    gap: 0.2rem;
+    margin-left: auto;
+  }
+
+.auth-button {
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+
+}
+
+.auth-button:first-of-type {
+  background-color: #007bff; /* Yeşil buton */
+  color: white;
+  border: 2px solid;
+}
+
+.auth-button:last-of-type {
+  background-color: transparent;
+  color: black;
+  border: 2px solid #ccc;
+}
+
+.auth-button:hover {
+  opacity: 0.8; /* Hover efekti */
+}
   
   /* Hamburger Icon - Hidden on Desktop */
   .hamburger-icon {
@@ -71,12 +105,12 @@
   .sidebar {
     position: fixed;
     top: 0;
-    right: -100%;
+    left: -100%;
     width: 250px;
     height: 100%;
     background-color: #fff;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
-    transition: right 0.3s ease-in-out;
+    transition: left 0.3s ease-in-out;
     padding: 2rem 1rem;
     z-index: 1;
     display: flex;
@@ -85,7 +119,7 @@
   }
   
   .sidebar-open {
-    right: 0;
+    left: 0;
   }
 
   .sidebar-open-body {
@@ -130,6 +164,120 @@
     color: #0071e3; /* Blue for active link */
   }
   
+/* Mobile Auth Buttons */
+.mobile-auth-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+
+
+.sidebar-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+/* User Avatar */
+.user-avatar-container {
+  position: relative;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.user-avatar {
+  background-color: #4a2f1e;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #f28b11; /* Dış çerçeve rengi */
+}
+
+.user-avatar:hover {
+  transform: scale(1.05);
+}
+.user-dropdown-menu {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  width: 220px;
+  padding: 10px;
+}
+
+
+
+
+.user-dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+.logout-icon {
+  font-size: 16px;
+  color: #ff0000;
+}
+
+
+/* Kullanıcı Bilgisi */
+.navbar-user-info {
+  display: flex;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  justify-content: flex-start; /* Sola hizala */
+}
+
+.user-avatar-large {
+  background-color: #4a2f1e;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.username {
+  color: #f28b11;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: left; /* Sola hizalı yazı */
+}
+
+/* Dropdown Logout Butonu */
+.user-dropdown-item {
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  transition: background-color 0.2s ease-in-out;
+  font-size: 16px;
+}
+
+.user-dropdown-item span {
+  margin-right: 8px; /* İkon ile yazı arasında boşluk */
+}
+.user-dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+
   /* Responsive Styles */
   
   /* Desktop View */
@@ -141,6 +289,7 @@
     .hamburger-icon {
       display: none; /* Hide hamburger on desktop */
     }
+ 
   }
   
   /* Mobile View */
@@ -154,6 +303,8 @@
       z-index: 100; /* Navbar'dan daha yüksek olmalı */
     }
 
+ 
+
     .links-container {
       display: none; /* Hide links on mobile */
     }
@@ -162,7 +313,6 @@
       justify-content: space-between; /* Sol ve sağa hizala */
       align-items: center;
       width: 100%;
-      padding: 0 20px; /* Yatay padding */
     }
   
     .logo-container {
@@ -170,13 +320,21 @@
     }
   
     .hamburger-icon {
-      margin-left: auto; /* Hamburger ikonunu sağa dayamak için */
+    
       display: block;
       margin-right: 1rem;
     }
     .navbar-logo{
         margin-left: -1.5rem;
     }
+
+        /* Mobile auth buttons - sidebar içinde */
+        .mobile-auth-buttons {
+          display: flex;
+          gap: 1rem;
+          margin-top: 2rem;
+      }
+   
   }
   
 

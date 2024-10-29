@@ -232,6 +232,10 @@
     background-color: var(--button-active-color);
     transform: translateY(0);
   }
+
+  .login-prompt-image{
+    width: 65%;
+  }
   
   /* Animasyonlar */
   @keyframes fadeInDown {
@@ -336,6 +340,10 @@
     .hero-button {
       padding: 0.75rem 1.5rem; /* Buton boyutlarını ayarlar */
       font-size: 1rem; /* Buton yazı boyutunu küçültür */
+    }
+
+    .login-prompt-image{
+      width: 100%;
     }
   }
    

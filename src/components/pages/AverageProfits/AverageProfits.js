@@ -1,54 +1,74 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import './AverageProfits.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner, faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import "./AverageProfits.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faSpinner,
+  faSort,
+  faSortUp,
+  faSortDown,
+} from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
 
 const AverageProfits = () => {
   const [userProfits, setUserProfits] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [sortConfig, setSortConfig] = useState({ key: 'avgProfit', direction: 'descending' });
+  const [sortConfig, setSortConfig] = useState({
+    key: "avgProfit",
+    direction: "descending",
+  });
+  const userId = useSelector((state) => state.user.userId);
 
   useEffect(() => {
-    // Backend'den ortalama kâr/zarar verilerini ve coin sayısını çekme
-    const fetchAverageProfits = async () => {
+    const fetchAverageProfit = async () => {
       try {
-        const response = await axios.get('https://calm-harbor-22861-fa5a63bab33f.herokuapp.com/users/average-profits');
-        setUserProfits(response.data);
+        const response = await axios.get(
+          `https://cointracker-backend-7786c0daa55a.herokuapp.com/appUser/${userId}/average-profits`
+        );
+
+        // avgProfit değerini hesaplayarak yeni bir dizi oluşturuyoruz
+        const processedData = response.data.influencers.map((influencer) => ({
+          ...influencer,
+          avgProfit:
+            influencer.coinCount > 0
+              ? influencer.totalProfit / influencer.coinCount
+              : 0, // coinCount sıfırsa avgProfit'i 0 olarak ayarlıyoruz
+        }));
+        setUserProfits(processedData);
       } catch (error) {
-        console.error('Error fetching average profits:', error);
+        console.error("Error fetching average profit:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchAverageProfits();
-  }, []);
+    fetchAverageProfit();
+  }, [userId]);
 
   // Sıralama fonksiyonu
   const handleSort = (key) => {
-    let direction = 'ascending';
-    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
-      direction = 'descending';
+    let direction = "ascending";
+    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
     }
     setSortConfig({ key, direction });
   };
 
   // Sıralama ayarına göre tabloyu sıralama
   const sortedUserProfits = [...userProfits].sort((a, b) => {
-    if (a[sortConfig.key] < b[sortConfig.key]) {
-      return sortConfig.direction === 'ascending' ? -1 : 1;
+    if (parseFloat(a[sortConfig.key]) < parseFloat(b[sortConfig.key])) {
+      return sortConfig.direction === "ascending" ? -1 : 1;
     }
-    if (a[sortConfig.key] > b[sortConfig.key]) {
-      return sortConfig.direction === 'ascending' ? 1 : -1;
+    if (parseFloat(a[sortConfig.key]) > parseFloat(b[sortConfig.key])) {
+      return sortConfig.direction === "ascending" ? 1 : -1;
     }
     return 0;
   });
 
   const getSortIcon = (key) => {
     if (sortConfig.key === key) {
-      return sortConfig.direction === 'ascending' ? faSortUp : faSortDown;
+      return sortConfig.direction === "ascending" ? faSortUp : faSortDown;
     }
     return faSort;
   };
@@ -60,35 +80,44 @@ const AverageProfits = () => {
       </header>
       {loading ? (
         <div className="loading-spinner">
-          <FontAwesomeIcon icon={faSpinner} spin /> {/* Loading icon */}
+          <FontAwesomeIcon icon={faSpinner} spin />
         </div>
       ) : (
         <table className="profits-table">
           <thead>
             <tr>
               <th>Influencer</th>
-              <th onClick={() => handleSort('avgProfit')}>
-                Average Profit (%){' '}
-                <FontAwesomeIcon icon={getSortIcon('avgProfit')} />
+              <th onClick={() => handleSort("avgProfit")}>
+                Average Profit (%){" "}
+                <FontAwesomeIcon icon={getSortIcon("avgProfit")} />
               </th>
-              <th onClick={() => handleSort('coinCount')}>
-                Number of Coins{' '}
-                <FontAwesomeIcon icon={getSortIcon('coinCount')} />
+              <th onClick={() => handleSort("coinCount")}>
+                Number of Coins{" "}
+                <FontAwesomeIcon icon={getSortIcon("coinCount")} />
               </th>
             </tr>
           </thead>
           <tbody>
-            {sortedUserProfits.map((user) => (
-              <tr key={user.userId}>
+            {sortedUserProfits.map((influencer, index) => (
+              <tr key={index}>
                 <td>
-                  <Link to={`/user/${user.userId}`} className="user-link">
-                    {user.userName}
+                  <Link
+                    to={`/user/${influencer.influencerId}`}
+                    className="user-link"
+                  >
+                    {influencer.influencerName}
                   </Link>
                 </td>
-                <td className={user.avgProfit > 0 ? 'profit-positive' : 'profit-negative'}>
-                  {user.avgProfit.toFixed(2)}%
+                <td
+                  className={
+                    influencer.totalProfit > 0
+                      ? "profit-positive"
+                      : "profit-negative"
+                  }
+                >
+                  {(influencer.totalProfit / influencer.coinCount).toFixed(2)}%
                 </td>
-                <td>{user.coinCount}</td>
+                <td>{influencer.coinCount}</td>
               </tr>
             ))}
           </tbody>
