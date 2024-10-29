@@ -13,18 +13,8 @@ const News = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const rssFeeds = [
-          'https://coindesk.com/arc/outboundfeeds/rss/',
-          'https://cointelegraph.com/rss',
-        ];
-
-        const allPromises = rssFeeds.map(feed =>
-          axios.get(`https://api.rss2json.com/v1/api.json?rss_url=${feed}`)
-        );
-
-        const responses = await Promise.all(allPromises);
-        const allNews = responses.flatMap(response => response.data.items);
-        setNewsItems(allNews);
+        const response = await axios.get('http://localhost:5000/news'); // Backend'deki /news endpoint'ine istek atıyoruz
+        setNewsItems(response.data);
       } catch (error) {
         console.error('Error fetching news:', error);
         setError(true);
@@ -32,15 +22,13 @@ const News = () => {
         setLoading(false);
       }
     };
-
+  
     fetchNews();
-
-  // Her 5 dakikada bir haberleri güncelleyen interval
-  const intervalId = setInterval(fetchNews, 1800000 ); // 30 dakika
-
-  return () => clearInterval(intervalId); // Bileşen kaldırıldığında interval'i temizle
+  
+    const intervalId = setInterval(fetchNews, 1800000); // 30 dakika
+    return () => clearInterval(intervalId);
   }, []);
-
+  
   const removeDuplicateImages = (htmlContent) => {
     // Sadece ilk img'yi döndürüyor ve diğerlerini filtreliyor.
     return htmlContent.replace(/<img[^>]*>/g, (match, index) => (index === 0 ? match : ''));

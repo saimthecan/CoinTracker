@@ -40,6 +40,11 @@ app.use('/auth', authRouter); // auth işlemleri için
 const appUser = require('./routes/appUser'); // auth ile ilgili rotalar
 app.use('/appUser', appUser); // auth işlemleri için
 
+// news
+const newsRouter = require('./routes/news');
+app.use('/news', newsRouter);
+
+
 
 // Sunucuyu Başlatma
 app.listen(port, () => {
