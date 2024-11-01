@@ -334,6 +334,11 @@
           gap: 1rem;
           margin-top: 2rem;
       }
+
+      .auth-button {
+        padding: 7px 13px;
+        font-size: 12px;
+      }
    
   }
   
