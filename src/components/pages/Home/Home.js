@@ -78,7 +78,7 @@ const Home = () => {
           <img src={UserIcon} alt="Favorite Influencers" className="feature-icon" />
           <h3>Add Your Favorite Influencers</h3>
           <p>Track trusted Twitter influencers and the coins they share.</p>
-          <Link to="/admin-influencers" className="feature-button">Start</Link>
+          <Link to="/AppUser-influencers" className="feature-button">Start</Link>
         </div>
 
         <div className="feature-card">
