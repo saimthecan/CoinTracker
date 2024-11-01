@@ -1333,6 +1333,7 @@ router.get('/:appUserId/influencers/highlights', async (req, res) => {
       if (avgProfit > highestAvgProfit) {
         highestAvgProfit = avgProfit;
         highestAvgProfitUser = {
+          _id: influencer._id, 
           name: influencer.name,
           avgProfit,
         };
@@ -1341,6 +1342,7 @@ router.get('/:appUserId/influencers/highlights', async (req, res) => {
 
     // Sonuçları döndür
     res.json({
+      _id: mostCoinsInfluencer._id,
       highestAvgProfitUser,
       highestProfitCoin,
       mostCoinsInfluencer: mostCoinsInfluencer ? {

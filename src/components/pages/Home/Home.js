@@ -41,7 +41,6 @@ const Home = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-
         setHighlights(response.data);
       } catch (error) {
         console.error('Error fetching highlights:', error);

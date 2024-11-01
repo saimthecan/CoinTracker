@@ -16,6 +16,7 @@ import store from "./ReduxToolkit/store";
 import { setUser, clearUser, setAuthLoading  } from './ReduxToolkit/userSlice';
 import { jwtDecode } from 'jwt-decode';
 import "./App.css";
+import ScrollToTop from './ScrollToTop'; 
 
 const App = () => {
   return (
@@ -83,6 +84,7 @@ const AppContent = () => {
 
   return (
       <Router>
+          <ScrollToTop />
         <Navbar />
         <div className="main-content">
           <Routes>
