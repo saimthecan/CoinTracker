@@ -123,6 +123,14 @@ const Navbar = () => {
                 >
                   My Favorite Influencers
                 </RouterLink>
+                {role === "appUser" && (
+                  <RouterLink
+                    to="/AppUser-influencers"
+                    className={location.pathname === "/AppUser-influencers" ? "nav-link active" : "nav-link"}
+                  >
+                    My Influencers
+                  </RouterLink>
+                )}
                 <RouterLink
                   to="/admin-influencers"
                   className={
@@ -133,14 +141,7 @@ const Navbar = () => {
                 >
                   Admin Influencers
                 </RouterLink>
-                {role === "appUser" && (
-                  <RouterLink
-                    to="/AppUser-influencers"
-                    className={location.pathname === "/AppUser-influencers" ? "nav-link active" : "nav-link"}
-                  >
-                    AppUser Influencers
-                  </RouterLink>
-                )}
+             
                 <RouterLink
                   to="/average-profits"
                   className={
@@ -236,6 +237,15 @@ const Navbar = () => {
               >
                 <FaHeart className="sidebar-icon" /> My Favorite Influencers
               </RouterLink>
+              {role === "appUser" && (
+                <RouterLink
+                  to="/AppUser-influencers"
+                  className={location.pathname === "/AppUser-influencers" ? "sidebar-link active" : "sidebar-link"}
+                  onClick={toggleSidebar}
+                >
+                  <FaUserFriends className="sidebar-icon" /> My Influencers
+                </RouterLink>
+              )}
               <RouterLink
                 to="/admin-influencers"
                 className={
@@ -247,15 +257,7 @@ const Navbar = () => {
               >
                 <FaUserFriends className="sidebar-icon" /> Admin Influencers
               </RouterLink>
-              {role === "appUser" && (
-                <RouterLink
-                  to="/AppUser-influencers"
-                  className={location.pathname === "/AppUser-influencers" ? "sidebar-link active" : "sidebar-link"}
-                  onClick={toggleSidebar}
-                >
-                  <FaUserFriends className="sidebar-icon" /> AppUser Influencers
-                </RouterLink>
-              )}
+          
               <RouterLink
                 to="/average-profits"
                 className={
