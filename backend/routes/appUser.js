@@ -3,7 +3,9 @@ const router = express.Router();
 const AppUser = require('../models/AppUser');
 const axios = require('axios');
 const authenticateToken = require('../middleware/authenticateToken'); // Import here
+const { sendNotification } = require('./notificationService');
 const mongoose = require('mongoose');
+
 
 
 // Ana sayfa rotası
@@ -146,6 +148,13 @@ router.post(
 
       // Yeni eklenen coin'i almak için
       const addedCoin = influencer.coins[influencer.coins.length - 1];
+
+      // Bildirim gönderme
+      const payload = {
+        title: 'New Coin Added',
+        message: `${addedCoin.name} has been added under influencer ${influencer.name}.`,
+      };
+      sendNotification(payload);
 
       res.status(201).json(addedCoin);
     } catch (err) {
@@ -681,11 +690,40 @@ router.get("/admin-influencers", authenticateToken, async (req, res) => {
       return admin.influencers;
     });
 
+     // Bildirim gönderme
+     if (influencersList.length > 0) {
+      const payload = {
+        title: 'Influencers Fetched',
+        message: `Total ${influencersList.length} influencers have been fetched successfully.`,
+      };
+      sendNotification(payload);
+    }
+
 
     res.json(influencersList);
   } catch (err) {
     console.error("Admin influencerları getirilirken hata oluştu:", err);
     res.status(500).json({ message: "Influencerlar alınırken hata oluştu" });
+  }
+});
+
+
+// Save push subscription
+router.post('/:appUserId/subscribe', authenticateToken, async (req, res) => {
+  try {
+    const appUser = await AppUser.findById(req.params.appUserId);
+    if (!appUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Save the subscription object
+    appUser.pushSubscription = req.body.subscription;
+    await appUser.save();
+
+    res.status(200).json({ message: 'Subscription saved' });
+  } catch (err) {
+    console.error('Error saving subscription:', err);
+    res.status(500).json({ message: 'Error saving subscription' });
   }
 });
 

@@ -273,6 +273,21 @@
     box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
   }
 
+  .notification-icon-container {
+    position: absolute;
+    left: 20px; /* Adjust as needed */
+    cursor: pointer;
+  }
+  
+  .notification-icon-container.enabled .notification-icon {
+    color: green; /* Change color when enabled */
+  }
+  
+  .notification-icon {
+    font-size: 24px; /* Adjust size as needed */
+  }
+  
+
 
 /* Mobile View */
 @media (max-width: 767px) {

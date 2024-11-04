@@ -24,7 +24,8 @@ const appUserSchema = new mongoose.Schema({
   role: { type: String, default: 'appUser' }, // Rol (örneğin 'appUser' ya da 'admin')
   isActive: { type: Boolean, default: true }, // Kullanıcı aktif mi?
   createdAt: { type: Date, default: Date.now }, // Kullanıcının oluşturulma tarihi
-  influencers: [influencerSchema] // Influencers alanı ekleniyor
+  influencers: [influencerSchema], // Influencers alanı ekleniyor
+  pushSubscription: mongoose.Schema.Types.Mixed,
 });
 
 
