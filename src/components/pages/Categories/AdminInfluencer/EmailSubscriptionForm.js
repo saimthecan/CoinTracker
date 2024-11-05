@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './EmailSubscriptionForm.css';
 
 const EmailSubscriptionForm = ({ onSubmitEmail, onClose }) => {
   const [email, setEmail] = useState('');
@@ -18,9 +19,12 @@ const EmailSubscriptionForm = ({ onSubmitEmail, onClose }) => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          className="email-input"
         />
-        <button type="submit">Subscribe</button>
-        <button type="button" onClick={onClose}>Cancel</button>
+        <div className="button-group">
+          <button type="submit" className="subscribe-button">Subscribe</button>
+          <button type="button" className="cancel-button" onClick={onClose}>Cancel</button>
+        </div>
       </form>
     </div>
   );

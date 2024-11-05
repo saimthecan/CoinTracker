@@ -1,0 +1,62 @@
+.email-subscription-form {
+    padding: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .email-subscription-form h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+  
+  .email-subscription-form form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .email-input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .subscribe-button,
+  .cancel-button {
+    flex: 1;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+  }
+  
+  .subscribe-button {
+    background-color: #28a745;
+    color: #ffffff;
+    margin-right: 10px;
+  }
+  
+  .cancel-button {
+    background-color: #dc3545;
+    color: #ffffff;
+    margin-left: 10px;
+  }
+  
+  .subscribe-button:hover {
+    background-color: #218838;
+  }
+  
+  .cancel-button:hover {
+    background-color: #c82333;
+  }
+  
