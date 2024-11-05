@@ -25,13 +25,13 @@
     margin-bottom: 20px;
   }
   
-  .button-group {
+  .email-button-group {
     display: flex;
     justify-content: space-between;
   }
   
-  .subscribe-button,
-  .cancel-button {
+  .email-subscribe-button,
+  .email-cancel-button {
     flex: 1;
     padding: 10px 20px;
     font-size: 16px;
@@ -40,23 +40,23 @@
     border-radius: 4px;
   }
   
-  .subscribe-button {
+  .email-subscribe-button {
     background-color: #28a745;
     color: #ffffff;
     margin-right: 10px;
   }
   
-  .cancel-button {
+  .email-cancel-button {
     background-color: #dc3545;
     color: #ffffff;
     margin-left: 10px;
   }
   
-  .subscribe-button:hover {
+  .email-subscribe-button:hover {
     background-color: #218838;
   }
   
-  .cancel-button:hover {
+  .email-cancel-button:hover {
     background-color: #c82333;
   }
   

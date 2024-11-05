@@ -352,3 +352,12 @@
   width: 100%;
 }
 }
+
+/* Mobile View */
+@media (max-width: 400px) {
+
+  .title-and-icon {
+ padding-left: 2rem;
+  }
+
+}

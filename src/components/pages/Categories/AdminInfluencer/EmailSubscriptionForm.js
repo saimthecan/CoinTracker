@@ -21,9 +21,9 @@ const EmailSubscriptionForm = ({ onSubmitEmail, onClose }) => {
           required
           className="email-input"
         />
-        <div className="button-group">
-          <button type="submit" className="subscribe-button">Subscribe</button>
-          <button type="button" className="cancel-button" onClick={onClose}>Cancel</button>
+        <div className="email-button-group">
+          <button type="submit" className="email-subscribe-button">Subscribe</button>
+          <button type="button" className="email-cancel-button" onClick={onClose}>Cancel</button>
         </div>
       </form>
     </div>
