@@ -81,7 +81,7 @@ const FavoriKullanicilarim = () => {
             </div>
           ))
         ) : (
-          <p>Henüz favorilere kullanıcı eklemediniz.</p>
+          <p>No favorite users yet.</p>
         )}
       </div>
     </div>

@@ -25,7 +25,11 @@ const appUserSchema = new mongoose.Schema({
   isActive: { type: Boolean, default: true }, // Kullanıcı aktif mi?
   createdAt: { type: Date, default: Date.now }, // Kullanıcının oluşturulma tarihi
   influencers: [influencerSchema], // Influencers alanı ekleniyor
-  pushSubscription: mongoose.Schema.Types.Mixed,
+  email: { type: String, default: null },
+  pushSubscription: {
+    type: Object,
+    default: null,
+  },
 });
 
 

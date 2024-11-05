@@ -52,7 +52,7 @@ const AdminInfluencer = () => {
   const handleNotificationIconClick = () => {
     if (notificationsEnabled) {
       const confirmUnsubscribe = window.confirm(
-        'Bildirimleri kapatmak ve email adresinizi silmek istiyor musunuz?'
+        'Do you want to disable notifications and delete your email address?'
       );
       if (confirmUnsubscribe) {
         handleEmailUnsubscribe();
