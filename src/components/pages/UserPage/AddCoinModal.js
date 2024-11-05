@@ -42,15 +42,19 @@ const AddCoinModal = ({ onClose, onAddCoin }) => {
 
       if (inputType === "price") {
         // Fiyat girdiyse, market cap hesaplanacak
-        calculatedShareMarketCap = (currentMarketCap / currentPrice) * calculatedSharePrice;
+        calculatedShareMarketCap =
+          (currentMarketCap / currentPrice) * calculatedSharePrice;
       } else {
         // Market cap girdiyse, fiyat hesaplanacak
-        calculatedSharePrice = (currentPrice / currentMarketCap) * calculatedShareMarketCap;
+        calculatedSharePrice =
+          (currentPrice / currentMarketCap) * calculatedShareMarketCap;
       }
 
       // Hesaplanan değerlerin sayısal olup olmadığını kontrol et
       if (isNaN(calculatedShareMarketCap) || isNaN(calculatedSharePrice)) {
-        setError("Hesaplamada bir hata oluştu. Lütfen girişlerinizi kontrol edin.");
+        setError(
+          "Hesaplamada bir hata oluştu. Lütfen girişlerinizi kontrol edin."
+        );
         return;
       }
 
@@ -76,25 +80,25 @@ const AddCoinModal = ({ onClose, onAddCoin }) => {
         <button className="close-button" onClick={onClose}>
           &times;
         </button>
-        <h2>Yeni Coin Ekle</h2>
+        <h2>Add New Coin</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="caAddress">CA Adresi</label>
+            <label htmlFor="caAddress">CA Address</label>
             <input
               type="text"
               id="caAddress"
-              placeholder="CA Adresi"
+              placeholder="CA Address"
               value={caAddress}
               onChange={(e) => setCaAddress(e.target.value)}
               required
             />
           </div>
           <div className="form-group">
-            <label htmlFor="shareDate">Paylaşım Tarihi</label>
+            <label htmlFor="shareDate">Posting Date</label>
             <input
               type="date"
               id="shareDate"
-              placeholder="Paylaşım Tarihi"
+              placeholder="Posting Date"
               value={shareDate}
               onChange={(e) => setShareDate(e.target.value)}
               required
@@ -103,7 +107,7 @@ const AddCoinModal = ({ onClose, onAddCoin }) => {
 
           <div className="form-group radio-group">
             <div className="radio-container">
-            <input
+              <input
                 type="radio"
                 id="marketcap"
                 name="inputType"
@@ -111,7 +115,9 @@ const AddCoinModal = ({ onClose, onAddCoin }) => {
                 checked={inputType === "marketcap"}
                 onChange={() => setInputType("marketcap")}
               />
-              <label htmlFor="marketcap" className="radio-label">Market Cap</label>
+              <label htmlFor="marketcap" className="radio-label">
+                Market Cap
+              </label>
 
               <input
                 type="radio"
@@ -121,19 +127,18 @@ const AddCoinModal = ({ onClose, onAddCoin }) => {
                 checked={inputType === "price"}
                 onChange={() => setInputType("price")}
               />
-              <label htmlFor="price" className="radio-label">Fiyat</label>
-
-         
+              <label htmlFor="price" className="radio-label">
+                Price
+              </label>
             </div>
           </div>
 
           {inputType === "price" && (
             <div className="form-group">
-           
               <input
                 type="number"
                 id="sharePrice"
-                placeholder="Paylaşım Tarihindeki Fiyat"
+                placeholder="Price on Date of Posted"
                 value={sharePrice}
                 onChange={(e) => setSharePrice(e.target.value)}
                 required
@@ -144,12 +149,11 @@ const AddCoinModal = ({ onClose, onAddCoin }) => {
 
           {inputType === "marketcap" && (
             <div className="form-group">
-            
               <NumericFormat
                 thousandSeparator=","
                 allowNegative={false}
                 id="shareMarketCap"
-                placeholder="Paylaşım Tarihindeki Market Cap"
+                placeholder="Posted Market Cap"
                 value={shareMarketCap}
                 onValueChange={(values) => {
                   const { value } = values; // formatlanmamış değer
@@ -165,14 +169,10 @@ const AddCoinModal = ({ onClose, onAddCoin }) => {
 
           <div className="button-group">
             <button type="submit" className="submit-button">
-              Ekle
+              Add
             </button>
-            <button
-              type="button"
-              onClick={onClose}
-              className="cancel-button"
-            >
-              İptal
+            <button type="button" onClick={onClose} className="cancel-button">
+              Cancel
             </button>
           </div>
         </form>

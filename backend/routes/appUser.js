@@ -504,7 +504,6 @@ router.get("/admin-influencers/highlights", async (req, res) => {
   try {
   
     const appUser = await AppUser.findOne({ role: "admin" });
-    console.log("Admin User:", appUser);
 
       // Eğer adminId 'ObjectId' türünde bir değer bekliyorsa, doğrulama yap
       if (!mongoose.Types.ObjectId.isValid(appUser._id)) {
@@ -527,7 +526,6 @@ router.get("/admin-influencers/highlights", async (req, res) => {
   
       // Her influencer'ın coinlerini topla
       for (const influencer of appUser.influencers) {
-          console.log("Influencer:", influencer);
         const coins = influencer.coins;
         if (coins.length > mostCoinsCount) {
           mostCoinsCount = coins.length;

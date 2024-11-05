@@ -234,7 +234,7 @@ axios.interceptors.request.use(
   };
 
   const handleDeleteCoin = async (coinId) => {
-    if (window.confirm("Bu coin'i silmek istediğinizden emin misiniz?")) {
+    if (window.confirm("Are you sure you want to delete this coin?")) {
       try {
         await axios.delete(`${API_URL}/appUser/${userId}/influencer/${id}/coins/${coinId}`, {
           headers: {
