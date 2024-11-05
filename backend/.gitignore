@@ -11,3 +11,4 @@ logs/
 # Lock files
 package-lock.json
 yarn.lock
+.env

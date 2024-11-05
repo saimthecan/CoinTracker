@@ -13,11 +13,14 @@ import { useAdminInfluencer } from "./useAdminInfluencer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faSearch, faBell  } from "@fortawesome/free-solid-svg-icons"; // Arama simgesi için
 import { useSelector } from "react-redux";
+import EmailSubscriptionForm from "./EmailSubscriptionForm"; 
 
 const AdminInfluencer = () => {
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false); // Arama çubuğunu açıp kapamak için state
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
+
 
   const searchBarRef = useRef(null);
   const searchIconRef = useRef(null);
@@ -46,93 +49,78 @@ const AdminInfluencer = () => {
   const currentUsers = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(AdminInfluencerUsers.length / itemsPerPage);
 
-  const urlBase64ToUint8Array = (base64String) => {
-    // Base64URL'deki '-' ve '_' karakterlerini Base64'teki '+' ve '/' ile değiştirin
-    const padding = '='.repeat((4 - base64String.length % 4) % 4);
-    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-  
-    try {
-      const rawData = window.atob(base64);
-      const outputArray = new Uint8Array(rawData.length);
-  
-      for (let i = 0; i < rawData.length; ++i) {
-        outputArray[i] = rawData.charCodeAt(i);
+  const handleNotificationIconClick = () => {
+    if (notificationsEnabled) {
+      const confirmUnsubscribe = window.confirm(
+        'Bildirimleri kapatmak ve email adresinizi silmek istiyor musunuz?'
+      );
+      if (confirmUnsubscribe) {
+        handleEmailUnsubscribe();
       }
-      return outputArray;
+    } else {
+      setShowEmailModal(true);
+    }
+  };
+  
+  const handleEmailUnsubscribe = async () => {
+    try {
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+      const response = await fetch(
+        `https://cointracker-backend-7786c0daa55a.herokuapp.com/appUser/${storedUser.userId}/unsubscribe-email`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${storedUser.token}`,
+          },
+        }
+      );
+  
+      if (response.ok) {
+        alert('Email aboneliğiniz iptal edildi.');
+        setNotificationsEnabled(false);
+      } else {
+        const data = await response.json();
+        alert(`Hata: ${data.message}`);
+      }
     } catch (error) {
-      console.error('Base64 string doğru formatta değil:', error);
-      throw new Error('Geçersiz Base64 string');
+      console.error('Error unsubscribing email:', error);
+      alert('Email aboneliğinden çıkarken bir hata oluştu.');
     }
   };
   
 
-  const handleNotificationIconClick = async () => {
-    if (!('Notification' in window) || !('serviceWorker' in navigator)) {
-      alert('Push notifications are not supported in your browser.');
-      return;
-    }
-  
-    if (notificationsEnabled) {
-      // Abonelik iptal ediliyor
-      try {
-        const registration = await navigator.serviceWorker.getRegistration();
-        if (registration) {
-          const subscription = await registration.pushManager.getSubscription();
-          if (subscription) {
-            await subscription.unsubscribe();
-            alert('Bildirimler devre dışı bırakıldı');
-          }
+  const handleEmailSubmit = async (email) => {
+    try {
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+      const response = await fetch(
+        `https://cointracker-backend-7786c0daa55a.herokuapp.com/appUser/${storedUser.userId}/subscribe-email`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${storedUser.token}`,
+          },
+          body: JSON.stringify({ email }),
         }
-        setNotificationsEnabled(false);
-      } catch (error) {
-        console.error('Abonelik iptali sırasında hata oluştu:', error);
-        alert('Bildirimleri devre dışı bırakırken bir hata oluştu.');
+      );
+  
+      if (response.ok) {
+        alert('Email subscription successful');
+        setNotificationsEnabled(true);
+        setShowEmailModal(false);
+      } else {
+        const data = await response.json();
+        alert(`Error: ${data.message}`);
       }
-    } else {
-      // Abonelik aktif ediliyor
-      try {
-        const permission = await Notification.requestPermission();
-        if (permission === 'granted') {
-          const registration = await navigator.serviceWorker.register('/service-worker.js');
-          const response = await fetch('https://cointracker-backend-7786c0daa55a.herokuapp.com/appUser/vapidPublicKey');
-          const vapidPublicKey = await response.text();
-          console.log('VAPID Public Key:', vapidPublicKey);
-          const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
-  
-          const subscription = await registration.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: convertedVapidKey,
-          });
-  
-          const storedUser = JSON.parse(localStorage.getItem('user'));
-          await fetch(`https://cointracker-backend-7786c0daa55a.herokuapp.com/appUser/${storedUser.userId}/subscribe`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${storedUser.token}`,
-            },
-            body: JSON.stringify({ subscription }),
-          });
-  
-          setNotificationsEnabled(true);
-          alert('Bildirimler etkinleştirildi');
-        } else {
-          alert('Bildirim izni reddedildi.');
-        }
-      } catch (error) {
-        console.error('Bildirim aboneliği sırasında hata oluştu:', error);
-        alert('Bildirim aboneliği sırasında bir hata oluştu.');
-      }
+    } catch (error) {
+      console.error('Error subscribing email:', error);
+      alert('An error occurred while subscribing to email notifications.');
     }
   };
-  
-  
-  useEffect(() => {
-    if (Notification.permission === 'granted') {
-      setNotificationsEnabled(true);
-    }
-  }, []);
-  
+
+ 
+
 
   const handleSearchIconClick = () => {
     setSearchOpen(!searchOpen); // Arama çubuğunu aç/kapat
@@ -156,6 +144,36 @@ const AdminInfluencer = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [searchOpen]);
+
+  useEffect(() => {
+    const checkEmailSubscription = async () => {
+      try {
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+        const response = await fetch(
+          `https://cointracker-backend-7786c0daa55a.herokuapp.com/appUser/${storedUser.userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${storedUser.token}`,
+            },
+          }
+        );
+  
+        if (response.ok) {
+          const data = await response.json();
+          if (data.email) {
+            setNotificationsEnabled(true);
+          } else {
+            setNotificationsEnabled(false);
+          }
+        }
+      } catch (error) {
+        console.error('Error checking email subscription:', error);
+      }
+    };
+  
+    checkEmailSubscription();
+  }, []);
+  
 
   if (loading) {
     return (
@@ -223,6 +241,14 @@ const AdminInfluencer = () => {
           onClose={() => setShowAddUserModal(false)}
         />
       </Modal>
+
+         {/* Bildirim modali */}
+    <Modal isOpen={showEmailModal} onClose={() => setShowEmailModal(false)}>
+      <EmailSubscriptionForm
+        onSubmitEmail={handleEmailSubmit}
+        onClose={() => setShowEmailModal(false)}
+      />
+    </Modal>
 
       <div className="card-container">
         {currentUsers.map((user) => {
