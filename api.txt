@@ -1,1 +1,0 @@
-https://cointracker-backend-7786c0daa55a.herokuapp.com
