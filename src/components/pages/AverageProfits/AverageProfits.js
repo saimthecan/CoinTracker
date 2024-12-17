@@ -55,8 +55,11 @@ const AverageProfits = () => {
     setSortConfig({ key, direction });
   };
 
+   // coinCount > 0 olan influencerları filtreliyoruz
+   const filteredUserProfits = userProfits.filter((influencer) => influencer.coinCount > 0);
+
   // Sıralama ayarına göre tabloyu sıralama
-  const sortedUserProfits = [...userProfits].sort((a, b) => {
+  const sortedUserProfits = [...filteredUserProfits].sort((a, b) => {
     if (parseFloat(a[sortConfig.key]) < parseFloat(b[sortConfig.key])) {
       return sortConfig.direction === "ascending" ? -1 : 1;
     }
