@@ -87,7 +87,7 @@ const formatPriceWithConditionalZeros = (rawPrice) => {
 /* =========================================
    Asıl Latest Bileşeni
    ========================================= */
-const API_URL = "http://localhost:5000";
+   const API_URL = "https://cointracker-backend-7786c0daa55a.herokuapp.com";
 
 const Latest = () => {
   const [coins, setCoins] = useState([]);
