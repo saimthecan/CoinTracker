@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import { CssBaseline, CircularProgress, Box } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material/styles"; 
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom"; // Navigate kullanarak yönlendirme yapacağız
 import { Provider, useDispatch, useSelector } from "react-redux"; // useSelector eklendi
 import Navbar from './components/pages/Navbar/Navbar';
@@ -10,6 +12,7 @@ import News from "./components/pages/News/News";
 import FavoriCoinlerim from "./components/pages/FavoriCoinlerim/FavoriCoinlerim";
 import AverageProfits from './components/pages/AverageProfits/AverageProfits';
 import Home from './components/pages/Home/Home';
+import Latest from './components/pages/Latest/Latest';
 import Login from "./components/Auth/Login";
 import SignUp from "./components/Auth/SignUp";
 import store from "./ReduxToolkit/store";
@@ -18,11 +21,16 @@ import { jwtDecode } from 'jwt-decode';
 import "./App.css";
 import ScrollToTop from './ScrollToTop'; 
 
+const theme = createTheme();
+
 const App = () => {
   return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
     <Provider store={store}>
       <AppContent />
     </Provider>
+    </ThemeProvider>
   );
 };
 
@@ -31,12 +39,22 @@ const ProtectedRoute = ({ children, requiredRole }) => {
   const { isAuthenticated, role, isLoading } = useSelector((state) => state.user);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if (!isAuthenticated || (requiredRole && role !== requiredRole)) {
-    return <Navigate to="/login" />;
+    return (
+      <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" height="100vh">
+        <h2>Access Denied: You do not have the required permissions.</h2>
+        <Navigate to="/login" />
+      </Box>
+    );
   }
+  
 
   return children;
 };
@@ -45,65 +63,71 @@ const AppContent = () => {
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    dispatch(setAuthLoading(true)); // isLoading'i true yapıyoruz
-    const storedUserData = localStorage.getItem('user');
+  // checkTokenValidity fonksiyonunu burada tanımlıyoruz
+  const checkTokenValidity = (dispatch) => {
+    const storedUserData = localStorage.getItem('user'); // LocalStorage'dan kullanıcı verisini al
     if (storedUserData) {
-      const userData = JSON.parse(storedUserData);
+      const userData = JSON.parse(storedUserData); // JSON formatını çöz
       try {
-        // Token'ı çöz ve geçerliliğini kontrol et
-        const decodedToken = jwtDecode(userData.token);
+        const decodedToken = jwtDecode(userData.token); // Token'ı çözümle
         const currentTime = Date.now() / 1000; // Şu anki zaman (saniye cinsinden)
         if (decodedToken.exp > currentTime) {
-          // Token geçerli, kullanıcıyı ayarla
+          // Token hala geçerliyse kullanıcıyı Redux state'e ayarla
           dispatch(setUser(userData));
         } else {
-          // Token süresi dolmuş, kullanıcıyı çıkış yap
+          // Token süresi dolmuşsa kullanıcıyı çıkış yap
           dispatch(clearUser());
           localStorage.removeItem('user');
         }
       } catch (error) {
         console.error('Token çözülürken hata oluştu:', error);
-        // Token geçersizse kullanıcıyı çıkış yap
-        dispatch(clearUser());
+        dispatch(clearUser()); // Token geçersizse çıkış yap
         localStorage.removeItem('user');
       }
     } else {
-      dispatch(clearUser());
+      dispatch(clearUser()); // Kullanıcı oturumu yoksa çıkış yap
     }
-    dispatch(setAuthLoading(false)); // isLoading'i false yapıyoruz
+  };
+
+  // useEffect ile token kontrolü yapıyoruz
+  useEffect(() => {
+    dispatch(setAuthLoading(true)); // Yükleme durumunu başlat
+    checkTokenValidity(dispatch); // Kullanıcı oturumunu kontrol et
+    dispatch(setAuthLoading(false)); // Yükleme durumunu sonlandır
   }, [dispatch]);
 
+  // Eğer isLoading durumu aktifse CircularProgress gösteriyoruz
   if (isLoading) {
-    
-    // Kullanıcı oturum durumu belirlenene kadar bir yükleniyor ekranı gösterebilirsiniz
-    return <div>Loading...</div>;
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <CircularProgress />
+      </Box>
+    );
   }
 
-  
-
   return (
-      <Router>
-          <ScrollToTop />
-        <Navbar />
-        <div className="main-content">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
+    <Router>
+      <ScrollToTop />
+      <Navbar />
+      <div className="main-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
 
-            {/* Korumalı rotalar */}
-            <Route path="/my-favorite-influencers" element={<ProtectedRoute><FavoriKullanicilarim /></ProtectedRoute>} />
-            <Route path="/admin-influencers" element={<ProtectedRoute><AdminInfluencer /></ProtectedRoute>} />
-            <Route path="/AppUser-influencers" element={<ProtectedRoute><AppUser /></ProtectedRoute>} />
-            <Route path="/average-profits" element={<ProtectedRoute><AverageProfits /></ProtectedRoute>} />
-            <Route path="/star-coins" element={<ProtectedRoute><FavoriCoinlerim /></ProtectedRoute>} />
-            <Route path="/user/:id" element={<ProtectedRoute><UserPage /></ProtectedRoute>} />
-
-            <Route path="/news" element={<News />} />
-          </Routes>
-        </div>
-      </Router>
+          {/* Korumalı rotalar */}
+          <Route path="/my-favorite-influencers" element={<ProtectedRoute><FavoriKullanicilarim /></ProtectedRoute>} />
+          <Route path="/admin-influencers" element={<ProtectedRoute><AdminInfluencer /></ProtectedRoute>} />
+          <Route path="/AppUser-influencers" element={<ProtectedRoute><AppUser /></ProtectedRoute>} />
+          <Route path="/latest" element={<ProtectedRoute><Latest /></ProtectedRoute>} />
+          <Route path="/average-profits" element={<ProtectedRoute><AverageProfits /></ProtectedRoute>} />
+          <Route path="/star-coins" element={<ProtectedRoute><FavoriCoinlerim /></ProtectedRoute>} />
+          <Route path="/user/:id" element={<ProtectedRoute><UserPage /></ProtectedRoute>} />
+          <Route path="/news" element={<News />} />
+        </Routes>
+      </div>
+    </Router>
   );
 };
+
 export default App;

@@ -2,7 +2,7 @@
 
 /* General Navbar Settings */
 .navbar {
-    background-color: #f8f8f8; /* Clean, Apple-like background */
+    background-color: #0D0D0D; /* Clean, Apple-like background */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     height: 10px; /* Compact navbar */
     display: flex;
@@ -12,6 +12,8 @@
     top: 0;
     width: 100%;
     z-index: 101;
+    padding-top: 1.5rem;
+
   }
   
   /* Navbar Content */
@@ -45,18 +47,18 @@
   .nav-link {
     font-size: 15px;
     font-family: "Inter", sans-serif;
-    color: #333333e2;
+    color: #777777;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s;
   }
   
   .nav-link:hover {
-    color: black; /* Green on hover */
+    color: white; /* Green on hover */
   }
   
   .nav-link.active {
-    color: #0071e3; /* Blue for active link */
+    color: whitesmoke; /* Blue for active link */
   }
 
 
@@ -74,19 +76,21 @@
   cursor: pointer;
   text-decoration: none;
   transition: all 0.3s ease;
+  
 
 }
 
 .auth-button:first-of-type {
-  background-color: #007bff; /* Yeşil buton */
+  background-color: #1976D2; /* Yeşil buton */
   color: white;
   border: 2px solid;
+  
 }
 
 .auth-button:last-of-type {
   background-color: transparent;
-  color: black;
-  border: 2px solid #ccc;
+  color: white;
+  border: 2px solid;
 }
 
 .auth-button:hover {

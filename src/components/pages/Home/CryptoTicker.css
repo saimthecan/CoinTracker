@@ -1,9 +1,9 @@
 .crypto-ticker {
   width: 100%;
   overflow: hidden;
-  background-color: var(--background-color); /* Sayfanızın arka plan rengiyle uyumlu */
+  background-color: #262626; /* Sayfanızın arka plan rengiyle uyumlu */
   color: var(--text-color); /* Sayfanızın metin rengiyle uyumlu */
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #262626;
   margin-bottom: 1rem;
   position: relative;
 }
@@ -12,7 +12,7 @@
   display: flex;
   align-items: center;
   padding: 0 1.5rem;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   white-space: nowrap;
 }
 
@@ -20,15 +20,18 @@
   width: 20px;
   height: 20px;
   margin-right: 0.5rem;
+  background-color: #262626 ;
 }
 
 .coin-name {
-  font-weight: bold;
+  
   margin-right: 0.5rem;
+  color: white;
 }
 
 .coin-price {
   margin-right: 0.5rem;
+  color: white
 }
 
 .coin-change {

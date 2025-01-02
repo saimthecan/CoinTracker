@@ -1,0 +1,138 @@
+.latest-profits-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9fafb;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profits-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .profits-header h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .profits-header p {
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  .loading-spinner {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-top: 20px;
+  }
+  
+  .profits-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .profits-table th,
+  .profits-table td {
+    padding: 15px;
+    text-align: center;
+    cursor: pointer; /* Sütun başlıklarını tıklanabilir yapmak için */
+  }
+  
+  .profits-table th {
+    background-color: #4f46e5;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  .profits-table td {
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .profits-table tr:hover {
+    background-color: #f1f5f9;
+  }
+  
+  .user-link {
+    text-decoration: none;
+    color: #3b82f6;
+    font-weight: 600;
+  }
+  
+  .user-link:hover {
+    text-decoration: underline;
+  }
+  
+  .profit-positive {
+    color: #10b981; /* Yeşil renk: Kâr */
+  }
+  
+  .profit-negative {
+    color: #ef4444; /* Kırmızı renk: Zarar */
+  }
+  
+  .favorites-header {
+    width: 97% !important;
+    padding: 10px 20px; /* Yüksekliği azaltmak için padding değerleri küçültüldü */
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .favorites-header h1 {
+    font-size: 1.8rem;
+    margin: 0;
+    color: var(--text-color, #333);
+  }
+  
+  .favorites-header p {
+    font-size: 1rem;
+    color: var(--secondary-text-color, #555);
+    margin: 0;
+  }
+  
+  @media (max-width: 767px) {
+    .profits-header h1 {
+      font-size: 1.5rem;
+    }
+  
+    .profits-header p {
+      font-size: 0.9rem;
+    }
+  
+    .profits-table th,
+    .profits-table td {
+      padding: 10px;
+      font-size: 0.9rem;
+    }
+  
+    .favorites-header {
+      padding: 8px 15px;
+      width: 90% !important;
+      margin-bottom: 1rem !important ;
+    }
+  
+    .favorites-header h1 {
+      font-size: 1.5rem;
+    }
+  
+    .favorites-header p {
+      font-size: 0.9rem;
+    }
+  }
+  

@@ -141,6 +141,17 @@ const Navbar = () => {
                 >
                   Admin Influencers
                 </RouterLink>
+
+                <RouterLink
+                  to="/latest"
+                  className={
+                    location.pathname === "/latest"
+                      ? "nav-link active"
+                      : "nav-link"
+                  }
+                >
+                  Latest
+                </RouterLink>
              
                 <RouterLink
                   to="/average-profits"
@@ -256,6 +267,17 @@ const Navbar = () => {
                 onClick={toggleSidebar}
               >
                 <FaUserFriends className="sidebar-icon" /> Admin Influencers
+              </RouterLink>
+              <RouterLink
+                to="/latest"
+                className={
+                  location.pathname === "/latest"
+                    ? "sidebar-link active"
+                    : "sidebar-link"
+                }
+                onClick={toggleSidebar}
+              >
+                <FaChartLine className="sidebar-icon" /> Latest
               </RouterLink>
           
               <RouterLink
