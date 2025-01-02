@@ -16,6 +16,8 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  TableContainer,
+  Divider,
 } from "@mui/material";
 
 /* =========================================
@@ -168,89 +170,118 @@ const Latest = () => {
     profit !== undefined ? `${profit.toFixed(2)}%` : "N/A";
 
   return (
-    <Box maxWidth="lg" mx="auto" p={2}>
-      {/* Başlık */}
-      <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
-        <Typography variant="h5" gutterBottom>
-          Average Profit/Loss Table
+    <Box maxWidth="lg" mx="auto" p={3}>
+    {/* Başlık ve Tablo Çerçevesi */}
+    <Paper elevation={4} sx={{ p: 3, mb: 3 }}>
+      {/* Sayfa Başlığı */}
+      <Box textAlign="center" mb={2}>
+        <Typography variant="h5" fontWeight="bold">
+          Latest Coins
         </Typography>
-      </Paper>
-
-      {/* Tablo */}
-      <Paper elevation={2}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Coin Adı</TableCell>
-              <TableCell>Paylaşan Kişi</TableCell>
-              <TableCell>Paylaştığı Fiyat</TableCell>
-              <TableCell>Şu Anki Fiyat</TableCell>
-              <TableCell>Kâr/Zarar (%)</TableCell>
-              <TableCell>Paylaştığı Tarih</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {coins.map((coin) => (
-              <TableRow key={coin._id}>
-               <TableCell>
-  {coin.url ? (
-    <a
-      href={coin.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={(e) => {
-        e.stopPropagation(); // Eğer parent click varsa engelle
-        console.log(`Navigating to: ${coin.url}`); // URL'yi logla
-        if (!coin.url.startsWith("http")) {
-          console.error("Invalid URL:", coin.url);
-        }
-      }}
-      style={{ textDecoration: "none", color: "#1976d2" }}
-    >
-      {coin.name} {coin.symbol ? `(${coin.symbol})` : ""}
-    </a>
-  ) : (
-    <>
-      <span style={{ color: "red" }}>URL Eksik</span> {coin.name} {coin.symbol ? `(${coin.symbol})` : ""}
-    </>
-  )}
-</TableCell>
-
-                <TableCell>
-                  {/* Paylaşan kişi -> /user/:id rotası */}
-                  <Link
-                    to={`/user/${coin.influencerId}`}
-                    style={{ textDecoration: "none", color: "#1976d2" }}
-                  >
-                    {coin.influencerName}
-                  </Link>
+      </Box>
+      <Divider />
+      {/* Tablo Konteyneri */}
+      <Paper elevation={3} sx={{ overflowX: "auto", mt:"1rem" }}>
+        <TableContainer>
+          <Table>
+            {/* Tablo Başlıkları */}
+            <TableHead>
+              <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
+                <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>
+                  Coin Adı
                 </TableCell>
-
-                <TableCell>
-                  {coin.sharePrice
-                    ? formatPriceWithConditionalZeros(coin.sharePrice)
-                    : "N/A"}
+                <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>
+                  Paylaşan Kişi
                 </TableCell>
-
-                <TableCell>
-                  {coin.currentPrice
-                    ? formatPriceWithConditionalZeros(coin.currentPrice)
-                    : "N/A"}
+                <TableCell sx={{ fontWeight: "bold", textAlign: "right" }}>
+                  Paylaştığı Fiyat
                 </TableCell>
-
-                <TableCell>
-                  {coin.profitPercentage
-                    ? formatProfitPercentage(coin.profitPercentage)
-                    : "N/A"}
+                <TableCell sx={{ fontWeight: "bold", textAlign: "right" }}>
+                  Şu Anki Fiyat
                 </TableCell>
-
-                <TableCell>
-                  {new Date(coin.shareDate).toLocaleDateString()}
+                <TableCell sx={{ fontWeight: "bold", textAlign: "right" }}>
+                  Kâr/Zarar (%)
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>
+                  Paylaştığı Tarih
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+
+            {/* Tablo Gövdesi */}
+            <TableBody>
+              {coins.map((coin, index) => (
+                <TableRow
+                  key={coin._id}
+                  sx={{
+                    backgroundColor: index % 2 === 0 ? "#fafafa" : "inherit",
+                    "&:hover": { backgroundColor: "#f0f0f0" },
+                  }}
+                >
+                  <TableCell sx={{ textAlign: "center" }}>
+                    {coin.url ? (
+                      <a
+                        href={coin.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ textDecoration: "none", color: "#1976d2" }}
+                      >
+                        {coin.name} {coin.symbol ? `(${coin.symbol})` : ""}
+                      </a>
+                    ) : (
+                      <>
+                        <span style={{ color: "red" }}>URL Eksik</span>{" "}
+                        {coin.name} {coin.symbol ? `(${coin.symbol})` : ""}
+                      </>
+                    )}
+                  </TableCell>
+
+                  <TableCell sx={{ textAlign: "center" }}>
+                    <Link
+                      to={`/user/${coin.influencerId}`}
+                      style={{ textDecoration: "none", color: "#1976d2" }}
+                    >
+                      {coin.influencerName}
+                    </Link>
+                  </TableCell>
+
+                  <TableCell sx={{ textAlign: "right" }}>
+                    {coin.sharePrice
+                      ? formatPriceWithConditionalZeros(coin.sharePrice)
+                      : "N/A"}
+                  </TableCell>
+
+                  <TableCell sx={{ textAlign: "right" }}>
+                    {coin.currentPrice
+                      ? formatPriceWithConditionalZeros(coin.currentPrice)
+                      : "N/A"}
+                  </TableCell>
+
+                  <TableCell
+                    sx={{
+                      textAlign: "right",
+                      color:
+                        coin.profitPercentage > 0
+                          ? "green"
+                          : coin.profitPercentage < 0
+                          ? "red"
+                          : "inherit",
+                    }}
+                  >
+                    {coin.profitPercentage
+                      ? formatProfitPercentage(coin.profitPercentage)
+                      : "N/A"}
+                  </TableCell>
+
+                  <TableCell sx={{ textAlign: "center" }}>
+                    {new Date(coin.shareDate).toLocaleDateString()}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
       </Paper>
     </Box>
   );
