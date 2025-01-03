@@ -24,7 +24,7 @@ const AverageProfits = () => {
     const fetchAverageProfit = async () => {
       try {
         const response = await axios.get(
-          `https://cointracker-backend-7786c0daa55a.herokuapp.com/appUser/${userId}/average-profits`
+          `http://localhost:5000/appUser/${userId}/average-profits`
         );
 
         // avgProfit değerini hesaplayarak yeni bir dizi oluşturuyoruz
@@ -98,6 +98,9 @@ const AverageProfits = () => {
                 Number of Coins{" "}
                 <FontAwesomeIcon icon={getSortIcon("coinCount")} />
               </th>
+              <th onClick={() => handleSort("rugPullCount")}>
+      Rugpull <FontAwesomeIcon icon={getSortIcon("rugPullCount")} />
+    </th>
             </tr>
           </thead>
           <tbody>
@@ -121,6 +124,7 @@ const AverageProfits = () => {
                   {(influencer.totalProfit / influencer.coinCount).toFixed(2)}%
                 </td>
                 <td>{influencer.coinCount}</td>
+                <td>{influencer.rugPullCount}</td>
               </tr>
             ))}
           </tbody>

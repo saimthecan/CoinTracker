@@ -19,6 +19,7 @@ import {
   TableContainer,
   Divider,
 } from "@mui/material";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 
 /* =========================================
    Fiyat formatlama fonksiyonu (JSX döndürüyor)
@@ -258,21 +259,41 @@ const Latest = () => {
                   </TableCell>
 
                   <TableCell
-                    sx={{
-                      textAlign: "right",
-                      color:
-                        coin.profitPercentage > 0
-                          ? "green"
-                          : coin.profitPercentage < 0
-                          ? "red"
-                          : "inherit",
-                    }}
-                  >
-                    {coin.profitPercentage
-                      ? formatProfitPercentage(coin.profitPercentage)
-                      : "N/A"}
-                  </TableCell>
-
+  sx={{
+    textAlign: "right",
+    color:
+      coin.profitPercentage > 0
+        ? "green"
+        : coin.profitPercentage < 0
+        ? "red"
+        : "inherit",
+  }}
+>
+  {coin.profitPercentage !== undefined ? (
+    <Box
+      sx={{
+        display: "flex",        // Flexbox ile hizalama
+        alignItems: "center",   // Dikeyde ortalama
+        justifyContent: "flex-end", // Sağa hizalama
+      }}
+    >
+      {formatProfitPercentage(coin.profitPercentage)}
+      {/* Eğer coin %85'ten fazla düştüyse ünlem ikonu göster */}
+      {coin.profitPercentage <= -85 && (
+        <PriorityHighIcon
+          sx={{
+            color: "red",       // Renk
+            fontSize: "20px",   // Özel boyut
+            ml: 0.2,           // Yazıyla ikon arasına boşluk
+          }}
+          title="Potential Rugpull Detected!" // Fareyle üzerine gelindiğinde açıklama
+        />
+      )}
+    </Box>
+  ) : (
+    "N/A"
+  )}
+</TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     {new Date(coin.shareDate).toLocaleDateString()}
                   </TableCell>
