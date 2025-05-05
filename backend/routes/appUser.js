@@ -12,6 +12,151 @@ router.get("/", (req, res) => {
   res.send("Ana sayfa - Coin Tracker API çalışıyor.");
 });
 
+
+// Global memory cache
+let groupedCoinsCache = null;
+let groupedCoinsTimestamp = 0;
+const CACHE_DURATION = 15 * 60 * 1000; // 15 dakika
+
+// Delay helper
+const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
+const BATCH_SIZE = 5;
+const BATCH_DELAY = 1000;
+
+// Basit memory cache for CA data
+const dexCache = new Map();
+
+const getDexDataWithCache = async (caAddress) => {
+  if (dexCache.has(caAddress)) {
+    return dexCache.get(caAddress);
+  }
+
+  try {
+    const res = await axios.get(`https://api.dexscreener.com/latest/dex/tokens/${caAddress}`);
+    const pair = res.data.pairs?.[0];
+    if (!pair) return null;
+
+    const data = {
+      currentPrice: parseFloat(pair.priceUsd),
+      currentMarketCap: pair.marketCap,
+      imageUrl: `https://dd.dexscreener.com/ds-data/tokens/${pair.chainId}/${caAddress}.png?size=lg`,
+      url: pair.url,
+      network: pair.chainId,
+    };
+
+    dexCache.set(caAddress, data);
+
+    // 5 dakikalık geçici cache
+    setTimeout(() => dexCache.delete(caAddress), 5 * 60 * 1000);
+
+    return data;
+  } catch (err) {
+    console.error(`Dex error for ${caAddress}:`, err.message);
+    return null;
+  }
+};
+
+// Tüm coin’leri işleyen fonksiyon
+const generateEnrichedCoinList = async () => {
+  const allUsers = await AppUser.find({});
+  const coinMap = new Map();
+
+  for (const user of allUsers) {
+    for (const influencer of user.influencers) {
+      for (const coin of influencer.coins) {
+        if (!coin.caAddress) continue;
+        const ca = coin.caAddress.toLowerCase();
+
+        if (!coinMap.has(ca)) {
+          coinMap.set(ca, {
+            caAddress: ca,
+            name: coin.name,
+            symbol: coin.symbol,
+            sharedBy: [],
+          });
+        }
+
+        const twitterHandle = influencer.twitter?.split("/").pop();
+        coinMap.get(ca).sharedBy.push({
+          influencerName: influencer.name,
+          twitter: influencer.twitter,
+          profileImage: twitterHandle ? `https://unavatar.io/twitter/${twitterHandle}` : null,
+          sharePrice: coin.sharePrice,
+          shareMarketCap: coin.shareMarketCap,
+          shareDate: coin.shareDate,
+        });
+      }
+    }
+  }
+
+  const coinList = Array.from(coinMap.values());
+  const enrichedCoins = [];
+
+  for (let i = 0; i < coinList.length; i += BATCH_SIZE) {
+    const batch = coinList.slice(i, i + BATCH_SIZE);
+
+    const batchResults = await Promise.all(
+      batch.map(async (coin) => {
+        const dexData = await getDexDataWithCache(coin.caAddress);
+        if (!dexData) return null;
+
+        const { currentPrice, currentMarketCap, imageUrl, url, network } = dexData;
+
+        const updatedSharers = coin.sharedBy.map((sharer) => ({
+          ...sharer,
+          marketCapComparison: sharer.shareMarketCap
+            ? +(((currentMarketCap - sharer.shareMarketCap) / sharer.shareMarketCap) * 100).toFixed(2)
+            : null,
+          currentPrice,
+          currentMarketCap,
+        }));
+
+        return {
+          ...coin,
+          imageUrl,
+          url,
+          currentPrice,
+          currentMarketCap,
+          network,
+          sharedBy: updatedSharers,
+        };
+      })
+    );
+
+    enrichedCoins.push(...batchResults.filter(Boolean));
+
+    if (i + BATCH_SIZE < coinList.length) {
+      await delay(BATCH_DELAY); // Sıradaki batch öncesi bekle
+    }
+  }
+
+  return enrichedCoins;
+};
+
+// Route
+router.get("/grouped-coins", async (req, res) => {
+  const now = Date.now();
+
+  if (groupedCoinsCache && (now - groupedCoinsTimestamp) < CACHE_DURATION) {
+    return res.json(groupedCoinsCache); // Cache'den döndür
+  }
+
+  try {
+    const enrichedCoins = await generateEnrichedCoinList();
+
+    groupedCoinsCache = enrichedCoins;
+    groupedCoinsTimestamp = now;
+
+    res.json(enrichedCoins);
+  } catch (err) {
+    console.error("Grouped coins endpoint error:", err.message);
+    res.status(500).json({ message: "Veriler alınırken hata oluştu" });
+  }
+});
+
+
+
 // Admin influencer ekleme
 router.post("/admin-influencers", authenticateToken, async (req, res) => {
   try {
@@ -166,6 +311,10 @@ router.post(
       influencer.coins.push(newCoin);
       await adminUser.save();
 
+      // Cache sıfırlama
+      groupedCoinsCache = null;
+      groupedCoinsTimestamp = 0;
+
       // Yeni eklenen coin'i almak için
       const addedCoin = influencer.coins[influencer.coins.length - 1];
 
@@ -247,6 +396,11 @@ router.put(
       coin.shareMarketCap = req.body.shareMarketCap || coin.shareMarketCap;
 
       await adminUser.save();
+
+      // Cache sıfırlama
+      groupedCoinsCache = null;
+      groupedCoinsTimestamp = 0;
+
       res.json(coin);
     } catch (err) {
       console.error("Coin güncellenirken hata oluştu:", err);
@@ -294,6 +448,9 @@ router.delete(
       influencer.coins.pull(coinId);
 
       await adminUser.save();
+
+      groupedCoinsCache = null;
+      groupedCoinsTimestamp = 0;      
 
       res.status(200).json({ message: "Coin silindi" });
     } catch (err) {
@@ -1042,6 +1199,10 @@ router.post("/:appUserId/coins", async (req, res) => {
     appUser.coins.push(newCoin);
     await appUser.save();
 
+    groupedCoinsCache = null;
+    groupedCoinsTimestamp = 0;
+
+
     // Yeni eklenen coin'i almak için
     const addedCoin = appUser.coins[appUser.coins.length - 1];
 
@@ -1086,6 +1247,9 @@ router.delete(
       influencer.coins.pull(req.params.coinId); // Coin'i coins dizisinden kaldırıyoruz
 
       await appUser.save();
+
+      groupedCoinsCache = null;
+      groupedCoinsTimestamp = 0;      
 
       res.status(200).json({ message: "Coin silindi" });
     } catch (err) {
@@ -1177,6 +1341,9 @@ router.put(
       coin.shareMarketCap = req.body.shareMarketCap || coin.shareMarketCap;
 
       await appUser.save();
+      groupedCoinsCache = null;
+      groupedCoinsTimestamp = 0;
+
       res.json(coin);
     } catch (err) {
       console.error("Coin güncellenirken hata oluştu:", err);
@@ -1569,5 +1736,7 @@ router.get("/:appUserId/influencer/:influencerId", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+
 
 module.exports = router;

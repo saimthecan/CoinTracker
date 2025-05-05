@@ -17,7 +17,7 @@ import {
 import axios from "axios";
 import { formatPriceWithConditionalZeros } from "./FormatPrice"; // Dilersen aynı format fonksiyonunu burada da kullan
 
-const API_URL = "https://cointracker-evt3.onrender.com";
+const API_URL = "http://localhost:5000";
 
 const CoinInsights = () => {
   const [coinsList, setCoinsList] = useState([]);
@@ -50,14 +50,29 @@ const CoinInsights = () => {
       </Typography>
 
       <Autocomplete
-        options={coinsList}
-        getOptionLabel={(option) => `${option.name} (${option.symbol})`}
-        onChange={(event, value) => handleCoinSelect(value)}
-        renderInput={(params) => (
-          <TextField {...params} label="Coin seçiniz" variant="outlined" />
-        )}
-        sx={{ width: "100%", maxWidth: 400, mb: 3 }}
-      />
+  options={coinsList}
+  getOptionLabel={(option) => `${option.name} (${option.symbol})`}
+  onChange={(event, value) => handleCoinSelect(value)}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      label="Coin seçiniz"
+      variant="outlined"
+      InputProps={{
+        ...params.InputProps,
+        endAdornment: (
+          <>
+            {coinsList.length === 0 ? (
+              <CircularProgress color="inherit" size={20} />
+            ) : null}
+            {params.InputProps.endAdornment}
+          </>
+        ),
+      }}
+    />
+  )}
+  sx={{ width: "100%", maxWidth: 400, mb: 3 }}
+/>
 
       <Divider />
 
