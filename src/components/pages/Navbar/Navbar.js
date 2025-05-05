@@ -143,6 +143,17 @@ const Navbar = () => {
                 </RouterLink>
 
                 <RouterLink
+                  to="/coininsights"
+                  className={
+                    location.pathname === "/coininsights"
+                      ? "nav-link active"
+                      : "nav-link"
+                  }
+                >
+                 Coin Insights
+                </RouterLink>
+
+                <RouterLink
                   to="/latest"
                   className={
                     location.pathname === "/latest"
@@ -268,6 +279,19 @@ const Navbar = () => {
               >
                 <FaUserFriends className="sidebar-icon" /> Admin Influencers
               </RouterLink>
+
+              <RouterLink
+                to="/coininsights"
+                className={
+                  location.pathname === "/coininsights"
+                    ? "sidebar-link active"
+                    : "sidebar-link"
+                }
+                onClick={toggleSidebar}
+              >
+                <FaUserFriends className="sidebar-icon" /> Coin Insights
+              </RouterLink>
+
               <RouterLink
                 to="/latest"
                 className={
@@ -277,6 +301,12 @@ const Navbar = () => {
                 }
                 onClick={toggleSidebar}
               >
+
+                
+
+                
+
+                
                 <FaChartLine className="sidebar-icon" /> Latest
               </RouterLink>
           

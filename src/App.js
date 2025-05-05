@@ -6,6 +6,7 @@ import FavoriKullanicilarim from "./components/pages/FavoriKullanicilarim/Favori
 import AdminInfluencer from "./components/pages/Categories/AdminInfluencer/AdminInfluencer";
 import AppUser from "./components/pages/Categories/AppUser/AppUser";
 import UserPage from "./components/pages/UserPage/UserPage";
+import CoinInsights from "./components/pages/CoinInsights/CoinInsights";
 import News from "./components/pages/News/News";
 import FavoriCoinlerim from "./components/pages/FavoriCoinlerim/FavoriCoinlerim";
 import AverageProfits from './components/pages/AverageProfits/AverageProfits';
@@ -88,6 +89,7 @@ const AppContent = () => {
             <Route path="/latest" element={<ProtectedRoute><Latest /></ProtectedRoute>} />
             <Route path="/average-profits" element={<ProtectedRoute><AverageProfits /></ProtectedRoute>} />
             <Route path="/star-coins" element={<ProtectedRoute><FavoriCoinlerim /></ProtectedRoute>} />
+            <Route path="/coininsights" element={<ProtectedRoute><CoinInsights /></ProtectedRoute>} />
             <Route path="/user/:id" element={<ProtectedRoute><UserPage /></ProtectedRoute>} />
             <Route path="/news" element={<News />} />
           </Routes>
