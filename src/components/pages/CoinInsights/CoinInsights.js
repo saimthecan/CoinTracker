@@ -17,7 +17,7 @@ import {
 import axios from "axios";
 import { formatPriceWithConditionalZeros } from "./FormatPrice"; // Dilersen aynı format fonksiyonunu burada da kullan
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://cointracker-evt3.onrender.com";
 
 const CoinInsights = () => {
   const [coinsList, setCoinsList] = useState([]);
