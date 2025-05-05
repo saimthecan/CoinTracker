@@ -13,7 +13,7 @@ const News = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await axios.get('https://cointracker-backend-7786c0daa55a.herokuapp.com/news'); // Backend'deki /news endpoint'ine istek atıyoruz
+        const response = await axios.get('http://localhost:5000/news'); // Backend'deki /news endpoint'ine istek atıyoruz
         setNewsItems(response.data);
       } catch (error) {
         console.error('Error fetching news:', error);

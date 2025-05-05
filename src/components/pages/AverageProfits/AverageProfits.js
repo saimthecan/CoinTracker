@@ -24,7 +24,7 @@ const AverageProfits = () => {
     const fetchAverageProfit = async () => {
       try {
         const response = await axios.get(
-          `https://cointracker-backend-7786c0daa55a.herokuapp.com/appUser/${userId}/average-profits`
+          `http://localhost:5000/appUser/${userId}/average-profits`
         );
 
         // avgProfit değerini hesaplayarak yeni bir dizi oluşturuyoruz

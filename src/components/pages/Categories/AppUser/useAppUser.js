@@ -15,7 +15,7 @@ export const useAppUser = () => {
  const { userId, token } = useSelector((state) => state.user);
 
 
-  const API_URL = 'https://cointracker-backend-7786c0daa55a.herokuapp.com/appUser';
+  const API_URL = 'http://localhost:5000/appUser';
 
  // Kullanıcıya özel influencerları çekmek için kullanılan fetch fonksiyonu
    // Influencer'ları çeken fonksiyon

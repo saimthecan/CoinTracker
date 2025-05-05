@@ -17,7 +17,7 @@ export const Signup = () => {
     const user = { username, password };
   
     try {
-      const response = await axios.post("https://cointracker-backend-7786c0daa55a.herokuapp.com/auth/signup", user);
+      const response = await axios.post("http://localhost:5000/auth/signup", user);
   
       if (response.status === 201) {
         navigate("/login");

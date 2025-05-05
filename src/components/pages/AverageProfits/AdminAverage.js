@@ -39,11 +39,11 @@ const AverageProfits = () => {
 
   useEffect(() => {
     if (userRole === 'admin') {
-      fetchAverageProfit(`https://cointracker-backend-7786c0daa55a.herokuapp.com/admin-influencers/average-profits`);
+      fetchAverageProfit(`http://localhost:5000/admin-influencers/average-profits`);
     } else if (selectedOption === 'myInfluencers') {
-      fetchAverageProfit(`https://cointracker-backend-7786c0daa55a.herokuapp.com/appUser/${userId}/average-profits`);
+      fetchAverageProfit(`http://localhost:5000/appUser/${userId}/average-profits`);
     } else {
-      fetchAverageProfit('https://cointracker-backend-7786c0daa55a.herokuapp.com/adminUser/admin-influencers/average-profits');
+      fetchAverageProfit('http://localhost:5000/adminUser/admin-influencers/average-profits');
     }
   }, [userId, selectedOption, userRole, fetchAverageProfit]);
 

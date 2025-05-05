@@ -19,7 +19,7 @@ export const Login = () => {
 
     const user = { username, password };
     try {
-      const response = await axios.post("https://cointracker-backend-7786c0daa55a.herokuapp.com/auth/login", user);
+      const response = await axios.post("http://localhost:5000/auth/login", user);
 
 
       if (response.data && response.data.token) {

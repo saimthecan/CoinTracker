@@ -33,7 +33,7 @@ const Home = () => {
 
 
         // Dinamik olarak URL'yi oluşturuyoruz
-        const url = `https://cointracker-backend-7786c0daa55a.herokuapp.com/appUser/${appUserId}/influencers/highlights`;
+        const url = `http://localhost:5000/appUser/${appUserId}/influencers/highlights`;
 
         // Yetkilendirme başlığı ile birlikte isteği yapıyoruz
         const response = await axios.get(url, {

@@ -5,7 +5,7 @@ export const fetchUserByToken = createAsyncThunk(
   'user/fetchByToken',
   async (token, { rejectWithValue }) => {
     try {
-      const response = await axios.get('https://cointracker-backend-7786c0daa55a.herokuapp.com/api/user', {
+      const response = await axios.get('http://localhost:5000/api/user', {
         headers: {
           'Accept': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -22,7 +22,7 @@ export const loginUser = createAsyncThunk(
   'user/login',
   async ({ username, password }, { rejectWithValue }) => { // dispatch'i kaldırdık
     try {
-      const response = await axios.post('https://cointracker-backend-7786c0daa55a.herokuapp.com/login', {
+      const response = await axios.post('http://localhost:5000/login', {
         username,
         password,
       });
