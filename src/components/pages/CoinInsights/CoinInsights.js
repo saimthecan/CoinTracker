@@ -97,10 +97,6 @@ const CoinInsights = () => {
               <Typography variant="h6">
                 {selectedCoin.name} ({selectedCoin.symbol})
               </Typography>
-              <Typography variant="body2">
-                Ağ: {selectedCoin.network} — Fiyat: ${selectedCoin.currentPrice}{" "}
-                — MCAP: ${selectedCoin.currentMarketCap.toLocaleString()}
-              </Typography>
             </Box>
           </Box>
 
