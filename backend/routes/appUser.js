@@ -4,7 +4,6 @@ const AppUser = require("../models/AppUser");
 const axios = require("axios");
 const authenticateToken = require("../middleware/authenticateToken"); // Import here
 const mongoose = require("mongoose");
-const webpush = require("web-push");
 const { sendEmail } = require("../services/emailService");
 
 // Ana sayfa rotası
@@ -133,6 +132,8 @@ const generateEnrichedCoinList = async () => {
 
   return enrichedCoins;
 };
+
+
 
 // Route
 router.get("/grouped-coins", async (req, res) => {
