@@ -37,7 +37,7 @@ const FavoriCoinlerim = () => {
   const searchBarRef = useRef(null);
   const searchIconRef = useRef(null);
 
-  const API_URL = 'http://localhost:5000';
+  const API_URL = 'https://cointracker-evt3.onrender.com';
 
   useEffect(() => {
     const fetchFavoriteCoins = async () => {

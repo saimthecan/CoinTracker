@@ -17,7 +17,7 @@ export const Signup = () => {
     const user = { username, password };
   
     try {
-      const response = await axios.post("http://localhost:5000/auth/signup", user);
+      const response = await axios.post("https://cointracker-evt3.onrender.com/auth/signup", user);
   
       if (response.status === 201) {
         navigate("/login");

@@ -7,7 +7,7 @@ import { sortCoins, filterCoinsByNetwork } from "./Utils";
 import { useSelector } from 'react-redux';
 import {jwtDecode} from 'jwt-decode';
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://cointracker-evt3.onrender.com";
 
 export const useAdminUserPage = (id) => {
   const [user, setUser] = useState(null);

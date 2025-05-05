@@ -24,7 +24,7 @@ const AverageProfits = () => {
     const fetchAverageProfit = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/appUser/${userId}/average-profits`
+          `https://cointracker-evt3.onrender.com/appUser/${userId}/average-profits`
         );
 
         // avgProfit değerini hesaplayarak yeni bir dizi oluşturuyoruz

@@ -66,7 +66,7 @@ const AdminInfluencer = () => {
     try {
       const storedUser = JSON.parse(localStorage.getItem('user'));
       const response = await fetch(
-        `http://localhost:5000/appUser/${storedUser.userId}/unsubscribe-email`,
+        `https://cointracker-evt3.onrender.com/appUser/${storedUser.userId}/unsubscribe-email`,
         {
           method: 'POST',
           headers: {
@@ -94,7 +94,7 @@ const AdminInfluencer = () => {
     try {
       const storedUser = JSON.parse(localStorage.getItem('user'));
       const response = await fetch(
-        `http://localhost:5000/appUser/${storedUser.userId}/subscribe-email`,
+        `https://cointracker-evt3.onrender.com/appUser/${storedUser.userId}/subscribe-email`,
         {
           method: 'POST',
           headers: {
@@ -150,7 +150,7 @@ const AdminInfluencer = () => {
       try {
         const storedUser = JSON.parse(localStorage.getItem('user'));
         const response = await fetch(
-          `http://localhost:5000/appUser/${storedUser.userId}`,
+          `https://cointracker-evt3.onrender.com/appUser/${storedUser.userId}`,
           {
             headers: {
               Authorization: `Bearer ${storedUser.token}`,

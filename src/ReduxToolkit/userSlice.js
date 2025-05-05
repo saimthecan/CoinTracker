@@ -5,7 +5,7 @@ export const fetchUserByToken = createAsyncThunk(
   'user/fetchByToken',
   async (token, { rejectWithValue }) => {
     try {
-      const response = await axios.get('http://localhost:5000/api/user', {
+      const response = await axios.get('https://cointracker-evt3.onrender.com/api/user', {
         headers: {
           'Accept': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -22,7 +22,7 @@ export const loginUser = createAsyncThunk(
   'user/login',
   async ({ username, password }, { rejectWithValue }) => { // dispatch'i kaldırdık
     try {
-      const response = await axios.post('http://localhost:5000/login', {
+      const response = await axios.post('https://cointracker-evt3.onrender.com/login', {
         username,
         password,
       });

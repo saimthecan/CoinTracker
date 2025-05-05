@@ -15,7 +15,7 @@ export const useAppUser = () => {
  const { userId, token } = useSelector((state) => state.user);
 
 
-  const API_URL = 'http://localhost:5000/appUser';
+  const API_URL = 'https://cointracker-evt3.onrender.com/appUser';
 
  // Kullanıcıya özel influencerları çekmek için kullanılan fetch fonksiyonu
    // Influencer'ları çeken fonksiyon

@@ -10,7 +10,7 @@ export const useAdminInfluencer = () => {
 
   const { userId, token, username } = useSelector((state) => state.user);
 
-  const API_URL = 'http://localhost:5000/appUser/admin-influencers';
+  const API_URL = 'https://cointracker-evt3.onrender.com/appUser/admin-influencers';
 
  // Admin influencerları fetch eden bağımsız bir fonksiyon
  const fetchAdminInfluencers = useCallback(async () => {

@@ -39,11 +39,11 @@ const AverageProfits = () => {
 
   useEffect(() => {
     if (userRole === 'admin') {
-      fetchAverageProfit(`http://localhost:5000/admin-influencers/average-profits`);
+      fetchAverageProfit(`https://cointracker-evt3.onrender.com/admin-influencers/average-profits`);
     } else if (selectedOption === 'myInfluencers') {
-      fetchAverageProfit(`http://localhost:5000/appUser/${userId}/average-profits`);
+      fetchAverageProfit(`https://cointracker-evt3.onrender.com/appUser/${userId}/average-profits`);
     } else {
-      fetchAverageProfit('http://localhost:5000/adminUser/admin-influencers/average-profits');
+      fetchAverageProfit('https://cointracker-evt3.onrender.com/adminUser/admin-influencers/average-profits');
     }
   }, [userId, selectedOption, userRole, fetchAverageProfit]);
 
