@@ -88,7 +88,7 @@ const formatPriceWithConditionalZeros = (rawPrice) => {
 /* =========================================
    Asıl Latest Bileşeni
    ========================================= */
-   const API_URL = "https://cointracker-evt3.onrender.com";
+   const API_URL = "http://localhost:5000";
 
 const Latest = () => {
   const [coins, setCoins] = useState([]);

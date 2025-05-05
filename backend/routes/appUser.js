@@ -461,6 +461,66 @@ router.delete(
   }
 );
 
+// En son paylaşılan coinleri döner
+router.get("/admin-influencers/latest-coins", authenticateToken, async (req, res) => {
+  try {
+    const adminUser = await AppUser.findOne({ role: "admin" });
+
+    if (!adminUser) {
+      return res.status(404).json({ message: "Admin kullanıcı bulunamadı." });
+    }
+
+    const latestCoins = [];
+
+    for (const influencer of adminUser.influencers) {
+      for (const coin of influencer.coins) {
+        latestCoins.push({
+          _id: coin._id,
+          name: coin.name,
+          symbol: coin.symbol,
+          shareDate: coin.shareDate,
+          sharePrice: coin.sharePrice,
+          shareMarketCap: coin.shareMarketCap,
+          influencerId: influencer._id,
+          influencerName: influencer.name,
+          caAddress: coin.caAddress,
+        });
+      }
+    }
+
+    // En son tarihlilere göre sırala
+    latestCoins.sort((a, b) => new Date(b.shareDate) - new Date(a.shareDate));
+
+    // Dexscreener fiyatlarını ekle
+    const enriched = await Promise.all(latestCoins.map(async (coin) => {
+      try {
+        const response = await axios.get(`https://api.dexscreener.com/latest/dex/tokens/${coin.caAddress}`);
+        const pair = response.data.pairs?.[0];
+        if (pair) {
+          const currentPrice = parseFloat(pair.priceUsd);
+          const profitPercentage = coin.sharePrice
+            ? ((currentPrice - coin.sharePrice) / coin.sharePrice) * 100
+            : null;
+          return {
+            ...coin,
+            currentPrice,
+            profitPercentage,
+            url: pair.url,
+          };
+        }
+        return { ...coin, currentPrice: null, profitPercentage: null };
+      } catch (err) {
+        console.error(`Dex error for ${coin.name}:`, err.message);
+        return { ...coin, currentPrice: null, profitPercentage: null };
+      }
+    }));
+
+    res.json(enriched);
+  } catch (err) {
+    console.error("latest-coins endpoint error:", err.message);
+    res.status(500).json({ message: "En son coinler alınırken hata oluştu." });
+  }
+});
 
 
 // Admin influencer'ını favorilere ekleme
